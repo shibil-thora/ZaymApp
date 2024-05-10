@@ -1,18 +1,9 @@
-import React, { useRef } from 'react' 
+import React, { useRef, useState } from 'react' 
 import { useEffect } from 'react'
-import {stateDate} from '../../Redux/redux.js'
+import axios from 'axios'
 
 function ServiceList() { 
-    const count = useRef(0) 
-    useEffect(() => {
-        for (const dist in stateDate.districts) {
-            for (const subDist in stateDate.districts[dist]) {
-                console.log(stateDate.districts[dist][subDist].subDistrict) 
-                count.current ++; 
-            }
-        } 
-        console.log(count)
-    }, [])
+    
   return (
     <>   
     <div className="mx-12">
@@ -22,7 +13,7 @@ function ServiceList() {
             <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
             <input
             type="text"
-            className="block w-5/6 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+            className="block w-5/6 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-orange-500"
             placeholder="Enter text here..." />  
 
             </div>
@@ -31,7 +22,7 @@ function ServiceList() {
             <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
             <input
             type="text"
-            className="block w-5/6 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+            className="block w-5/6 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-orange-500"
             placeholder="Enter text here..." />  
 
             </div>

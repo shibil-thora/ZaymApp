@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'rest_framework', 
     'corsheaders', 
     'rest_framework_simplejwt',
+    'services', 
+] 
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
 ]
 
 MIDDLEWARE = [
