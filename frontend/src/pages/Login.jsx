@@ -2,7 +2,9 @@ import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { loginUser } from '../ApiServices/ApiServices' 
 import {useDispatch} from 'react-redux' 
-import { changeAuthMode } from '../Redux/AuthSlice'
+import { changeAuthMode } from '../Redux/AuthSlice' 
+import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 function Login() {
     const navigate = useNavigate(); 
@@ -10,7 +12,14 @@ function Login() {
     const [password, setPassword] = useState('');  
     const [error, setError] = useState('');
     const dispatch = useDispatch(); 
+    const state = useSelector(state => state.auth) 
 
+    useEffect(() => {
+      if (state.user.is_authenticated) {
+      navigate('/')
+    }
+    }, [])
+    
     function handleLoginClick() { 
       if (!username || !password) {
         setError('empty inputs')
@@ -57,7 +66,7 @@ function Login() {
                   onClick={() => handleLoginClick()}
                   className=" font-medium shadow-lg
                   text-black mx-4 h-8 mt-4 bg-black bg-opacity-20  px-4 py-0 
-                  rounded-md hover:bg-orange-600">Login</button>
+                  rounded-md hover:bg-orange-600 focus:outline-orange-500 ">Login</button>
                 </div>
             </div>
         </div>

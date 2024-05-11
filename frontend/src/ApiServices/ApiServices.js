@@ -10,12 +10,21 @@ export function loginUser(user) {
     })
 } 
 
+
+//first we are checking the status of the current user if the access token is outdated we will get the 
+// refresh token on the catch session. ====USER STATUS SESSION====
+
 export function userStatus() {
     return axios.get('user_status/').then((res) => {
         return res
     }).catch((err) => {
         const refresh = localStorage.getItem('refresh') 
-        axios.get()
-        console.log(err)
+        return BaseAxios.post(`${baseURL}api/token/refresh`, {refresh}).then((res) => {
+            localStorage.setItem('access', res.data.access); 
+            console.log('refreshed'); 
+            return axios.get('user_status/').then((res) => {
+                return res
+            })
+        }) 
     })
 }

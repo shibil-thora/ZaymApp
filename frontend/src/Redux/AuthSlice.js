@@ -15,7 +15,6 @@ export const authSlice = createSlice({
     initialState: INITIAL_STATE, 
     reducers: {
         changeAuthMode: (state, action) => {
-            console.log(action.payload.username)
             state.user.username = action.payload.username; 
             state.user.email = action.payload.email; 
             state.user.is_authenticated = action.payload.is_authenticated; 

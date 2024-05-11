@@ -120,9 +120,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10), 
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5), 
     'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
 }
+
+#media configs
+MEDIA_ROOT = BASE_DIR / 'uploads'
+MEDIA_URL = '/media/'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

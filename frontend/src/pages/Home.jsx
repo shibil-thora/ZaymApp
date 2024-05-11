@@ -13,9 +13,11 @@ function Home() {
 
   useEffect(() => {
     userStatus().then((res) => {
+      if (res.status == 200) {
       dispatch(changeAuthMode(res.data.user))
+      }
     }).catch((err) => {
-      navigate('/login')
+      navigate('login/')
     })
   }, [])
 
