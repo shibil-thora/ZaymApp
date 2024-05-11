@@ -7,3 +7,6 @@ class Area(models.Model):
     sub_dist = models.CharField(max_length=100)
     village = models.CharField(max_length=100) 
     area_name = models.CharField(max_length=200)
+
+    def __str__(self): 
+        return self.area_name
