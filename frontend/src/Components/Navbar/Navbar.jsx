@@ -22,7 +22,6 @@ function Navbar() {
                     className="text-white zoom-hover hover:shadow-lg hover:border focus:outline-white hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">Home</button>
                     <button className="text-white zoom-hover  focus:outline-white hover:shadow-lg hover:border hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">contact us</button>
                     <button 
-                    onClick={() => dispatch(logOut())}
                     className="text-white zoom-hover hover:shadow-lg hover:border focus:outline-white hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">About us</button>
                   
                 </section>
@@ -38,7 +37,7 @@ function Navbar() {
              rounded-md focus:outline-white hover:bg-orange-600">Login</button>
 
             <button 
-            onClick={() => { navigate('profile/') }}
+            onClick={() => { navigate('profile/user') }}
             className='w-12 h-12 hover:px-4 hover:py-4 hidden md:block zoom-hover hover:cursor-pointer shadow-lg rounded-full focus:outline-white border-4 hover:border-4 hover:border-orange-600 md:mx-4 bg-white'></button>
             </div>
             

@@ -69,6 +69,8 @@ function Login() {
                   rounded-md hover:bg-orange-600 focus:outline-orange-500 ">Login</button>
                 </div>
             </div>
+            <h2 className="text-sm mt-3 mx-auto">Don't have an account ?  &nbsp;
+            <button className="font-bold text-orange-600 hover:underline"> signup</button> </h2>
         </div>
     </div> 
 
