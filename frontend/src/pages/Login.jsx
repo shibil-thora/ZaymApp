@@ -66,11 +66,15 @@ function Login() {
                   onClick={() => handleLoginClick()}
                   className=" font-medium shadow-lg
                   text-black mx-4 h-8 mt-4 bg-black bg-opacity-20  px-4 py-0 
-                  rounded-md hover:bg-orange-600 focus:outline-orange-500 ">Login</button>
+                  rounded-md hover:bg-orange-600 focus:outline-orange-500 focus:outline-none">Login</button>
                 </div>
             </div>
             <h2 className="text-sm mt-3 mx-auto">Don't have an account ?  &nbsp;
-            <button className="font-bold text-orange-600 hover:underline"> signup</button> </h2>
+            <button 
+            onClick={() => {
+              navigate('/signup/', {replace: true})
+            }}
+            className="font-bold text-orange-600 hover:underline"> signup</button> </h2>
         </div>
     </div> 
 

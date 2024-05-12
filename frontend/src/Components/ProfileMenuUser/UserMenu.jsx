@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
 import { useNavigate } from 'react-router-dom'
 
+// user menu of profile
 function UserMenu() {
     const state = useSelector(state => state.auth) 
     const dispatch = useDispatch()
@@ -10,13 +11,13 @@ function UserMenu() {
 
     function handleLogout() {
         dispatch(logOut()); 
-        navigate('/')
+        navigate('/login', {replace: true})
     }
   return (
     <>
     <div className="flex flex-col h-full w-full">
         <div className="w-3/4 border-b border-gray-200 mx-8 py-4 ">
-            <h1 className="text-3xl font-bold text-orange-60">Profile Details</h1>
+            <h1 className="text-3xl font-bold text-gray-700">Profile Details</h1>
         </div>
         <div className="my-2 mx-8"> 
             <h2 className="text-black font-medium">username: </h2>
@@ -35,7 +36,7 @@ function UserMenu() {
              bg-white-200 focus:outline-none focus:ring-0"/>
         </div>
         <div className="w-3/4 border-b border-gray-200 mx-8 py-4 ">
-            <h1 className="text-2xl font-bold text-orange-60">Area Details</h1>
+            <h1 className="text-2xl font-bold text-gray-700">Area Details</h1>
         </div>
         <div className="flex flex-col sm:flex-row justify-center sm:space-x-4 mx-8 w-3/4">
             {/* state */}
@@ -76,7 +77,7 @@ function UserMenu() {
         <div className="div flex mx-8 mt-4">
             <button 
             onClick={()=> handleLogout()}
-            className="text-white bg-red-600 hover:bg-red-500 shadow-md rounded-lg px-8 py-2"><i className="fas fa-sign-out-alt"></i> signout</button>
+            className="text-white bg-red-600 hover:bg-red-500 shadow-md rounded-lg px-8 py-2 zoom-hover"><i className="fas fa-sign-out-alt"></i> signout</button>
         </div>
          
     </div>

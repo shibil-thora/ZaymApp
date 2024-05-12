@@ -14,7 +14,7 @@ function Navbar() {
     top-0 sticky z-10">
 
         <div className="max-w-6xl flex justify-between md:mx-auto mx-8 py-2 ">
-            <h2 className="text-4xl ms-2 font-black cursor-pointer text-white">ZaymApp</h2> 
+            <h2 className="text-4xl ms-2 font-black cursor-pointer text-gray-200">ZaymApp</h2> 
             <div className="hidden md:block">
                 <section className="flex justify-between space-x-8 mt-3 items-center">
                     <button 
@@ -37,7 +37,7 @@ function Navbar() {
              rounded-md focus:outline-white hover:bg-orange-600">Login</button>
 
             <button 
-            onClick={() => { navigate('profile/user') }}
+            onClick={() => { navigate('/profile/user/', {replace: true}) }}
             className='w-12 h-12 hover:px-4 hover:py-4 hidden md:block zoom-hover hover:cursor-pointer shadow-lg rounded-full focus:outline-white border-4 hover:border-4 hover:border-orange-600 md:mx-4 bg-white'></button>
             </div>
             

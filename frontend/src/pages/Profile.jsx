@@ -65,6 +65,7 @@ function Profile(props) {
         <div className="w-full flex-grow flex sm:w-1/2 md:w-3/4">
             <div className="flex-grow my-3 sm:me-3 sm:mx-0 me-1 mx-3 rounded-md shadow-md bg-white">
                 {<props.rightMenu />}
+                
             </div>
         </div>
     </div>
