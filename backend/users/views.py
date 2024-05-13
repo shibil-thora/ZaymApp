@@ -1,16 +1,17 @@
 from django.shortcuts import render 
 from rest_framework.response import Response 
 from rest_framework.views import APIView  
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from django.contrib.auth import authenticate 
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import UserSerializer
+from .serializers import UserSerializer 
+from .models import MyUsers as User 
+from django.core.validators import EmailValidator
 
 
-class LoginView(APIView): 
+class UserLoginView(APIView): 
     def post(self, request):
-        print('came here')
         username = request.data['username']
         password = request.data['password'] 
         user = authenticate(username=username, password=password) 
@@ -20,7 +21,7 @@ class LoginView(APIView):
         refresh = RefreshToken.for_user(user) 
         access = refresh.access_token 
         user_data = UserSerializer(user) 
-        user_dict = user_data.data
+        user_dict = user_data.data 
         response_data = {
             'refresh': str(refresh),
             'access': str(access), 
@@ -33,7 +34,6 @@ class LoginView(APIView):
         }
     
         return Response(response_data) 
-      
     
 
 class UserStatusView(APIView): 
@@ -50,4 +50,63 @@ class UserStatusView(APIView):
                 'is_superuser': user_dict['is_superuser'],
             }
         }
-        return Response(response_data)
+        return Response(response_data) 
+    
+
+class UserSignUpView(APIView): 
+    def post(self, request): 
+        username = request.data.get('username')
+        email = request.data.get('email')
+        pass1 = request.data.get('pass1')
+        pass2 = request.data.get('pass2')
+        print(username, email, pass1, pass2)
+
+        if not pass1 == pass2: 
+            raise AuthenticationFailed('passwords do not match!') 
+        
+        if User.objects.filter(username=username): 
+            raise AuthenticationFailed('username already exists') 
+        
+        if User.objects.filter(email=email):
+            raise AuthenticationFailed('email already exists') 
+        
+        if len(username.strip()) < 4:  
+            raise AuthenticationFailed('username is short')
+        
+        if str(username).isdigit(): 
+            raise AuthenticationFailed('invalid username') 
+        
+        try: 
+            EmailValidator()(email)
+        except: 
+            raise AuthenticationFailed('Enter a valid email') 
+        
+        if len(pass1.strip()) < 5: 
+            raise AuthenticationFailed('short password') 
+        
+        User.objects.create_user(username=username, email=email, password=pass1)
+        
+        return Response({'message': 'user Created'}) 
+    
+
+class UserListView(APIView): 
+    permission_classes = [IsAdminUser]
+    def get(self, request): 
+        user_objs = User.objects.all()
+        user_objs = user_objs.exclude(is_superuser=True)
+        user_set = UserSerializer(user_objs, many=True)
+        return Response({"users": user_set.data})
+    
+
+class ToggleBlockView(APIView): 
+    permission_classes = [IsAdminUser]
+    def post(self, request): 
+        user_id = request.data['id'] 
+        user = User.objects.get(id=user_id) 
+        if user.is_active: 
+            user.is_active = False
+            user.save()
+        else:
+            user.is_active = True 
+            user.save()
+        return Response({'id': user_id, 'status': user.is_active})

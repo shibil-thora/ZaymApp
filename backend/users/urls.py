@@ -2,6 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('login/', views.LoginView().as_view()), 
+    path('login/', views.UserLoginView().as_view()), 
+    path('signup/', views.UserSignUpView().as_view()), 
     path('user_status/', views.UserStatusView.as_view()), 
+    path('zaymadmin/users_list/', views.UserListView.as_view()), 
+    path('zaymadmin/toggleblock/', views.ToggleBlockView.as_view()), 
 ]
