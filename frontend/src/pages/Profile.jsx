@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom' 
 import { useDispatch } from 'react-redux'
 import { changeAuthMode } from '../Redux/AuthSlice'
+import { baseImageURL } from '../Axios/axios'
 
 function Profile(props) { 
     const state = useSelector(state => state.auth)
@@ -30,7 +31,7 @@ function Profile(props) {
             <div className="bg-white flex flex-col justify-center space-y-4 rounded-md shadow-md m-2 flex-grow">
                 <section className=" my-8 sm:my-0 h-3/4 flex flex-col justify-center gap-8">
                 <img className="w-40 h-40 mx-auto border border-black shadow-lg rounded-full" 
-                src="http://127.0.0.1:8000/media/profile_pics/donglee.jpg" /> 
+                src={`${baseImageURL}/media/profile_pics/donglee.jpg`} /> 
                 <div className="zoom-hover">
 
 

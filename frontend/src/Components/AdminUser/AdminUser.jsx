@@ -1,12 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getUsersList } from '../../ApiServices/ApiServices';
+import { ToggleBlockUser } from '../../ApiServices/ApiServices';
 
 function AdminUser() {
+  const [users, setUsers] = useState([]); 
+  const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    getUsersList().then((res) => {
+      setUsers(res.data.users) 
+    })
+  }, [])
+
+  function toggleActivation(id) {
+    ToggleBlockUser(id).then((res) => {
+      const new_users = [...users];
+      const change_id = new_users.findIndex(user => user.id === res.data.id) ;
+      new_users[change_id].is_active = res.data.status; 
+      setUsers([...new_users])
+  
+      }).catch((err) => {
+        console.log(err)
+      })
+  }
+
   return (
      <>
     <div className="flex p-4 flex-col h-screen">
         <div className="w-full mb-3 flex items-center space-x-2">
             <h2 className="fas fa-search bg-white p-3 border border-black"></h2>
         <input type="text" 
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             required
             placeholder='Search user...'
             className=" px-2 py-2 shadow-md w-full sm:w-1/2  border border-black
@@ -23,19 +48,24 @@ function AdminUser() {
             <th className="px-6 py-4 border border-black ">Activity</th>
           </tr>
         </thead>
-        <tbody>
-          <tr className="border-b border-gray-200 bg-white">
-            <td className="px-6 py-4 border border-black">kareem</td>
-            <td className="px-6 py-4 border border-black">kareem@gmail.com</td>
-            <td className="px-6 py-4 border border-black">
-            <button 
-            className="hidden md:block font-medium zoom-hover
-             text-white mt-2 bg-green-700  px-4 py-1 mx-auto
-              focus:outline-white hover:opacity-90">Activate</button>
-            </td>
-
-            <td className="px-6 py-4 border text-green-700 font-bold border-black">Blocked</td>
-          </tr>
+        <tbody> 
+          { users.filter((user) => user.username.toLowerCase().includes(query.toLowerCase())).map((user) => (
+             <tr key={user.id} className="border-b border-gray-200 bg-white">
+             <td className="px-6 py-4 border border-black">{user.username}</td>
+             <td className="px-6 py-4 border border-black">{user.email}</td>
+             <td className="px-6 py-4 border border-black">
+             <button 
+             onClick={() => toggleActivation(user.id)}
+             className={`hidden md:block font-medium zoom-hover
+              text-white mt-2 ${user.is_active ? 'bg-red-600': 'bg-green-700'}  px-4 py-1 mx-auto
+               focus:outline-white hover:opacity-90`}>{user.is_active ? 'block': 'activate'}</button>
+             </td>
+             <td className={`px-6 py-4 border ${user.is_active ? 'text-green-700': 'text-red-500'} font-bold border-black`}>
+              {user.is_active? 'Active': 'blocked'}</td>
+           </tr>
+          ))
+          }
+          
           
         </tbody>
       </table>

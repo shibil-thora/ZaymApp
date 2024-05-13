@@ -4,7 +4,6 @@ const INITIAL_STATE = {
     user: {
         username: '', 
         email: '', 
-        profile_pic: '', 
         is_authenticated: false,
         is_superuser: false, 
     }
@@ -19,14 +18,14 @@ export const authSlice = createSlice({
             state.user.email = action.payload.email; 
             state.user.is_authenticated = action.payload.is_authenticated; 
             state.user.is_superuser = action.payload.is_superuser; 
+           
         },
         logOut: (state, action) => {
             localStorage.setItem('access', ''); 
             localStorage.setItem('refresh', ''); 
             state.user = {
                 username: '', 
-                email: '', 
-                profile_pic: '', 
+                email: '',  
                 is_authenticated: false,
                 is_superuser: false, 
             }

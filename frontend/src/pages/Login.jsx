@@ -27,6 +27,7 @@ function Login() {
       else{
         loginUser({username: username, password: password}).then((res) => {
           setError('')
+          console.log(res.data.user)
           dispatch(changeAuthMode(res.data.user)) 
           localStorage.setItem('refresh', res.data.refresh); 
           localStorage.setItem('access', res.data.access); 

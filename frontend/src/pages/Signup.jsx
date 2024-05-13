@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import {signUpUser} from '../ApiServices/ApiServices'
 
 function Signup() {
   const [username, setUsername] = useState('');
@@ -11,7 +12,32 @@ function Signup() {
   const [pass2, setPass2] = useState(''); 
   const navigate = useNavigate(); 
 
-  
+  function handleRegisterClick() {
+    signUpUser({username, email, pass1, pass2}).then((res) => {
+      setUserError('')
+      setEmailError('')
+      setPassError('')
+      navigate('/login/', {replace: true})
+    }).catch((err) => {
+      console.log(err)
+      const errorMessage = err.response.data.detail; 
+      if (errorMessage.includes('username')) {
+        setUserError(errorMessage);
+        setEmailError('')
+        setPassError('')
+      }
+      else if (errorMessage.includes('email')) {
+        setUserError();
+        setEmailError(errorMessage)
+        setPassError('')
+      }
+      else if (errorMessage.includes('password')) {
+        setUserError('');
+        setEmailError('')
+        setPassError(errorMessage)
+      }
+    })
+  }
   
   return (
     <div className="flex justify-center min-h-screen">
@@ -63,6 +89,7 @@ function Signup() {
                 </div>
                 <div className="mx-auto flex flex-col">
                   <button 
+                  onClick={() => handleRegisterClick()}
                   className=" font-medium shadow-lg
                   text-black mx-4 h-8 mt-4 bg-black bg-opacity-20  px-4 py-0 
                   rounded-md hover:bg-orange-600 focus:outline-orange-500 focus:outline-none zoom-hover">Register</button>

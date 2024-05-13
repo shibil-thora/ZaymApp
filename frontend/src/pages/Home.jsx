@@ -17,7 +17,8 @@ function Home() {
       dispatch(changeAuthMode(res.data.user))
       }
     }).catch((err) => {
-      navigate('login/')
+      console.log(err)
+      navigate('/login/', {replace: true})
     })
   }, [])
 

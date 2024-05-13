@@ -1,9 +1,31 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import AdminNavbar from '../Components/AdminNav/AdminNavbar'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { userStatus } from '../ApiServices/ApiServices';
+import { changeAuthMode } from '../Redux/AuthSlice';
 
 function Admin(props) {
     const navigate = useNavigate(); 
+    const dispatch = useDispatch();
+    const state = useSelector(state => state.auth)
+
+    useEffect(() => {
+        userStatus().then((res) => {
+          if (res.status == 200) {
+          dispatch(changeAuthMode(res.data.user))
+          }
+        }).catch((err) => {
+            console.log(err)
+          navigate('/login/', {replace: true})
+        })
+      }, [])
+
+    useEffect(() => {
+        if (!state.user.is_superuser) {
+            navigate('/login/', {replace: true})
+        }
+    }, [])
 
   return (
     <>

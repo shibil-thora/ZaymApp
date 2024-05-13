@@ -10,6 +10,12 @@ export function loginUser(user) {
     })
 } 
 
+export function signUpUser(user) {
+    return BaseAxios.post(`${baseURL}signup/`, user).then((res) => {
+        return res
+    })
+} 
+
 
 //first we are checking the status of the current user if the access token is outdated we will get the 
 // refresh token on the catch session. ====USER STATUS SESSION====
@@ -26,5 +32,17 @@ export function userStatus() {
                 return res
             })
         }) 
+    })
+}
+
+export function getUsersList() {
+    return axios.get('zaymadmin/users_list').then((res) => {
+        return res
+    })
+}
+
+export function ToggleBlockUser(id) {
+    return axios.post('zaymadmin/toggleblock/', {id}).then((res) => {
+        return res
     })
 }
