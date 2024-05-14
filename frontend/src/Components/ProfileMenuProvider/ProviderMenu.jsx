@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
 import { useNavigate } from 'react-router-dom'  
 
-function ProviderMenu() {
+function ProviderMenu(props) {
     const state = useSelector(state => state.auth) 
     const dispatch = useDispatch()
     const navigate = useNavigate('/')

@@ -1,11 +1,12 @@
 import React from 'react' 
 import {useNavigate} from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
 
 function Navbar() {
-  const navigate = useNavigate() 
-  const dispatch = useDispatch()
+  const navigate = useNavigate(); 
+  const dispatch = useDispatch(); 
+  const state = useSelector(state => state.auth); 
 
   return (
     <>
@@ -27,14 +28,16 @@ function Navbar() {
                 </section>
             </div> 
             <div className="flex">
-              <div className="md:flex rotate-hover hidden hover:cursor-pointer w-8 h-8 zoom-hover shadow-lg bg-black bg-opacity-20 rounded-full hover:bg-orange-600 mt-2 justify-center">   
+
+              {state.user.is_authenticated && <div className="md:flex rotate-hover hidden hover:cursor-pointer w-8 h-8 zoom-hover shadow-lg bg-black bg-opacity-20 rounded-full hover:bg-orange-600 mt-2 justify-center">   
                 <i className="text-white mt-2 fas fa-bell"></i> 
-              </div>
-            <button 
+              </div>}
+
+            {!state.user.is_authenticated && <button 
             onClick={() => navigate('login/')} 
             className="hidden md:block font-medium shadow-lg zoom-hover
              text-white mx-4 h-8 mt-2 bg-black bg-opacity-20  px-4 py-0 
-             rounded-md focus:outline-white hover:bg-orange-600">Login</button>
+             rounded-md focus:outline-white hover:bg-orange-600">Login</button>}
 
             <button 
             onClick={() => { navigate('/profile/user/', {replace: true}) }}

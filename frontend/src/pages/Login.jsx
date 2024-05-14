@@ -33,6 +33,7 @@ function Login() {
           localStorage.setItem('access', res.data.access); 
           navigate('/')
         }).catch((err) => {
+          console.log(err)
           setError(err.response.data.detail)
         })
       }

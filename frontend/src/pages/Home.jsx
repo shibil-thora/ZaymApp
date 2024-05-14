@@ -11,17 +11,6 @@ function Home() {
   const dispatch = useDispatch(); 
   const navigate = useNavigate(); 
 
-  useEffect(() => {
-    userStatus().then((res) => {
-      if (res.status == 200) {
-      dispatch(changeAuthMode(res.data.user))
-      }
-    }).catch((err) => {
-      console.log(err)
-      navigate('/login/', {replace: true})
-    })
-  }, [])
-
   return (
     <>
     <Navbar />

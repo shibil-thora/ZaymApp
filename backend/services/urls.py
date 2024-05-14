@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('set_service/', views.SetService.as_view())
+    path('get_areas/', views.GetAreas.as_view()), 
+    path('set_scripts/', views.SetService.as_view()), 
 ]

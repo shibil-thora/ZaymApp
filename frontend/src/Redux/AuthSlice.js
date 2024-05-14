@@ -6,6 +6,7 @@ const INITIAL_STATE = {
         email: '', 
         is_authenticated: false,
         is_superuser: false, 
+        area: {}, 
     }
 } 
 
@@ -14,11 +15,12 @@ export const authSlice = createSlice({
     initialState: INITIAL_STATE, 
     reducers: {
         changeAuthMode: (state, action) => {
+            console.log(action.payload)
             state.user.username = action.payload.username; 
             state.user.email = action.payload.email; 
             state.user.is_authenticated = action.payload.is_authenticated; 
             state.user.is_superuser = action.payload.is_superuser; 
-           
+            state.user.area = action.payload.area;
         },
         logOut: (state, action) => {
             localStorage.setItem('access', ''); 
@@ -28,6 +30,7 @@ export const authSlice = createSlice({
                 email: '',  
                 is_authenticated: false,
                 is_superuser: false, 
+                area: {}, 
             }
         }
     }

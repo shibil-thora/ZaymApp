@@ -1,16 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar/Navbar'
+import AdminNavbar from '../Components/AdminNav/AdminNavbar'
 import { userStatus } from '../ApiServices/ApiServices'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom' 
 import { useDispatch } from 'react-redux'
 import { changeAuthMode } from '../Redux/AuthSlice'
-import { baseImageURL } from '../Axios/axios'
+import { baseURL } from '../Axios/axios'
+import { GetAreaList } from '../ApiServices/ApiServices'
+
 
 function Profile(props) { 
     const state = useSelector(state => state.auth)
     const navigate = useNavigate() 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch() 
+    const [areas, setAreas] = useState([]) 
+    const [states, setStates] = useState([]) 
+    const [subDists, setSubDists] = useState([]) 
+    const [dists, setDists] = useState([]) 
+    const [villages, setVillages] = useState([]) 
 
     useEffect(() => {
         userStatus().then((res) => {
@@ -19,19 +27,31 @@ function Profile(props) {
             }
           }).catch((err) => {
             console.log(err)
-            navigate('/')
+            navigate('/login/', {replace: true})
           })
+    }, [])
+
+    useEffect(() => {
+        GetAreaList().then((res) => {
+            setAreas(res.data.areas); 
+            setStates(res.data.states); 
+            setSubDists(res.data.sub_districts);
+            setDists(res.data.districts);
+            setVillages(res.data.villages);
+            
+            console.log(villages);
+        })
     }, [])
 
   return (
     <>
-    <Navbar /> 
+    {!state.user.is_superuser ? <Navbar /> : <AdminNavbar/>} 
     <div className="flex flex-col  sm:flex-row  bg-opacity-30 max-w-6xl mx-auto min-h-screen">
         <div className="flex flex-col w-full sm:w-1/2 md:w-1/4 m-1">
             <div className="bg-white flex flex-col justify-center space-y-4 rounded-md shadow-md m-2 flex-grow">
                 <section className=" my-8 sm:my-0 h-3/4 flex flex-col justify-center gap-8">
                 <img className="w-40 h-40 mx-auto border border-black shadow-lg rounded-full" 
-                src={`${baseImageURL}/media/profile_pics/donglee.jpg`} /> 
+                src={`${baseURL}/media/profile_pics/donglee.jpg`} /> 
                 <div className="zoom-hover">
 
 
@@ -65,7 +85,13 @@ function Profile(props) {
         </div>
         <div className="w-full flex-grow flex sm:w-1/2 md:w-3/4">
             <div className="flex-grow my-3 sm:me-3 sm:mx-0 me-1 mx-3 rounded-md shadow-md bg-white">
-                {<props.rightMenu />}
+                {<props.rightMenu
+                areas={areas}
+                states={states} 
+                subDists={subDists}
+                dists={dists}
+                villages={villages}
+                />}
                 
             </div>
         </div>

@@ -8,6 +8,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer 
 from .models import MyUsers as User 
 from django.core.validators import EmailValidator
+from services.serializers import AreaSerializer
+from services.models import Area
 
 
 class UserLoginView(APIView): 
@@ -22,6 +24,13 @@ class UserLoginView(APIView):
         access = refresh.access_token 
         user_data = UserSerializer(user) 
         user_dict = user_data.data 
+        area = None 
+        try: 
+            area_obj = user.area.area 
+            area = AreaSerializer(area_obj).data
+        except: 
+            pass
+
         response_data = {
             'refresh': str(refresh),
             'access': str(access), 
@@ -30,6 +39,7 @@ class UserLoginView(APIView):
                 'email': user_dict['email'], 
                 'is_authenticated': user_dict['is_authenticated'] and user_dict['is_active'], 
                 'is_superuser': user_dict['is_superuser'],
+                'area': area
             }
         }
     
@@ -37,17 +47,24 @@ class UserLoginView(APIView):
     
 
 class UserStatusView(APIView): 
-    permission_classes = [IsAuthenticated] 
     def get(self, request): 
         user = request.user
         user_data = UserSerializer(user) 
         user_dict = user_data.data
+        area = None 
+        try: 
+            area_obj = user.area.area 
+            area = AreaSerializer(area_obj).data
+        except: 
+            pass
+
         response_data = {
             'user': {
                 'username': user_dict['username'],
                 'email': user_dict['email'], 
                 'is_authenticated': user_dict['is_authenticated'] and user_dict['is_active'], 
                 'is_superuser': user_dict['is_superuser'],
+                'area': area
             }
         }
         return Response(response_data) 
@@ -110,3 +127,13 @@ class ToggleBlockView(APIView):
             user.is_active = True 
             user.save()
         return Response({'id': user_id, 'status': user.is_active})
+    
+
+class EditUserArea(APIView): 
+    permission_classes = [IsAuthenticated]
+    def post(self, request): 
+        user = request.user 
+        area = user.area 
+        new_area = Area
+        print(area)
+        return Response('got inside')
