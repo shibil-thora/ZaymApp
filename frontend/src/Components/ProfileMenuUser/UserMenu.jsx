@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { logOut } from '../../Redux/AuthSlice'
+import { logOut, changeArea } from '../../Redux/AuthSlice'
 import { useNavigate } from 'react-router-dom'
 import Modal from '../Modal/Modal'
 import ResultBox from '../AreaResultBox/ResultBox'
-import { useMemo } from 'react'
+import { useRef } from 'react'
 import { EditUserArea } from '../../ApiServices/ApiServices'
+
 
 // user menu of profile
 function UserMenu(props) {
@@ -15,6 +16,7 @@ function UserMenu(props) {
     const [showModal, setShowModal] = useState(false) 
     const [showAreaSearch, setShowAreaSearch] = useState(false)
     const [areaQuery, setAreaQuery] = useState('');
+    const areaDisplay = useRef(null)
 
     function handleLogoutClick() {
         setShowModal(true)
@@ -25,12 +27,13 @@ function UserMenu(props) {
         navigate('/login', {replace: true})
     }
 
-    function handleAreaClick(area_id) {
-        console.log(area_id) 
-        EditUserArea().then((res) => {
-            console.log(res)
+    function handleAreaClick(area) {
+        EditUserArea(area.id).then((res) => { 
+            dispatch(changeArea(res.data));
+            setShowAreaSearch(false)
         })
-    }
+    } 
+    
 
   return (
     <>
@@ -70,12 +73,11 @@ function UserMenu(props) {
 
             <div className="flex flex-col mx-8 my-4">
                 <div className="flex">
-            {!showAreaSearch &&<input type="text" 
-            value={state.user.area ? `${state.user.area.village} - ${state.user.area.dist} - ${state.user.area.state}` : 'None'} 
-            readOnly
-            required
+            {!showAreaSearch &&<div
             className="rounded-md px-2 py-2 shadow-md w-full sm:w-3/4  border border-orange-500
-             bg-white-200 focus:outline-none focus:ring-0 bg-orange-100"/>}
+             bg-white-200 focus:outline-none focus:ring-0 bg-orange-100">
+                {state.user.area ? `${state.user.area.village} - ${state.user.area.dist} - ${state.user.area.state}` : 'None'} 
+                </div>}
 
               {showAreaSearch && <input type="text" 
             value={areaQuery} 
@@ -107,18 +109,20 @@ function UserMenu(props) {
         <div className="flex flex-col sm:flex-row justify-center sm:space-x-4 mx-8 w-3/4">
             {/* state */}
             <div className="my-2 flex-grow"> 
-                <h2 className="text-black font-medium">state: </h2>
+                <h2 className="text-black font-medium">state </h2>
                 <input type="text" 
                 required
+                value={state.user.area ? `${state.user.area.state}`: 'None'}
                 readOnly
                 className=" cursor-default px-2 py-2 shadow-md w-full  border border-cyan-500
                 bg-white-200 focus:outline-none focus:ring-0"/>
             </div> 
             {/* dist */}
             <div className="my-2 flex-grow"> 
-                <h2 className="text-black font-medium">district: </h2>
+                <h2 className="text-black font-medium">district </h2>
                 <input type="text" 
                 required
+                value={state.user.area ? `${state.user.area.dist}`: 'None'}
                 readOnly
                 className=" cursor-default px-2 py-2 shadow-md w-full  border border-cyan-500
                 bg-white-200 focus:outline-none focus:ring-0"/>
@@ -127,18 +131,20 @@ function UserMenu(props) {
         <div className="flex flex-col sm:flex-row justify-center sm:space-x-4 mx-8 w-3/4">
             {/* sub dist */}
             <div className="my-4 flex-grow"> 
-                <h2 className="text-black font-medium">sub district: </h2>
+                <h2 className="text-black font-medium">sub district </h2>
                 <input type="text" 
                 required
+                value={state.user.area ? `${state.user.area.sub_dist}`: 'None'}
                 readOnly
                 className=" cursor-default px-2 py-2 shadow-md w-full  border border-cyan-500
                 bg-white-200 focus:outline-none focus:ring-0"/>
             </div> 
             {/* dist */}
             <div className="my-4 flex-grow"> 
-                <h2 className="text-black font-medium">village: </h2>
+                <h2 className="text-black font-medium">village </h2>
                 <input type="text" 
                 required
+                value={state.user.area ? `${state.user.area.village}`: 'None'}
                 readOnly
                 className=" cursor-default px-2 py-2 shadow-md w-full  border border-cyan-500
                 bg-white-200 focus:outline-none focus:ring-0"/>

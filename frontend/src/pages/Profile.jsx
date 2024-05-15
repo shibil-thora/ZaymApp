@@ -38,8 +38,6 @@ function Profile(props) {
             setSubDists(res.data.sub_districts);
             setDists(res.data.districts);
             setVillages(res.data.villages);
-            
-            console.log(villages);
         })
     }, [])
 
@@ -73,12 +71,18 @@ function Profile(props) {
              </section>
             </div>
             <div className="bg-white flex flex-col rounded-md shadow-md m-2 flex-grow">
-                <button className="border-b text-gray-600 border-gray-200 mx-3 flex-grow ">
-                    <h2 className="h2 zoom-hover">Profile details</h2>
+                <button tabIndex={0} 
+                onClick={() => navigate('/profile/user', {replace: true})}
+                className="border-b text-gray-600 border-gray-200 mx-3 flex-grow ">
+                    <h2  className="h2 zoom-hover">Profile details</h2>
                 </button>
-                <button className="border-b  text-gray-600 border-gray-200 mx-3 flex-grow ">
+
+                {!state.user.is_superuser && <button tabIndex={0} 
+                onClick={() => navigate('/profile/provider', {replace: true})}
+                className="border-b  text-gray-600 border-gray-200 mx-3 flex-grow ">
                 <h2 className="h2 zoom-hover">Services management</h2>
-                </button>
+                </button>}
+
                 <button className=" text-gray-600 mx-3 flex-grow zoom-hover">change password</button>
                  
             </div>

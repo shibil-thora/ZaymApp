@@ -21,7 +21,7 @@ function ResultBox(props) {
         .map((area) => (
           <p 
           key={area.id} tabIndex={0} 
-          onClick={() => handleAreaClick(area.id)}
+          onClick={() => handleAreaClick(area)}
           className='text-sm px-4 cursor-pointer hover:font-medium hover:bg-cyan-300'>{area.area_name}</p>
         ))
           

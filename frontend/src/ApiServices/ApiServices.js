@@ -57,4 +57,21 @@ export function EditUserArea(id) {
     return axios.post('/edit_area/', {id}).then((res) => {
         return res
     })
-}
+} 
+
+export function createService(service) {
+    const formData = new FormData() 
+    formData.append('image', service.image);
+    formData.append('service', service.service);
+    formData.append('business_name', service.businessName);
+    formData.append('description', service.description);
+    formData.append('area', service.areaQuery);
+    return axios.post('/services/create/', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then((res) => {
+        return res
+    })
+} 
+

@@ -9,7 +9,7 @@ from .serializers import UserSerializer
 from .models import MyUsers as User 
 from django.core.validators import EmailValidator
 from services.serializers import AreaSerializer
-from services.models import Area
+from services.models import Area, UserArea 
 
 
 class UserLoginView(APIView): 
@@ -39,6 +39,7 @@ class UserLoginView(APIView):
                 'email': user_dict['email'], 
                 'is_authenticated': user_dict['is_authenticated'] and user_dict['is_active'], 
                 'is_superuser': user_dict['is_superuser'],
+                'is_provider': user_dict['is_provider'],
                 'area': area
             }
         }
@@ -57,13 +58,14 @@ class UserStatusView(APIView):
             area = AreaSerializer(area_obj).data
         except: 
             pass
-
+        
         response_data = {
             'user': {
                 'username': user_dict['username'],
                 'email': user_dict['email'], 
                 'is_authenticated': user_dict['is_authenticated'] and user_dict['is_active'], 
                 'is_superuser': user_dict['is_superuser'],
+                'is_provider': user_dict['is_provider'],
                 'area': area
             }
         }
@@ -133,7 +135,12 @@ class EditUserArea(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request): 
         user = request.user 
-        area = user.area 
-        new_area = Area
-        print(area)
-        return Response('got inside')
+        new_area = Area.objects.get(id=request.data['id'])
+        try:
+            area = user.area 
+            area.area = new_area 
+            area.save()
+            return Response(AreaSerializer(new_area).data)
+        except: 
+            UserArea.objects.create(user=request.user, area=new_area)
+            return Response(AreaSerializer(new_area).data)

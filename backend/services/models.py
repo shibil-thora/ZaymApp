@@ -16,13 +16,13 @@ class ServiceType(models.Model):
     service_name = models.CharField(max_length=100)
 
     def __str__(self): 
-        str(self.service_name)
+        return self.service_name
     
 
 class Service(models.Model): 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='services')
     business_name = models.CharField(max_length=100) 
-    service_type = models.ForeignKey('ServiceType', on_delete=models.CASCADE)
+    service_type = models.CharField(max_length=100)
     available = models.BooleanField(default=False) 
     permit = models.BooleanField(default=False)
     description = models.TextField(max_length=500, null=True) 
@@ -33,6 +33,7 @@ class Service(models.Model):
 
 
 class ServiceAreas(models.Model): 
+    area = models.ForeignKey('Area', on_delete=models.CASCADE, related_name='services' ,null=True)
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='areas')  
 
 

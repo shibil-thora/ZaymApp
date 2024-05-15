@@ -1,15 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
 import { useNavigate } from 'react-router-dom'  
+import ClosePopup from '../ClosePopup/ClosePopup'
+import ResultBox from '../AreaResultBox/ResultBox'
+import ServiceForm from '../ServiceForm/ServiceForm'
+import { createService } from '../../ApiServices/ApiServices'
 
 function ProviderMenu(props) {
     const state = useSelector(state => state.auth) 
     const dispatch = useDispatch()
-    const navigate = useNavigate('/')
+    const navigate = useNavigate('/')  
+    const [showForm, setShowForm] = useState(false);
+    const [showPopUp, setShowPopUp] = useState(false);
+    
 
     return (
       <>
+      {showPopUp && <ClosePopup 
+      text='Your request has been succesfully sent!'
+      onClose={() => setShowPopUp(false)}
+      />}
+
+      {state.user.is_provider && 
       <div className="flex flex-col h-screen overflow-y-scroll hide-scrollbar w-full">
           <div className=" border-b border-gray-200 mx-8 py-4 ">
               <h1 className="text-3xl font-bold text-gray-700 text-orange-60">Your Services</h1>
@@ -66,7 +79,27 @@ function ProviderMenu(props) {
           
            
           
+      </div>}
+      {!state.user.is_provider && 
+      <div className="flex flex-col mt-12 h-screen overflow-y-scroll hide-scrollbar w-full">
+        <div className="mx-auto text-center">
+          <h2 className="mx-auto font-medium text-lg">You are not a service provider </h2>
+          <h2 className="mx-auto font-medium text-md text-orange-600">Start providing a service </h2>
+          <button 
+          onClick={() => setShowForm(!showForm)}
+          className=" font-medium shadow-lg
+          text-white mx-4 h-8 p-2 bg-red-500 my-4 px-4 py-0 fademan
+          rounded-md hover:bg-red-600 zoom-hover focus:outline-orange-500 focus:outline-none">
+              {showForm ? 'close form': 'add a service'}
+          </button> 
+        </div> 
+        {showForm &&
+         <ServiceForm 
+         setShowForm={setShowForm}/>
+        }
+      
       </div>
+      } 
       </>
     )
 }

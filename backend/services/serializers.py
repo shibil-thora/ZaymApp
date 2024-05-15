@@ -13,5 +13,10 @@ class UserAreaSerializer(serializers.ModelSerializer):
         model = UserArea 
         fields = '__all__' 
 
+
+class ServiceSerializer(serializers.ModelSerializer): 
+    class Meta: 
+        model = Service 
+        fields = '__all__'
     
     
