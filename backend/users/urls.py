@@ -8,4 +8,5 @@ urlpatterns = [
     path('zaymadmin/users_list/', views.UserListView.as_view()), 
     path('zaymadmin/toggleblock/', views.ToggleBlockView.as_view()), 
     path('edit_area/', views.EditUserArea.as_view()),
+    path('update_profile_pic/', views.UpdateProfilePic.as_view()), 
 ]

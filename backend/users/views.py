@@ -40,7 +40,8 @@ class UserLoginView(APIView):
                 'is_authenticated': user_dict['is_authenticated'] and user_dict['is_active'], 
                 'is_superuser': user_dict['is_superuser'],
                 'is_provider': user_dict['is_provider'],
-                'area': area
+                'area': area, 
+                'pro_pic': user_dict['profile_picture']
             }
         }
     
@@ -66,7 +67,8 @@ class UserStatusView(APIView):
                 'is_authenticated': user_dict['is_authenticated'] and user_dict['is_active'], 
                 'is_superuser': user_dict['is_superuser'],
                 'is_provider': user_dict['is_provider'],
-                'area': area
+                'area': area,
+                'pro_pic': user_dict['profile_picture']
             }
         }
         return Response(response_data) 
@@ -143,4 +145,14 @@ class EditUserArea(APIView):
             return Response(AreaSerializer(new_area).data)
         except: 
             UserArea.objects.create(user=request.user, area=new_area)
-            return Response(AreaSerializer(new_area).data)
+            return Response(AreaSerializer(new_area).data) 
+        
+
+class UpdateProfilePic(APIView): 
+    permission_classes = [IsAuthenticated] 
+    def post(self, request): 
+        user = request.user 
+        print(request.FILES)
+        user.profile_picture = request.FILES['image']
+        user.save()
+        return Response(user.profile_picture.url)

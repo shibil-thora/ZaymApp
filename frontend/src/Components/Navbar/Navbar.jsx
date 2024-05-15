@@ -2,6 +2,7 @@ import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
+import { baseURL } from '../../Axios/axios';
 
 function Navbar() {
   const navigate = useNavigate(); 
@@ -35,13 +36,19 @@ function Navbar() {
 
             {!state.user.is_authenticated && <button 
             onClick={() => navigate('login/')} 
-            className="hidden md:block font-medium shadow-lg zoom-hover
+            className="hidden md:block font-medium shadow-lg
              text-white mx-4 h-8 mt-2 bg-black bg-opacity-20  px-4 py-0 
              rounded-md focus:outline-white hover:bg-orange-600">Login</button>}
 
             <button 
             onClick={() => { navigate('/profile/user/', {replace: true}) }}
-            className='w-12 h-12 hover:px-4 hover:py-4 hidden md:block zoom-hover hover:cursor-pointer shadow-lg rounded-full focus:outline-white border-4 hover:border-4 hover:border-orange-600 md:mx-4 bg-white'></button>
+            className='w-12 sm:flex sm:justify-center h-12 zoom-hover hidden md:block hover:cursor-pointer shadow-lg rounded-full focus:outline-white border-4 hover:border-4 hover:border-orange-600 md:mx-4 bg-white'>
+              <div>
+              <img 
+              className="rounded-full mb-3 "
+              src={state.user.pro_pic ? `${baseURL}${state.user.pro_pic}` : 'https://png.pngitem.com/pimgs/s/146-1468281_profile-icon-png-transparent-profile-picture-icon.png'} alt="" />
+              </div>
+            </button>
             </div>
             
             {/* mobile part */}

@@ -8,6 +8,7 @@ const INITIAL_STATE = {
         is_superuser: false, 
         is_provider: false, 
         area: {}, 
+        pro_pic: '', 
     }
 } 
 
@@ -21,7 +22,8 @@ export const authSlice = createSlice({
             state.user.is_authenticated = action.payload.is_authenticated; 
             state.user.is_superuser = action.payload.is_superuser; 
             state.user.is_provider = action.payload.is_provider;
-            state.user.area = action.payload.area;
+            state.user.area = action.payload.area; 
+            state.user.pro_pic = action.payload.pro_pic;
         },
         logOut: (state, action) => {
             localStorage.setItem('access', ''); 
@@ -33,13 +35,20 @@ export const authSlice = createSlice({
                 is_superuser: false, 
                 is_provider: false, 
                 area: {}, 
+                pro_pic: '',
             }
         }, 
         changeArea: (state, action) => {
             state.user.area = action.payload;
+        }, 
+        changeToProvider: (state, action) => {
+            state.user.is_provider = action.payload;
+        }, 
+        updateProPic: (state, action) => {
+            state.user.pro_pic = action.payload; 
         }
     }
 }) 
 
-export const {changeAuthMode, logOut, changeArea} = authSlice.actions
+export const {changeAuthMode, logOut, changeArea, changeToProvider, updateProPic} = authSlice.actions
 export default authSlice.reducer

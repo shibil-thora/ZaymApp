@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar/Navbar'
 import AdminNavbar from '../Components/AdminNav/AdminNavbar'
-import { userStatus } from '../ApiServices/ApiServices'
+import { UpdateProfileImage, userStatus } from '../ApiServices/ApiServices'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom' 
 import { useDispatch } from 'react-redux'
 import { changeAuthMode } from '../Redux/AuthSlice'
 import { baseURL } from '../Axios/axios'
-import { GetAreaList } from '../ApiServices/ApiServices'
+import { GetAreaList } from '../ApiServices/ApiServices' 
+import { updateProPic } from '../Redux/AuthSlice'
 
 
 function Profile(props) { 
@@ -19,6 +20,7 @@ function Profile(props) {
     const [subDists, setSubDists] = useState([]) 
     const [dists, setDists] = useState([]) 
     const [villages, setVillages] = useState([]) 
+    const [profileImage, setProfileImage] = useState(null);
 
     useEffect(() => {
         userStatus().then((res) => {
@@ -41,6 +43,15 @@ function Profile(props) {
         })
     }, [])
 
+    function handleProfileChange(e) {
+        const image = e.target.files[0]
+        console.log(image) 
+        UpdateProfileImage(image).then((res) => {
+            console.log(res)
+            dispatch(updateProPic(res.data))
+        })
+    }
+
   return (
     <>
     {!state.user.is_superuser ? <Navbar /> : <AdminNavbar/>} 
@@ -49,12 +60,13 @@ function Profile(props) {
             <div className="bg-white flex flex-col justify-center space-y-4 rounded-md shadow-md m-2 flex-grow">
                 <section className=" my-8 sm:my-0 h-3/4 flex flex-col justify-center gap-8">
                 <img className="w-40 h-40 mx-auto border border-black shadow-lg rounded-full" 
-                src={`${baseURL}/media/profile_pics/donglee.jpg`} /> 
+                src={state.user.pro_pic ? `${baseURL}${state.user.pro_pic}` : 'https://png.pngitem.com/pimgs/s/146-1468281_profile-icon-png-transparent-profile-picture-icon.png'} alt="" />
                 <div className="zoom-hover">
 
 
                     <div className="custom-file-input w-1/2 mx-auto">
                         <input
+                            onChange={(e) => {handleProfileChange(e)}}
                             type="file"
                             id="fileInput"
                             className="hidden"

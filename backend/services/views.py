@@ -3,10 +3,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView 
 from .models import Area
 from .serializers import AreaSerializer, ServiceSerializer
-from rest_framework.permissions import IsAuthenticated 
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from providers.views import IsProvider
 from rest_framework.exceptions import AuthenticationFailed
 from . models import Service, ServiceType
+from users.serializers import UserSerializer 
+from users.models import MyUsers as User
+
 
 class GetAreas(APIView): 
     def get(self, request): 
@@ -15,6 +18,21 @@ class GetAreas(APIView):
 
         response_data = {
             'areas': area_dict.data, 
+        }
+        return Response(response_data) 
+    
+
+class GetServices(APIView): 
+    permission_classes = [IsAdminUser]
+    def get(self, request):
+        services_obj = Service.objects.all().order_by('permit') 
+        users_obj = User.objects.all() 
+        users = UserSerializer(users_obj, many=True).data
+        services = ServiceSerializer(services_obj, many=True).data 
+
+        response_data = {
+            'users': users, 
+            'services': services, 
         }
         return Response(response_data) 
     
@@ -63,13 +81,22 @@ class CreateService(APIView):
             raise AuthenticationFailed('area is not selected')
         
         user = request.user
-        # Service.objects.create(
-        #     user=user, 
-        #     business_name=business_name, 
-        #     service_type=servie_type, 
-        #     description=description, 
-        #     cover_image=image
-        # ) 
-        # user.is_provider = True
+        Service.objects.create(
+            user=user, 
+            business_name=business_name, 
+            service_type=servie_type, 
+            description=description, 
+            cover_image=image
+        ) 
+        user.is_provider = True
         user.save()
-        return Response('created')
+        return Response({'is_provider': user.is_provider})
+    
+
+class AllowPermit(APIView): 
+    permission_classes = [IsAdminUser]
+    def post(self, request): 
+        service_obj = Service.objects.get(id=request.data['id'])
+        service_obj.permit = not service_obj.permit 
+        service_obj.save()
+        return Response({'permit': service_obj.permit})

@@ -3,8 +3,14 @@ import { useState } from 'react';
 import ResultBox from '../AreaResultBox/ResultBox'; 
 import { createService, userStatus } from '../../ApiServices/ApiServices';
 export const serviceTypes = ['Electrician', 'Carpenter', 'Barber']
+import ClosePopup from '../ClosePopup/ClosePopup';
+import { changeToProvider } from '../../Redux/AuthSlice';
+import { useDispatch } from 'react-redux';
+
 
 function ServiceForm(props) {
+    const dispatch = useDispatch();
+
     const [showAreaSearch, setShowAreaSearch] = useState(false)
     const [areaQuery, setAreaQuery] = useState(''); 
     const [service, setService] = useState(''); 
@@ -17,16 +23,18 @@ function ServiceForm(props) {
     const [descriptionError, setDescriptionError] = useState('');
     const [areaError, setAreaError] = useState('');
 
+
     function handleAreaClick(area) {
         setShowAreaSearch(false)
         setAreaQuery(area.area_name)
       }
 
     function onSubmit() {
-        // setShowForm(false) 
         createService({service, businessName, description, image, areaQuery}).then((res) => {
-            props.setShowForm(false)
             console.log(res)
+            props.invokePopUp()
+            dispatch(changeToProvider(res.data.is_provider));
+            props.setShowForm(false)
           }).catch((err) => {
             const error = err.response.data.detail 
             console.log(error)
@@ -79,6 +87,7 @@ function ServiceForm(props) {
                 onChange={(e) => setService(e.target.value)}
                 className="px-2 py-2 shadow-md w-full  border border-cyan-500
                 bg-white-200 focus:outline-none focus:ring-0 rounded-md">
+                  <option value='---------'>---------</option>
                     {serviceTypes.map(type => (
                         <option value={type}>{type}</option>
                     ))}

@@ -75,3 +75,37 @@ export function createService(service) {
     })
 } 
 
+
+export function GetProviderServices() {
+    return axios.get('/providers/get_services/').then((res) => {
+        return res
+    })
+} 
+
+export function GetServicesAdmin() {
+    return axios.get('/services/get_services/').then((res) => {
+        return res
+    })
+} 
+
+
+export function AllowPermit(id) {
+    return axios.post('/services/allow_permit/', {id}).then((res) => {
+        return res
+    })
+} 
+
+
+export function UpdateProfileImage(image) {
+    const formData = new FormData()
+    formData.append('image', image)
+    return axios.post('/update_profile_pic/', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then((res) => {
+        return res
+    })
+} 
+
+
