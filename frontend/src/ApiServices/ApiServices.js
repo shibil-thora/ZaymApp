@@ -108,4 +108,23 @@ export function UpdateProfileImage(image) {
     })
 } 
 
+export function GetServiceTypes() {
+    return axios.get('/services/get_types/').then((res) => {
+        return res
+    })
+} 
+
+
+export function HideServiceTypes(id) {
+    return axios.post('/services/hide_types/', {id}).then((res) => {
+        return res
+    })
+} 
+
+export function UnHideServiceTypes(id) {
+    return axios.post('/services/unhide_types/', {id}).then((res) => {
+        return res
+    })
+} 
+
 

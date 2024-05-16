@@ -76,7 +76,7 @@ function AdminProvider() {
               setShowModal(true)
               setCurrentService(service)
             }}
-            className={`hidden md:block font-medium zoom-hover
+            className={`font-medium zoom-hover
              text-white ${service.permit ? 'bg-green-700': 'bg-fuchsia-900'}  px-4 py-1
               focus:outline-white hover:bg-opacity-90`}>{service.permit ? 'Approved': 'Requested'}</button>
             </td>

@@ -2,7 +2,7 @@ import React from 'react'
 
 function Modal(props) {
   return (
-    <div className="fixed inset-0 flex justify-center bg-black  bg-opacity-60 z-20">
+    <div className="fixed inset-0 flex  justify-center bg-black  bg-opacity-60 z-20">
         
         <div className="bg-white flex shadow-lg flex-col space-y-3 justify-center sm:w-1/2 w-full h-1/3 rounded-xl my-auto">
             <div className="m-2 rounded-xl flex flex-col border border-black flex-grow justify-center">

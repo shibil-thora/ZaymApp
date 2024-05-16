@@ -13,6 +13,7 @@ class Area(models.Model):
     
 
 class ServiceType(models.Model): 
+    is_hidden = models.BooleanField(default=False)
     service_name = models.CharField(max_length=100)
 
     def __str__(self): 

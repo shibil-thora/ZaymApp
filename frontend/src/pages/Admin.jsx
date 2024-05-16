@@ -62,12 +62,12 @@ function Admin(props) {
             </div>
             <div tabIndex={1} 
             onClick={() => {
-                navigate('/admin/providers/')
+                navigate('/admin/servicetypes/')
             }}
             className="bg-black mx-2 mt-1 py-4 bg-opacity-30 
             focus:outline-0 focus:border focus:border-orange-600 cursor-pointer
             hover:bg-opacity-50 shadow-md border-green-600">
-                <h2 className="text-xl font-bold mx-8 text-gray-200">Areas</h2>
+                <h2 className="text-xl font-bold mx-8 text-gray-200">Service types</h2>
             </div>
         </div>
         <div className="w-3/4 "> 

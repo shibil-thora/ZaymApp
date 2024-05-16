@@ -95,6 +95,12 @@ function Profile(props) {
                 <h2 className="h2 zoom-hover">Services management</h2>
                 </button>}
 
+                {state.user.is_superuser && <button tabIndex={0} 
+                onClick={() => navigate('/admin/dashboard', {replace: true})}
+                className="border-b  text-gray-600 border-gray-200 mx-3 flex-grow ">
+                <h2 className="h2 zoom-hover">Admin panel</h2>
+                </button>}
+
                 <button className=" text-gray-600 mx-3 flex-grow zoom-hover">change password</button>
                  
             </div>

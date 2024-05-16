@@ -56,7 +56,7 @@ function AdminUser() {
              <td className="px-6 py-4 border border-black">
              <button 
              onClick={() => toggleActivation(user.id)}
-             className={`hidden md:block font-medium zoom-hover
+             className={`font-medium zoom-hover
               text-white mt-2 ${user.is_active ? 'bg-red-600': 'bg-green-700'}  px-4 py-1 mx-auto
                focus:outline-white hover:opacity-90`}>{user.is_active ? 'block': 'activate'}</button>
              </td>

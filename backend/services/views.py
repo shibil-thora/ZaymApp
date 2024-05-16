@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response 
 from rest_framework.views import APIView 
 from .models import Area
-from .serializers import AreaSerializer, ServiceSerializer
+from .serializers import AreaSerializer, ServiceSerializer, ServiceTypeSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from providers.views import IsProvider
 from rest_framework.exceptions import AuthenticationFailed
@@ -99,4 +99,32 @@ class AllowPermit(APIView):
         service_obj = Service.objects.get(id=request.data['id'])
         service_obj.permit = not service_obj.permit 
         service_obj.save()
-        return Response({'permit': service_obj.permit})
+        return Response({'permit': service_obj.permit}) 
+    
+
+class GetTypes(APIView): 
+    permission_classes = [IsAdminUser]
+    def get(self, request): 
+        service_objs = ServiceType.objects.all() 
+        services = ServiceTypeSerializer(service_objs, many=True).data
+        return Response(services)  
+    
+
+class HideTypes(APIView): 
+    permission_classes = [IsAdminUser] 
+    def post(self, request): 
+        service = ServiceType.objects.get(id=request.data['id'])
+        service.is_hidden = True 
+        service.save()
+        service = ServiceTypeSerializer(service).data
+        return Response(service)
+    
+
+class UnHideTypes(APIView): 
+    permission_classes = [IsAdminUser]
+    def post(self, request): 
+        service = ServiceType.objects.get(id=request.data['id'])
+        service.is_hidden = False
+        service.save()
+        service = ServiceTypeSerializer(service).data
+        return Response(service)
