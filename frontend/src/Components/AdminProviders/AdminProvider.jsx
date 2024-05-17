@@ -69,7 +69,7 @@ function AdminProvider() {
             <td className="px-6 py-4 border border-black">{users.find(user => user.id === service.user)?.username}</td>
             <td className="px-6 py-4 border border-black">{service.business_name} ({service.service_type})</td>
             <td className="px-6 py-4 border border-black">{users.find(user => service.user == user.id)?.email}</td> 
-            <td className="px-6 py-4 border text-green-700 font-bold border-black">{service.permit ? 'Has Permit': 'no Permit'}</td>
+            <td className={`px-6 py-4 border ${service.permit ? 'text-green-700': 'text-red-500'} font-bold border-black`}>{service.permit ? 'Has Permit': 'no Permit'}</td>
             <td className="px-6 py-4 border border-black">
             <button 
             onClick={() => {

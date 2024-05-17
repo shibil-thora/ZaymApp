@@ -35,7 +35,7 @@ function Navbar() {
               </div>}
 
             {!state.user.is_authenticated && <button 
-            onClick={() => navigate('login/')} 
+            onClick={() => navigate('/login/', {replace: true})} 
             className="hidden md:block font-medium shadow-lg
              text-white mx-4 h-8 mt-2 bg-black bg-opacity-20  px-4 py-0 
              rounded-md focus:outline-white hover:bg-orange-600">Login</button>}

@@ -22,6 +22,12 @@ export function GetAreaList() {
     })
 }
 
+export function GetDisplayServiceList() {
+    return BaseAxios.get(`${baseURL}/display_service_list`).then((res) => {
+        return res
+    })
+}
+
 
 //first we are checking the status of the current user if the access token is outdated we will get the 
 // refresh token on the catch session. ====USER STATUS SESSION====
@@ -29,15 +35,23 @@ export function GetAreaList() {
 export function userStatus() {
     return axios.get('/user_status/').then((res) => {
         return res
-    }).catch((err) => {
-        const refresh = localStorage.getItem('refresh') 
-        return BaseAxios.post(`${baseURL}/api/token/refresh`, {refresh}).then((res) => {
-            localStorage.setItem('access', res.data.access); 
-            console.log('refreshed'); 
-            return axios.get('/user_status/').then((res) => {
-                return res
-            })
-        }) 
+    }).catch((err) => { 
+        console.log(err)
+        if (err.response.status == 401){
+            const refresh = localStorage.getItem('refresh') 
+            return BaseAxios.post(`${baseURL}/api/token/refresh`, {refresh}).then((res) => {
+                localStorage.setItem('access', res.data.access); 
+                console.log('refreshed'); 
+                return axios.get('/user_status/').then((res) => {
+                    return res
+                })
+            }) 
+        }
+        else{
+            console.log('here')
+            throw err
+        }
+       
     })
 }
 

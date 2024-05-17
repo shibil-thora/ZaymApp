@@ -22,10 +22,21 @@ function ProviderMenu(props) {
 
     useEffect(() => {
       GetProviderServices().then((res) => {
-        setServices(res.data);
+        setServices(res.data); 
         console.log(res.data)
+      }).catch((err) => { 
+        if (err.response.status == 401) {
+          dispatch(logOut())
+          navigate('/login/', {replace: true})
+      }
       })
-    }, [])
+    }, []) 
+
+    function handleFormSubmit(service) {
+      console.log(service, 'provider menu')
+      setShowForm(false); 
+      setServices([...services, service])
+    }
     
 
     return (
@@ -34,7 +45,6 @@ function ProviderMenu(props) {
       text='Your request has been succesfully sent! admin will respond soon,'
       onClose={() => {
         setShowPopUp(false) 
-        navigate('/profile/user', {replace: true})
       }}
       />}
 
@@ -104,7 +114,7 @@ function ProviderMenu(props) {
         {showForm &&
          <ServiceForm 
          invokePopUp={invokePopUp}
-         setShowForm={setShowForm}/>
+         handleFormSubmit={handleFormSubmit}/>
         }
       
       </div>

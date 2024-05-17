@@ -2,10 +2,20 @@ import React, { useRef, useState } from 'react'
 import { useEffect } from 'react'
 import axios from 'axios' 
 import ResultBox from '../AreaResultBox/ResultBox'
+import { GetDisplayServiceList } from '../../ApiServices/ApiServices'
+import { baseURL } from '../../Axios/axios'
 
 function ServiceList() {  
   const [showSearchForm, setSearchForm] = useState(false)
-  const [areaQuery, setAreaQuery] = useState('')
+  const [areaQuery, setAreaQuery] = useState('') 
+  const [services, setServices] = useState([])
+
+  useEffect(() => {
+    GetDisplayServiceList().then((res) => {
+      setServices(res.data)
+      console.log(services)
+    })
+  }, [])
 
   function handleAreaClick(area) {
     setSearchForm(false);
@@ -54,18 +64,18 @@ function ServiceList() {
     shadow-xl">
     <div className="py-4 sm:px-8 mx-auto">
     <ul className="list-none my-8 flex  flex-row items-center">
-    <li className="sm:w-48 rounded-lg border border-black shadow-sm sm:h-48 w-36 h-36 my-8 mx-8 bg-white"></li>
-    <li className="sm:w-48 rounded-lg border border-black shadow-sm sm:h-48 w-36 h-36 my-8 mx-8 bg-white"></li>
-    <li className="sm:w-48 rounded-lg border border-black shadow-sm sm:h-48 w-36 h-36 my-8 mx-8 bg-white"></li>
-    <li className="sm:w-48 rounded-lg border border-black shadow-sm sm:h-48 w-36 h-36 my-8 mx-8 bg-white"></li>
-    <li className="sm:w-48 rounded-lg border border-black shadow-sm sm:h-48 w-36 h-36 my-8 mx-8 bg-white"></li>
-    <li className="sm:w-48 rounded-lg border border-black shadow-sm sm:h-48 w-36 h-36 my-8 mx-8 bg-white"></li>
-    <li className="sm:w-48 rounded-lg border border-black shadow-sm sm:h-48 w-36 h-36 my-8 mx-8 bg-white"></li>
-    <li className="sm:w-48 rounded-lg border border-black shadow-sm sm:h-48 w-36 h-36 my-8 mx-8 bg-white"></li>
-    <li className="sm:w-48 rounded-lg border border-black shadow-sm sm:h-48 w-36 h-36 my-8 mx-8 bg-white"></li>
- 
-     
-     
+    {services.map(service => (
+      <li className="sm:w-48 flex flex-col justify-between rounded-lg  border-black shadow-sm sm:h-48 w-36 h-36 my-8 mx-8 bg-white">
+        <div className="shadow-md rounded-md">
+          <img src={`${baseURL}/media/${service.cover_image}`} alt="service image" className="rounded-t-lg" />
+        </div>
+        <div className="div mx-auto my-2">
+        <h2 className="font-medium ">{service.business_name}</h2>
+        <h2 className="font-medium text-orange-600">({service.service_type})</h2>
+        </div>
+      </li>
+    ))
+    }
      
     </ul> 
     </div>

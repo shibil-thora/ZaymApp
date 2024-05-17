@@ -8,8 +8,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer 
 from .models import MyUsers as User 
 from django.core.validators import EmailValidator
-from services.serializers import AreaSerializer
-from services.models import Area, UserArea 
+from services.serializers import AreaSerializer, ServiceSerializer
+from services.models import Area, UserArea, Service
+from django.contrib.auth.models import AnonymousUser
 
 
 class UserLoginView(APIView): 
@@ -37,7 +38,8 @@ class UserLoginView(APIView):
             'user': {
                 'username': user_dict['username'],
                 'email': user_dict['email'], 
-                'is_authenticated': user_dict['is_authenticated'] and user_dict['is_active'], 
+                'is_authenticated': user_dict['is_authenticated'],
+                'is_active': user_dict['is_active'],  
                 'is_superuser': user_dict['is_superuser'],
                 'is_provider': user_dict['is_provider'],
                 'area': area, 
@@ -59,18 +61,33 @@ class UserStatusView(APIView):
             area = AreaSerializer(area_obj).data
         except: 
             pass
-        
-        response_data = {
-            'user': {
-                'username': user_dict['username'],
-                'email': user_dict['email'], 
-                'is_authenticated': user_dict['is_authenticated'] and user_dict['is_active'], 
-                'is_superuser': user_dict['is_superuser'],
-                'is_provider': user_dict['is_provider'],
-                'area': area,
-                'pro_pic': user_dict['profile_picture']
+        response_data = None
+        if isinstance(user, AnonymousUser): 
+            response_data = {
+                'user': {
+                    'username': None,
+                    'email': None, 
+                    'is_authenticated': None,
+                    'is_active': None,  
+                    'is_superuser': None,
+                    'is_provider': None,
+                    'area': area,
+                    'pro_pic': None
+                }   
             }
-        }
+        else: 
+            response_data = {
+                'user': {
+                    'username': user_dict['username'],
+                    'email': user_dict['email'], 
+                    'is_authenticated': user_dict['is_authenticated'],
+                    'is_active': user_dict['is_active'],  
+                    'is_superuser': user_dict['is_superuser'],
+                    'is_provider': user_dict['is_provider'],
+                    'area': area,
+                    'pro_pic': user_dict['profile_picture']
+                }
+            }
         return Response(response_data) 
     
 
@@ -156,3 +173,11 @@ class UpdateProfilePic(APIView):
         user.profile_picture = request.FILES['image']
         user.save()
         return Response(user.profile_picture.url)
+    
+
+class GetDisplayServiceList(APIView): 
+    def get(self, request): 
+        service_objs = Service.objects.all().filter(permit=True).values('id', 'business_name', 'service_type', 'cover_image')
+        #.filter(is_hidden=True) 
+        response_data = list(service_objs)
+        return Response(response_data)

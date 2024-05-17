@@ -34,10 +34,10 @@ function ServiceForm(props) {
             console.log(res)
             props.invokePopUp()
             dispatch(changeToProvider(res.data.is_provider));
-            props.setShowForm(false)
+            props.handleFormSubmit(res.data.service)
           }).catch((err) => {
+            console.log(err)
             const error = err.response.data.detail 
-            console.log(error)
             if (error.includes('image')) {
                 setImageError(error)
                 setBusinessError('')

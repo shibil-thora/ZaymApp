@@ -6,6 +6,7 @@ import { userStatus } from '../ApiServices/ApiServices'
 import { useDispatch } from 'react-redux'
 import { changeAuthMode } from '../Redux/AuthSlice'
 import { useNavigate } from 'react-router-dom'
+import Footer from '../Components/Footer/Footer'
 
 function Home() {
   const dispatch = useDispatch(); 
@@ -14,7 +15,8 @@ function Home() {
   return (
     <>
     <Navbar />
-    <ServiceList />
+    <ServiceList /> 
+    <Footer />
     </>
   )
 }

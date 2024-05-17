@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import {signUpUser} from '../ApiServices/ApiServices'
+import OTP from '../Components/OTP/OTP';
 
 function Signup() {
   const [username, setUsername] = useState('');
@@ -11,6 +12,7 @@ function Signup() {
   const [email, setEmail] = useState('');
   const [pass2, setPass2] = useState(''); 
   const navigate = useNavigate(); 
+  const [showOTP, setShowOTP] = useState(false);
 
   function handleRegisterClick() {
     signUpUser({username, email, pass1, pass2}).then((res) => {
@@ -40,51 +42,52 @@ function Signup() {
   }
   
   return (
+    <>
     <div className="flex justify-center min-h-screen">
-           
-        <div className="flex flex-col justify-center mx-auto">
-          <div className=" w-full flex mb-2">
+        {!showOTP &&
+        <div className="flex flex-col justify-center w-full mx-auto">
+          <div className=" w-full flex justify-center mb-2">
             <button 
             onClick={() => {
               navigate('/login/', {replace: true})
             }}
             className="rounded-md  bg-white p-2 shadow-md bg-opacity-20 hover:bg-opacity-50"><i className="fas fa-sign-out font-bold text-orange-600 rotate-180"></i> back</button>
           </div>
-            <div className="bg-white flex flex-col justify-center space-y-2 sm:w-80 rounded-md bg-opacity-20 shadow-md sm:h-3/4">
+            <div className="bg-white flex flex-col mx-auto justify-center space-y-2 w-3/4 sm:w-80 h-2/3 rounded-md bg-opacity-20 shadow-md sm:h-3/4">
                 <div className="mx-auto "> 
-                  <p className="mb-1">username</p>
+                  <p className="mb-1 font-semibold">username</p>
                   <input type="text" 
                   value={username} 
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className="rounded-md px-2 py-2 shadow-md bg-black bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
+                  className="rounded-md px-2 py-2 shadow-md bg-black text-gray-700 bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
                   <h6 className="text-center text-red-600"><small>{userError}</small></h6>
                 </div> 
                 <div className="mx-auto"> 
-                  <p className="mb-1">email</p>
+                  <p className="mb-1 font-semibold">email</p>
                   <input type="email" 
                   value={email} 
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="rounded-md px-2 py-2 shadow-md bg-black bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
+                  className="rounded-md px-2 py-2 shadow-md bg-black text-gray-700 bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
                   <h6 className="text-center text-red-600"><small>{emailError}</small></h6>
                 </div> 
                 <div className="mx-auto"> 
-                  <p className="mb-1">password</p>
+                  <p className="mb-1 font-semibold">password</p>
                   <input type="password" 
                   value={pass1} 
                   onChange={(e) => setPass1(e.target.value)}
                   required
-                  className="rounded-md px-2 py-2 shadow-md bg-black bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
+                  className="rounded-md  px-2 py-2 shadow-md bg-black bg-opacity-20 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
 
                 </div>
                 <div className="mx-auto"> 
-                  <p className="mb-1">confirm</p>
+                  <p className="mb-1 font-semibold">confirm password</p>
                   <input type="password" 
                   value={pass2} 
                   onChange={(e) => setPass2(e.target.value)}
                   required
-                  className="rounded-md px-2 py-2 shadow-md bg-black bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
+                  className="rounded-md px-2 py-2 shadow-md bg-black bg-opacity-20 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
                   <h6 className="text-center text-red-600"><small>{passError}</small></h6>
                 </div>
                 <div className="mx-auto flex flex-col">
@@ -96,8 +99,12 @@ function Signup() {
                 </div>
             </div>
              
-        </div>
+        </div>}
+        {showOTP &&
+        <OTP />
+        }
     </div> 
+    </>
   )
 }
 

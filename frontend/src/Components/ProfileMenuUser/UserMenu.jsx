@@ -63,7 +63,7 @@ function UserMenu(props) {
             <input type="text" 
             required
             readOnly
-            value={state.user.email ? state.user.email: 'hi'}
+            value={state.user.email ? state.user.email: ''}
             className="rounded-md px-2 py-2 bg-orange-100 shadow-md w-full sm:w-3/4  border border-orange-500
              bg-white-200 focus:outline-none focus:ring-0"/>
         </div>

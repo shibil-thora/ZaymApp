@@ -43,23 +43,23 @@ function Login() {
     <>
     <div className="flex justify-center min-h-screen">
            
-        <div className="flex flex-col justify-center mx-auto">
-            <div className="bg-white flex flex-col justify-center space-y-4 sm:w-80 rounded-md bg-opacity-20 shadow-md sm:h-80 zoom-hover">
+        <div className="flex flex-col w-full justify-center mx-auto">
+            <div className="bg-white flex flex-col justify-center mx-auto w-3/4 h-1/2 space-y-4 sm:w-80 rounded-md bg-opacity-20 shadow-md sm:h-80 zoom-hover">
                 <div className="mx-auto"> 
-                  <p className="mb-1">username</p>
+                  <p className="mb-1 font-semibold">username</p>
                   <input type="text" 
                   value={username} 
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className="rounded-md px-2 py-2 shadow-md bg-black bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
+                  className="rounded-md px-2 py-2 shadow-md bg-black text-gray-700 bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
                 </div> 
                 <div className="mx-auto"> 
-                  <p className="mb-1">password</p>
+                  <p className="mb-1 font-semibold">password</p>
                   <input type="password" 
                   value={password} 
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="rounded-md px-2 py-2 shadow-md bg-black bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
+                  className="rounded-md px-2 py-2 shadow-md bg-black bg-opacity-20 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
             
                 </div>
                 <div className="mx-auto flex flex-col"> 

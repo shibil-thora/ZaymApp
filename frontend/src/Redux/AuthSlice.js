@@ -5,6 +5,7 @@ const INITIAL_STATE = {
         username: '', 
         email: '', 
         is_authenticated: false,
+        is_active: false,
         is_superuser: false, 
         is_provider: false, 
         area: {}, 
@@ -20,6 +21,7 @@ export const authSlice = createSlice({
             state.user.username = action.payload.username; 
             state.user.email = action.payload.email; 
             state.user.is_authenticated = action.payload.is_authenticated; 
+            state.user.is_active = action.payload.is_active;
             state.user.is_superuser = action.payload.is_superuser; 
             state.user.is_provider = action.payload.is_provider;
             state.user.area = action.payload.area; 
@@ -32,6 +34,7 @@ export const authSlice = createSlice({
                 username: '', 
                 email: '',  
                 is_authenticated: false,
+                is_active: false, 
                 is_superuser: false, 
                 is_provider: false, 
                 area: {}, 

@@ -81,7 +81,7 @@ class CreateService(APIView):
             raise AuthenticationFailed('area is not selected')
         
         user = request.user
-        Service.objects.create(
+        service = Service.objects.create(
             user=user, 
             business_name=business_name, 
             service_type=servie_type, 
@@ -90,7 +90,11 @@ class CreateService(APIView):
         ) 
         user.is_provider = True
         user.save()
-        return Response({'is_provider': user.is_provider})
+        response_data = {
+            'is_provider': True, 
+            'service': ServiceSerializer(service).data,
+        } 
+        return Response(response_data)
     
 
 class AllowPermit(APIView): 

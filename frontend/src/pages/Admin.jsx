@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { userStatus } from '../ApiServices/ApiServices';
 import { changeAuthMode } from '../Redux/AuthSlice';
+import { logOut } from '../Redux/AuthSlice';
+import Footer from '../Components/Footer/Footer';
 
 function Admin(props) {
     const navigate = useNavigate(); 
@@ -23,6 +25,7 @@ function Admin(props) {
 
     useEffect(() => {
         if (!state.user.is_superuser) {
+            dispatch(logOut())
             navigate('/login/', {replace: true})
         }
     }, [])
@@ -75,6 +78,7 @@ function Admin(props) {
         </div>
     </div>
     </div>
+    <Footer />
     </>
   )
 }

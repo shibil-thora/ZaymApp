@@ -5,10 +5,10 @@ import { UpdateProfileImage, userStatus } from '../ApiServices/ApiServices'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom' 
 import { useDispatch } from 'react-redux'
-import { changeAuthMode } from '../Redux/AuthSlice'
 import { baseURL } from '../Axios/axios'
 import { GetAreaList } from '../ApiServices/ApiServices' 
 import { updateProPic } from '../Redux/AuthSlice'
+import Footer from '../Components/Footer/Footer'
 
 
 function Profile(props) { 
@@ -21,17 +21,6 @@ function Profile(props) {
     const [dists, setDists] = useState([]) 
     const [villages, setVillages] = useState([]) 
     const [profileImage, setProfileImage] = useState(null);
-
-    useEffect(() => {
-        userStatus().then((res) => {
-            if (res.status == 200) {
-            dispatch(changeAuthMode(res.data.user))
-            }
-          }).catch((err) => {
-            console.log(err)
-            navigate('/login/', {replace: true})
-          })
-    }, [])
 
     useEffect(() => {
         GetAreaList().then((res) => {
@@ -84,19 +73,19 @@ function Profile(props) {
             </div>
             <div className="bg-white flex flex-col rounded-md shadow-md m-2 flex-grow">
                 <button tabIndex={0} 
-                onClick={() => navigate('/profile/user', {replace: true})}
+                onClick={() => navigate('/profile/user/', {replace: true})}
                 className="border-b text-gray-600 border-gray-200 mx-3 flex-grow ">
                     <h2  className="h2 zoom-hover">Profile details</h2>
                 </button>
 
                 {!state.user.is_superuser && <button tabIndex={0} 
-                onClick={() => navigate('/profile/provider', {replace: true})}
+                onClick={() => navigate('/profile/provider/', {replace: true})}
                 className="border-b  text-gray-600 border-gray-200 mx-3 flex-grow ">
                 <h2 className="h2 zoom-hover">Services management</h2>
                 </button>}
 
                 {state.user.is_superuser && <button tabIndex={0} 
-                onClick={() => navigate('/admin/dashboard', {replace: true})}
+                onClick={() => navigate('/admin/dashboard/', {replace: true})}
                 className="border-b  text-gray-600 border-gray-200 mx-3 flex-grow ">
                 <h2 className="h2 zoom-hover">Admin panel</h2>
                 </button>}
@@ -118,6 +107,7 @@ function Profile(props) {
             </div>
         </div>
     </div>
+    <Footer />
     </>
   )
 }
