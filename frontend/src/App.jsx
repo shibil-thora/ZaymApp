@@ -12,6 +12,7 @@ import AdminUser from './Components/AdminUser/AdminUser'
 import AdminProvider from './Components/AdminProviders/AdminProvider'
 import AdminServiceTypes from './Components/AdminServiceTypes/AdminServiceTypes' 
 import UserProtected from './pages/UserProtected'
+import ServiceView from './pages/ServiceView'
 
 //add suspense and fallback and lazy loading. . . 
 
@@ -27,6 +28,7 @@ function App() {
       <Route exact path='admin/servicetypes' element={<Admin rightMenu={AdminServiceTypes}/>}/>
       <Route path='login/' element={<Login />}/>
       <Route path='signup/' element={<Signup />}/>
+      <Route path='user/serviceview/' element={<UserProtected component={ServiceView}/>}/>
       <Route path='profile/user/' element={<UserProtected component={Profile} rightMenu={UserMenu} />}/>
       <Route path='profile/provider/' element={<UserProtected component={Profile} rightMenu={ProviderMenu} />}/>
     </Routes>

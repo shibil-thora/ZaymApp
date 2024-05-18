@@ -78,7 +78,6 @@ function Admin(props) {
         </div>
     </div>
     </div>
-    <Footer />
     </>
   )
 }

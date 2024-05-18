@@ -177,7 +177,13 @@ class UpdateProfilePic(APIView):
 
 class GetDisplayServiceList(APIView): 
     def get(self, request): 
-        service_objs = Service.objects.all().filter(permit=True).values('id', 'business_name', 'service_type', 'cover_image')
+        service_objs = Service.objects.all().filter(permit=True).values(
+            'id', 
+            'business_name', 
+            'service_type', 
+            'cover_image', 
+            'description'
+        )
         #.filter(is_hidden=True) 
         response_data = list(service_objs)
         return Response(response_data)

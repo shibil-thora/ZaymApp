@@ -20,7 +20,13 @@ function UserProtected(props) {
                 navigate('/login/', {replace: true})
             }
           })
-    }, []) 
+    }, [])  
+    
+    useEffect(() => {
+      if(!(state.user.is_authenticated && state.user.is_active)) {
+        navigate('/login/', {replace: true})
+      }
+    }, [])
 
 
   return (
