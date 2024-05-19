@@ -10,4 +10,5 @@ urlpatterns = [
     path('edit_area/', views.EditUserArea.as_view()),
     path('update_profile_pic/', views.UpdateProfilePic.as_view()), 
     path('display_service_list/', views.GetDisplayServiceList.as_view()), 
+    path('testm/', views.TestApi.as_view())
 ]

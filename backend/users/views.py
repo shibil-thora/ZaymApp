@@ -10,7 +10,8 @@ from .models import MyUsers as User
 from django.core.validators import EmailValidator
 from services.serializers import AreaSerializer, ServiceSerializer
 from services.models import Area, UserArea, Service
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.models import AnonymousUser 
+from .tasks import my_task
 
 
 class UserLoginView(APIView): 
@@ -182,8 +183,14 @@ class GetDisplayServiceList(APIView):
             'business_name', 
             'service_type', 
             'cover_image', 
-            'description'
+            'description', 
         )
         #.filter(is_hidden=True) 
         response_data = list(service_objs)
-        return Response(response_data)
+        return Response(response_data) 
+    
+
+class TestApi(APIView): 
+    def get(self, result): 
+        result = my_task.delay()
+        return Response(str(result))

@@ -19,6 +19,12 @@ function ServiceList() {
     }).catch((err) => {
       console.log(err)
     })
+  }, []) 
+
+  useEffect(() => {
+    axios.get(`${baseURL}/testm`).then((res) => {
+      console.log(res, 'here')
+    })
   }, [])
 
   function handleAreaClick(area) {
@@ -64,7 +70,7 @@ function ServiceList() {
 
     <div className="flex flex-row opacity-80  h-76 max-w-6xl my-12 rounded-xl sm:mx-auto
     mx-12 overflow-x-scroll scroll-smooth ease-in-out bg-white bg-opacity-20
-    hide-scrollbar border border-black border-opacity-10 p-2
+    hide-scrollbar border border-black border-opacity-10 p-2 
     shadow-lg">
     <div className="py-4 sm:px-8 mx-auto">
     <ul className="list-none my-8 flex flex-row items-center">
