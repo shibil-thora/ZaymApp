@@ -11,7 +11,10 @@ from django.core.validators import EmailValidator
 from services.serializers import AreaSerializer, ServiceSerializer
 from services.models import Area, UserArea, Service
 from django.contrib.auth.models import AnonymousUser 
-from .tasks import my_task
+from .tasks import send_email_task
+import random
+from django.core.cache import cache
+from datetime import datetime, timedelta
 
 
 class UserLoginView(APIView): 
@@ -123,8 +126,19 @@ class UserSignUpView(APIView):
         if len(pass1.strip()) < 5: 
             raise AuthenticationFailed('short password') 
         
-        User.objects.create_user(username=username, email=email, password=pass1)
+        #User.objects.create_user(username=username, email=email, password=pass1)
         
+        return Response({'message': 'user Created'}) 
+    
+
+class UserRegisterView(APIView): 
+    def post(self, request): 
+        username = request.data.get('username')
+        email = request.data.get('email')
+        pass1 = request.data.get('pass1')
+        pass2 = request.data.get('pass2')
+        print(username, email, pass1, pass2)
+        User.objects.create_user(username=username, email=email, password=pass1)
         return Response({'message': 'user Created'}) 
     
 
@@ -190,7 +204,33 @@ class GetDisplayServiceList(APIView):
         return Response(response_data) 
     
 
-class TestApi(APIView): 
-    def get(self, result): 
-        result = my_task.delay()
-        return Response(str(result))
+class SendOTP(APIView): 
+    def post(self, request):
+        email = request.data['email'] 
+        otp = random.randint(100000, 999999)
+        send_email_task.delay(email=email, otp=otp)  
+        cache.set(email, (otp, datetime.now()))
+        return Response('success')  
+    
+
+class VerifyOTP(APIView): 
+    def post(self, request):  
+
+        def otp_is_valid(otp, sent_otp, sent_time): 
+            OTP_DURATION = 65  #seconds
+            if not otp == sent_otp: 
+                return False
+            time_diff = datetime.now() - sent_time 
+            return time_diff.total_seconds() <= OTP_DURATION
+
+        email = request.data['email'] 
+        otp = request.data['otp']
+        sent_otp, sent_time = cache.get(email) 
+        sent_otp = str(sent_otp)  
+        if not otp_is_valid(otp, sent_otp, sent_time): 
+            raise AuthenticationFailed('Wrong OTP!') 
+        response_data = {
+            'message': 'otp verification successful'
+        }
+        return Response(response_data)
+    

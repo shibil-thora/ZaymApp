@@ -28,6 +28,24 @@ export function GetDisplayServiceList() {
     })
 }
 
+export function SendOTP(email) {
+    return BaseAxios.post(`${baseURL}/send_otp`, {email}).then((res) => {
+        return res
+    })
+}
+
+export function VerifyOTP(email, otp) {
+    return BaseAxios.post(`${baseURL}/verify_otp`, {email, otp}).then((res) => {
+        return res
+    })
+}
+
+export function RegisterUser(user) {
+    return BaseAxios.post(`${baseURL}/register/`, user).then((res) => {
+        return res
+    })
+} 
+
 
 //first we are checking the status of the current user if the access token is outdated we will get the 
 // refresh token on the catch session. ====USER STATUS SESSION====

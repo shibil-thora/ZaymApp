@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react' 
-import { useEffect } from 'react'
-import axios from 'axios' 
+import { useEffect } from 'react' 
 import ResultBox from '../AreaResultBox/ResultBox'
 import { GetDisplayServiceList } from '../../ApiServices/ApiServices'
 import { baseURL } from '../../Axios/axios'
@@ -21,11 +20,6 @@ function ServiceList() {
     })
   }, []) 
 
-  useEffect(() => {
-    axios.get(`${baseURL}/testm`).then((res) => {
-      console.log(res, 'here')
-    })
-  }, [])
 
   function handleAreaClick(area) {
     setSearchForm(false);

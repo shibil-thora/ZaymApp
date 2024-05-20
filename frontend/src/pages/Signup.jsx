@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import {signUpUser} from '../ApiServices/ApiServices'
+import {SendOTP, signUpUser} from '../ApiServices/ApiServices'
 import OTP from '../Components/OTP/OTP';
 
 function Signup() {
@@ -19,7 +19,7 @@ function Signup() {
       setUserError('')
       setEmailError('')
       setPassError('')
-      navigate('/login/', {replace: true})
+      handleSendOTP();
     }).catch((err) => {
       console.log(err)
       const errorMessage = err.response.data.detail; 
@@ -39,6 +39,12 @@ function Signup() {
         setPassError(errorMessage)
       }
     })
+  }
+
+  function handleSendOTP() {
+    SendOTP(email).then((res) => {
+      setShowOTP(true)
+    }) 
   }
   
   return (
@@ -101,7 +107,7 @@ function Signup() {
              
         </div>}
         {showOTP &&
-        <OTP />
+        <OTP user={{username, email, pass1, pass2}} />
         }
     </div> 
     </>
