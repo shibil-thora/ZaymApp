@@ -68,7 +68,7 @@ function ServiceForm(props) {
   return (
         <>
        <div className="flex flex-col my-4 bg-gray-50 rounded-md space-y-4 shadow-md border
-         border-neutral-200 mx-4 h-screen overflow-y-scroll hide-scrollbar">
+         border-neutral-200 mx-4  hide-scrollbar">
           
           <div className="flex justify-between m-2">
                 <button className="rounded bg-white px-2 invisible">X invisible</button>

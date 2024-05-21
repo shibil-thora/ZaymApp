@@ -63,11 +63,16 @@ function ProviderMenu(props) {
               <h3 className="text-sm">{service.description} </h3>
             </div>
             {service.permit && <div className="flex flex-col flex-grow space-y-2 ">
-              <button className="text-white w-3/4 mx-auto font-medium zoom-hover rounded shadow-md hover:bg-orange-600 bg-orange-500">View service
-               
+              <button 
+               onClick={() => {
+                navigate('/provider/viewservice/', {state: service})
+              }}
+              className="text-white w-3/4 mx-auto font-medium zoom-hover rounded shadow-md hover:bg-orange-600 bg-orange-500">
+                View service
               </button>
-              <button className="text-white w-3/4 mx-auto font-medium zoom-hover rounded shadow-md hover:bg-cyan-800 bg-cyan-700">Edit service
-               
+              <button 
+              className="text-white w-3/4 mx-auto font-medium zoom-hover rounded shadow-md hover:bg-cyan-800 bg-cyan-700">
+                Edit service
               </button>
               <div className="text-lime-600 w-3/4 text-center cursor-default mx-auto font-medium rounded">Active</div>
             </div>}
@@ -81,20 +86,30 @@ function ProviderMenu(props) {
            </div>
            ))
           }
-           
-       
 
-        
-          </div>
+          </div> 
+
 
           <div className="w-3/4 border-b border-gray-200 mx-8 py-4 ">
-              <h1 className="text-2xl font-bold text-gray-700">Knocked Users</h1>
+              <h1 className="text-2xl font-bold text-gray-700">Knocked Customers</h1>
           </div>
           <div className="bg-gray-300 flex rounded-md mx-4 h-36">
             <div className="bg-gray-50 rounded-md shadow-md w-32 h-32 justify my-auto mx-2"></div>
             <div className="bg-gray-50 rounded-md shadow-md w-32 h-32 justify my-auto mx-2"></div>
   
           </div>
+          <button 
+          onClick={() => setShowForm(true)}
+          className="mx-8 mt-4 text-white w-48 py-2 font-medium zoom-hover rounded shadow-md hover:bg-cyan-800 bg-cyan-700">
+           {showForm ? 'close form': 'Add service'} <span> <i className="fas fa-book"></i></span>
+          </button> 
+          {!showForm && <h1 className="mx-8 text-green-500 text-sm"><small>{services.length < 3 ? 3 - services.length: 0}
+          &nbsp; more free services available for you</small></h1>}
+          {showForm &&
+          <ServiceForm 
+          invokePopUp={invokePopUp}
+          handleFormSubmit={handleFormSubmit}/>
+          }
           
           
       </div>}
