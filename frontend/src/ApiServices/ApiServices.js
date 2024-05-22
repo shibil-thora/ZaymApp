@@ -194,6 +194,12 @@ export function ChangePassword(current_pass, new_pass) {
     })
 } 
 
+export function EditServiceType(type) {
+    return axios.post('services/edit_types/', {type}).then((res) => {
+        return res
+    })
+} 
+
 
 
 

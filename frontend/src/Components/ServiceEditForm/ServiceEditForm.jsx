@@ -30,7 +30,7 @@ function ServiceEditForm(props) {
 
     useEffect(() => {
     GetServiceTypes().then((res) => {
-        setStypes(res.data) 
+        setStypes(res.data.service_active) 
         setbusinessName(props.service.business_name)
         setDescription(props.service.description)
         setImageURL(`${baseURL}${props.service.cover_image}`)

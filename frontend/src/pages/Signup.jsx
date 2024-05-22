@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import {SendOTP, signUpUser} from '../ApiServices/ApiServices'
 import OTP from '../Components/OTP/OTP';
+import { userSchema } from '../Validations/UserValidation'; 
+import * as yup from 'yup'; 
 
 function Signup() {
   const [username, setUsername] = useState('');
@@ -13,6 +15,16 @@ function Signup() {
   const [pass2, setPass2] = useState(''); 
   const navigate = useNavigate(); 
   const [showOTP, setShowOTP] = useState(false);
+
+  async function createUser () {
+    let formData = {
+      username: username, 
+      email: email, 
+      pass1: pass1, 
+    }
+    const isValid = await userSchema.isValid(formData)
+    console.log(isValid)
+  }
 
   function handleRegisterClick() {
     signUpUser({username, email, pass1, pass2}).then((res) => {

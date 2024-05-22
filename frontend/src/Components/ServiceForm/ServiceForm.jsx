@@ -31,7 +31,8 @@ function ServiceForm(props) {
 
     useEffect(() => {
       GetServiceTypes().then((res) => {
-        setStypes(res.data)
+        console.log(res)
+        setStypes(res.data.service_active)
       })
     }, [])
 

@@ -1,13 +1,16 @@
 import React, { useRef, useState } from 'react' 
 import { useEffect } from 'react' 
-import ResultBox from '../AreaResultBox/ResultBox'
+import ResultBox from '../AreaResultBox/ResultBox' 
+import ServiceResultBox from '../ServiceResultBox/ResultBox'
 import { GetDisplayServiceList } from '../../ApiServices/ApiServices'
 import { baseURL } from '../../Axios/axios'
 import { useNavigate } from 'react-router-dom'
 
 function ServiceList() {  
   const [showSearchForm, setSearchForm] = useState(false)
+  const [showServiceBox, setShowServiceBox] = useState(false)
   const [areaQuery, setAreaQuery] = useState('') 
+  const [serviceQuery, setServiceQuery] = useState('');
   const [services, setServices] = useState([])
   const navigate = useNavigate()
 
@@ -24,6 +27,12 @@ function ServiceList() {
   function handleAreaClick(area) {
     setSearchForm(false);
     setAreaQuery(area.area_name)
+  } 
+
+  function handleServiceClick(service) {
+    setShowServiceBox(false)
+    setServiceQuery(service.business_name) 
+    navigate('/user/serviceview/', {state: service})
   }
     
   return (
@@ -46,7 +55,10 @@ function ServiceList() {
             <h2 className="bg-white px-3 pt-3 rounded-md  mx-2 fa fa-book text-center"></h2>
             <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
             <input
-            type="text"
+            type="text" 
+            value={serviceQuery}
+            onFocus={() => setShowServiceBox(true)}
+            onChange={(e) => setServiceQuery(e.target.value)}
             className="block w-5/6 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-orange-500"
             placeholder="Search for service..." />  
 
@@ -55,6 +67,14 @@ function ServiceList() {
         <div className="div mx-20">
         {showSearchForm && <ResultBox
             handleAreaClick={handleAreaClick}
+            areaQuery={areaQuery}
+             />
+            }
+        </div> 
+        <div className="div mx-20">
+        {showServiceBox && <ServiceResultBox
+            handleAreaClick={handleServiceClick}
+            serviceQuery={serviceQuery}
             areaQuery={areaQuery}
              />
             }
@@ -73,12 +93,12 @@ function ServiceList() {
       onClick={() => navigate('/user/serviceview/',{state: service})}
       className="sm:w-48 flex flex-col justify-between rounded-lg border border-black border-opacity-20
       shadow-md sm:h-48 w-36 h-36 my-8 mx-8 bg-white focus:outline-orange-500 cursor-pointer zoom-hover-md">
-        <div className="shadow-md rounded-lg">
-          <img src={`${baseURL}/media/${service.cover_image}`} alt="service image" className="rounded-t-md" />
+        <div className="shadow-md rounded-lg w-full h-2/3">
+          <img src={`${baseURL}/media/${service.cover_image}`} alt="service image" className="rounded-t-md h-full w-full" />
         </div>
         <div className="div mx-auto my-2">
-        <h2 className="font-medium ">{service.business_name}</h2>
-        <h2 className="font-medium text-orange-600">({service.service_type})</h2>
+        <h2 className="font-medium sm:text-md text-sm">{service.business_name}</h2>
+        <h2 className="font-medium text-orange-600 sm:text-md text-sm">({service.service_type})</h2>
         </div>
       </li>
     ))
@@ -93,4 +113,4 @@ function ServiceList() {
   )
 }
 
-export default ServiceList
+export default ServiceList 

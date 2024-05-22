@@ -9,6 +9,7 @@ urlpatterns = [
     path('get_services/', views.GetServices.as_view()), 
     path('allow_permit/', views.AllowPermit.as_view()), 
     path('get_types/', views.GetTypes.as_view()), 
+    path('edit_types/', views.EditServiceType.as_view()), 
     path('hide_types/', views.HideTypes.as_view()), 
     path('unhide_types/', views.UnHideTypes.as_view()), 
 ]

@@ -65,9 +65,9 @@ function ProfileServiceView(props) {
             </div>
         </div>
 
-        <div className="py-4 sm:px-8 flex-grow w-full mx-auto rounded-xl border border-black h-32">
-    
-        </div>
+        {/* <div className="py-4 sm:px-8 flex-grow w-full mx-auto rounded-xl border border-black h-32">
+    hi
+        </div> */}
 
         <div className="flex flex-col space-y-3 my-4 mx-1"> 
         <h1 className="font-semibold">Areas</h1>

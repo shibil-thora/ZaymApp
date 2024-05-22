@@ -6,7 +6,7 @@ import ClosePopup from '../ClosePopup/ClosePopup'
 import ServiceForm from '../ServiceForm/ServiceForm'
 import ServiceEditForm from '../ServiceEditForm/ServiceEditForm'
 import { GetAreaList, GetProviderServices } from '../../ApiServices/ApiServices'
-import { baseURL } from '../../Axios/axios'
+import { baseURL } from '../../Axios/axios' 
 
 function ProviderMenu(props) {
     const state = useSelector(state => state.auth) 
@@ -69,7 +69,7 @@ function ProviderMenu(props) {
           <div className=" border-b border-gray-200 mx-8 py-4 ">
               <h1 className="text-3xl font-bold text-gray-700 text-orange-60">Your Services</h1>
           </div>
-          <div className="my-2 mx-8 flex flex-col space-y-2"> 
+          <div className="my-2 mx-8 flex flex-col space-y-4"> 
            {services.map((service) => (
             <div key={service.id} className="w-full bg-gray-200 shadow-md p-2 rounded-md flex space-x-4">
             <img className="w-30 h-20 rounded cursor-pointer mt-2"
@@ -129,7 +129,8 @@ function ProviderMenu(props) {
           <div className="w-3/4 border-b border-gray-200 mx-8 py-4 ">
               <h1 className="text-2xl font-bold text-gray-700">Knocked Customers</h1>
           </div>
-          <div className="bg-gray-300 flex rounded-md mx-4 h-36">
+          <div className="bg-gray-300 flex w-6/6 rounded-md mx-4 h-36 ">
+            <div className="bg-gray-50 rounded-md shadow-md w-32 h-32 justify my-auto mx-2"></div>
             <div className="bg-gray-50 rounded-md shadow-md w-32 h-32 justify my-auto mx-2"></div>
             <div className="bg-gray-50 rounded-md shadow-md w-32 h-32 justify my-auto mx-2"></div>
   

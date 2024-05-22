@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { GetServiceTypes, HideServiceTypes, UnHideServiceTypes } from '../../ApiServices/ApiServices';
+import { EditServiceType, GetServiceTypes, HideServiceTypes, UnHideServiceTypes } from '../../ApiServices/ApiServices';
 import Modal from '../Modal/Modal';
 import { useRef } from 'react';
+import EditType from '../EditType/EditType';
 
 function AdminServiceTypes() {
     const [query, setQuery] = useState('');
     const [types, setTypes] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const currentType = useRef(null);
+    const [editType, setEditType] = useState('');
+    const [showEditForm, setShowEditForm] = useState(false);
     
     useEffect(() => {
         GetServiceTypes().then((res) => {
-            setTypes(res.data);
+            setTypes(res.data.service_all);
             console.log(types)
         })
     }, [])
@@ -34,8 +37,24 @@ function AdminServiceTypes() {
             setShowModal(false)
         })
     }
+
+    function onEditSubmit() {
+      EditServiceType(editType).then((res) => {
+        console.log(res) 
+        const new_types = [...types] 
+        const index = new_types.findIndex(type => type.id == res.data.id) 
+        new_types[index] = res.data  
+        setTypes(new_types)
+        setShowEditForm(false)
+      })
+    }
   return (
     <>
+    {showEditForm && 
+    <EditType editQuery={editType} 
+    onEditSubmit={onEditSubmit}
+    setEditQuery={setEditType}/> 
+    }
      {showModal && <Modal 
      text={currentType.current.is_hidden ? 'are you sure about unhiding this type' : 'are you sure about hiding this type'} 
      approveText='yes'
@@ -72,6 +91,10 @@ function AdminServiceTypes() {
                 <td className="px-6 py-2 border border-black text-center">{type.service_name}</td>
                 <td className="px-6 py-2 border border-black text-center">
                 <button 
+                onClick={() => {
+                  setEditType(type)
+                  setShowEditForm(true)
+                }}
                 className="font-medium zoom-hover
                  text-white mt-2 px-4 py-1 mx-auto
                   focus:outline-white bg-indigo-800 hover:opacity-90">Edit</button>

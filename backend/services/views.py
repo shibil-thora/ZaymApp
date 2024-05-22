@@ -124,11 +124,12 @@ class EditService(APIView):
         servie_type = request.data['service']
         business_name = request.data['business_name']
         description = request.data['description']
+        print(request.data)
         
         if len(business_name.strip()) < 4: 
             raise AuthenticationFailed('business name should be ateast 4 letters') 
         
-        if Service.objects.filter(business_name=business_name): 
+        if Service.objects.exclude(id=request.data['id']).filter(business_name=business_name): 
             raise AuthenticationFailed('business name is already used') 
         
         if len(description.strip()) < 10:
@@ -160,8 +161,10 @@ class GetTypes(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request): 
         service_objs = ServiceType.objects.all() 
+        service_not_hidden = ServiceType.objects.filter(is_hidden=False) 
+        services_active = ServiceTypeSerializer(service_not_hidden, many=True).data
         services = ServiceTypeSerializer(service_objs, many=True).data
-        return Response(services)  
+        return Response({'service_all': services, 'service_active': services_active})  
     
 
 class HideTypes(APIView): 
@@ -181,5 +184,15 @@ class UnHideTypes(APIView):
         service.is_hidden = False
         service.save()
         service = ServiceTypeSerializer(service).data
-        return Response(service) 
+        return Response(service)  
+    
+
+class EditServiceType(APIView): 
+    permission_classes = [IsAdminUser]
+    def post(self, request): 
+        type_dict = request.data['type']
+        type_obj = ServiceType.objects.get(id=type_dict['id']) 
+        type_obj.service_name = type_dict['service_name']
+        type_obj.save() 
+        return Response(ServiceTypeSerializer(type_obj).data) 
     
