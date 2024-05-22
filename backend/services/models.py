@@ -1,5 +1,7 @@
 from django.db import models
 from users.models import MyUsers as User
+from users.serializers import UserSerializer
+
 
 class Area(models.Model): 
     state = models.CharField(max_length=100)
@@ -29,6 +31,16 @@ class Service(models.Model):
     description = models.TextField(max_length=500, null=True) 
     cover_image = models.ImageField(upload_to='covers', null=True)
 
+    def get_user(self): 
+        user_obj =  User.objects.get(id=self.user.id)
+        user = UserSerializer(user_obj).data 
+        return user 
+    
+    def get_areas(self): 
+        area_objs = list(self.areas.all().values_list('area', flat=True)) 
+        return area_objs
+
+
     def __str__(self): 
         return self.business_name
 
@@ -36,6 +48,11 @@ class Service(models.Model):
 class ServiceAreas(models.Model): 
     area = models.ForeignKey('Area', on_delete=models.CASCADE, related_name='services' ,null=True)
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='areas')  
+
+    def __str__(self): 
+        return self.service.business_name 
+    
+        
 
 
 class UserArea(models.Model): 

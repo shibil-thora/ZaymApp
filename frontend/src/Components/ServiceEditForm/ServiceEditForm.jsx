@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'; 
+import React from 'react'
+import { useState, useEffect } from 'react'; 
 import ResultBox from '../AreaResultBox/ResultBox'; 
-import { GetServiceTypes, createService, userStatus } from '../../ApiServices/ApiServices';
+import { EditService} from '../../ApiServices/ApiServices';
+export const serviceTypes = ['Electrician', 'Carpenter', 'Barber']
 import ClosePopup from '../ClosePopup/ClosePopup';
-import { changeToProvider } from '../../Redux/AuthSlice';
-import { useDispatch } from 'react-redux';
+import { GetServiceTypes } from '../../ApiServices/ApiServices';
+import { baseURL } from '../../Axios/axios';
 
 
-function ServiceForm(props) {
-    const dispatch = useDispatch();
+function ServiceEditForm(props) {
 
     const [showAreaSearch, setShowAreaSearch] = useState(false)
     const [areaQuery, setAreaQuery] = useState(''); 
@@ -23,23 +23,24 @@ function ServiceForm(props) {
     const [areaError, setAreaError] = useState('');
     const [stypes, setStypes] = useState([]); 
 
-
     function handleAreaClick(area) {
         setShowAreaSearch(false)
         setAreaQuery(area.area_name)
-      } 
+      }
 
     useEffect(() => {
-      GetServiceTypes().then((res) => {
-        setStypes(res.data)
-      })
+    GetServiceTypes().then((res) => {
+        setStypes(res.data) 
+        setbusinessName(props.service.business_name)
+        setDescription(props.service.description)
+        setImageURL(`${baseURL}${props.service.cover_image}`)
+        setService(props.service.service_type)
+    })
     }, [])
 
     function onSubmit() {
-        createService({service, businessName, description, image, areaQuery}).then((res) => {
+        EditService({id:props.service.id ,service, businessName, description, image, areaQuery}).then((res) => {
             console.log(res)
-            props.invokePopUp()
-            dispatch(changeToProvider(res.data.is_provider));
             props.handleFormSubmit(res.data.service)
           }).catch((err) => {
             console.log(err)
@@ -73,11 +74,12 @@ function ServiceForm(props) {
 
   return (
         <>
-       <div className="flex flex-col my-4 bg-gray-50 rounded-md space-y-4 shadow-md border
+       <div className="flex flex-col my-4 bg-cyan-200 rounded-md space-y-4 shadow-md border
          border-neutral-200 mx-4  hide-scrollbar">
           
           <div className="flex justify-between m-2">
                 <button className="rounded bg-white px-2 invisible">X invisible</button>
+                <h1 className="font-bold me-16">Edit Service</h1>
                 <button
                 onClick={() => props.setShowForm(false)}
                 className="rounded bg-orange-600 hover:bg-orange-500 text-white px-2 shadow-md">X</button>
@@ -95,7 +97,7 @@ function ServiceForm(props) {
                 bg-white-200 focus:outline-none focus:ring-0 rounded-md">
                   <option value='---------'>---------</option>
                     {stypes?.map(type => (
-                        <option value={type.id}>{type.service_name}</option>
+                        <option value={type.service_name}>{type.service_name}</option>
                     ))}
                     
                 </select>
@@ -144,25 +146,8 @@ function ServiceForm(props) {
                  <span className="text-sm text-red-600">{imageError}</span>
                  
         </div> 
-        <div className="flex-grow mx-8">
-        <h2 className="text-black font-medium">area </h2>
-                <input type="text" 
-                required
-                value={areaQuery} 
-                onFocus={() => setShowAreaSearch(true)}
-                onChange={(e) => setAreaQuery(e.target.value)}
-                className="px-2 py-2 shadow-md sm:w-3/4  border border-cyan-500
-                bg-white-200 focus:outline-none focus:ring-0 rounded-md"/> <br />
-                <span className="text-sm text-red-600">{areaError}</span>
-                
-        </div>
-        <div className="flex-grow mx-8">
-              {showAreaSearch && 
-                <ResultBox areaQuery={areaQuery} 
-                handleAreaClick={handleAreaClick}
-                showAreaSearch={showAreaSearch}/>
-             }
-        </div>
+ 
+        
         <div className="flex-grow mx-8">
         <button
         onClick={() => onSubmit()}
@@ -178,4 +163,4 @@ function ServiceForm(props) {
   )
 }
 
-export default ServiceForm
+export default ServiceEditForm

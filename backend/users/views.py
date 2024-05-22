@@ -234,3 +234,20 @@ class VerifyOTP(APIView):
         }
         return Response(response_data)
     
+
+class ChangePassword(APIView): 
+    permission_classes = [IsAuthenticated] 
+    def post(self, request): 
+        user = request.user 
+        is_auth = authenticate(username=user.username, password=request.data['current_pass'])
+        new_password = request.data['new_pass']
+
+        if is_auth is None: 
+            raise AuthenticationFailed('current password is wrong!') 
+        
+        if len(new_password.strip()) < 5: 
+            raise AuthenticationFailed('short password')
+    
+        user.set_password(new_password) 
+        user.save()
+        return Response('ok')

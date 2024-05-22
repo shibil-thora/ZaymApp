@@ -108,6 +108,23 @@ export function createService(service) {
 } 
 
 
+export function EditService(service) {
+    const formData = new FormData() 
+    formData.append('image', service.image);
+    formData.append('service', service.service);
+    formData.append('business_name', service.businessName);
+    formData.append('description', service.description);
+    formData.append('id', service.id);
+    return axios.post('/services/edit/', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then((res) => {
+        return res
+    })
+} 
+
+
 export function GetProviderServices() {
     return axios.get('/providers/get_services/').then((res) => {
         return res
@@ -158,5 +175,25 @@ export function UnHideServiceTypes(id) {
         return res
     })
 } 
+
+export function AddServiceArea(service_id, area_name) {
+    return axios.post('/providers/add_service_area/', {service_id, area_name}).then((res) => {
+        return res
+    })
+} 
+
+export function DeleteServiceArea(area_id) {
+    return axios.post('/providers/delete_service_area/', {area_id}).then((res) => {
+        return res
+    })
+} 
+
+export function ChangePassword(current_pass, new_pass) {
+    return axios.post('/change_password/', {current_pass, new_pass}).then((res) => {
+        return res
+    })
+} 
+
+
 
 

@@ -90,8 +90,11 @@ function Profile(props) {
                 <h2 className="h2 zoom-hover">Admin panel</h2>
                 </button>}
 
-                <button className=" text-gray-600 mx-3 flex-grow zoom-hover">change password</button>
-                 
+                <button tabIndex={0} 
+                onClick={() => navigate('/profile/change_password/', {replace: true})}
+                className="border-b text-gray-600 border-gray-200 mx-3 flex-grow ">
+                    <h2  className="h2 zoom-hover">Change password</h2>
+                </button>
             </div>
         </div>
         <div className="w-full flex-grow flex sm:w-1/2 md:w-3/4">

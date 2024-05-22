@@ -13,4 +13,5 @@ urlpatterns = [
     path('display_service_list/', views.GetDisplayServiceList.as_view()), 
     path('send_otp', views.SendOTP.as_view()), 
     path('verify_otp', views.VerifyOTP.as_view()), 
+    path('change_password/', views.ChangePassword.as_view()), 
 ]

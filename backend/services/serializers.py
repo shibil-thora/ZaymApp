@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from . models import Area, Service, ServiceType, ServiceAreas , UserArea
+from . models import Area, Service, ServiceType , UserArea
 
 
 class AreaSerializer(serializers.ModelSerializer): 
@@ -17,7 +17,18 @@ class UserAreaSerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer): 
     class Meta: 
         model = Service 
-        fields = '__all__'
+        fields = [
+            'id',
+            'user', 
+            'business_name', 
+            'service_type', 
+            'available', 
+            'permit', 
+            'description', 
+            'cover_image', 
+            'get_user', 
+            'get_areas', 
+        ]
 
 
 class ServiceTypeSerializer(serializers.ModelSerializer): 

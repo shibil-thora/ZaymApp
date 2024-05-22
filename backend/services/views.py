@@ -9,6 +9,8 @@ from rest_framework.exceptions import AuthenticationFailed
 from . models import Service, ServiceType
 from users.serializers import UserSerializer 
 from users.models import MyUsers as User
+from services.models import ServiceAreas
+from .models import ServiceType
 
 
 class GetAreas(APIView): 
@@ -18,6 +20,18 @@ class GetAreas(APIView):
 
         response_data = {
             'areas': area_dict.data, 
+        }
+        return Response(response_data) 
+    
+
+class GetServiceTypes(APIView): 
+    permission_classes = [IsAuthenticated]
+    def get(self, request): 
+        type_objs = ServiceType.objects.all()
+        type_dict = AreaSerializer(type_objs, many=True)
+
+        response_data = {
+            'areas': type_dict.data, 
         }
         return Response(response_data) 
     
@@ -89,10 +103,46 @@ class CreateService(APIView):
             cover_image=image
         ) 
         user.is_provider = True
-        user.save()
+        user.save() 
+        area_obj = Area.objects.get(area_name=area_name)
+        ServiceAreas.objects.create(service=service, area=area_obj)
         response_data = {
             'is_provider': True, 
             'service': ServiceSerializer(service).data,
+        } 
+        return Response(response_data) 
+    
+
+class EditService(APIView): 
+    permission_classes = [IsProvider]
+    def post(self, request): 
+        image = None
+        try:
+            image = request.FILES['image'] 
+        except: 
+            raise AuthenticationFailed('* image not selected') 
+        servie_type = request.data['service']
+        business_name = request.data['business_name']
+        description = request.data['description']
+        
+        if len(business_name.strip()) < 4: 
+            raise AuthenticationFailed('business name should be ateast 4 letters') 
+        
+        if Service.objects.filter(business_name=business_name): 
+            raise AuthenticationFailed('business name is already used') 
+        
+        if len(description.strip()) < 10:
+            raise AuthenticationFailed('description should be alteast 10 letters') 
+        
+        service = Service.objects.get(id=request.data['id'])
+        service.business_name = business_name 
+        service.service_type = servie_type 
+        service.description = description 
+        service.cover_image = image 
+        service.save()
+
+        response_data = {
+            'service': ServiceSerializer(service).data
         } 
         return Response(response_data)
     
@@ -107,7 +157,7 @@ class AllowPermit(APIView):
     
 
 class GetTypes(APIView): 
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     def get(self, request): 
         service_objs = ServiceType.objects.all() 
         services = ServiceTypeSerializer(service_objs, many=True).data
@@ -131,4 +181,5 @@ class UnHideTypes(APIView):
         service.is_hidden = False
         service.save()
         service = ServiceTypeSerializer(service).data
-        return Response(service)
+        return Response(service) 
+    

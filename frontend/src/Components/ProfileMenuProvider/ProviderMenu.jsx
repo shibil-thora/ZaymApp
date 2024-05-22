@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
 import { useNavigate } from 'react-router-dom'  
 import ClosePopup from '../ClosePopup/ClosePopup'
-import ResultBox from '../AreaResultBox/ResultBox'
 import ServiceForm from '../ServiceForm/ServiceForm'
-import { GetProviderServices } from '../../ApiServices/ApiServices'
+import ServiceEditForm from '../ServiceEditForm/ServiceEditForm'
+import { GetAreaList, GetProviderServices } from '../../ApiServices/ApiServices'
 import { baseURL } from '../../Axios/axios'
 
 function ProviderMenu(props) {
@@ -15,6 +15,9 @@ function ProviderMenu(props) {
     const [showForm, setShowForm] = useState(false);
     const [showPopUp, setShowPopUp] = useState(false); 
     const [services, setServices] = useState([]);
+    const [areas, setAreas] = useState([]);
+    const [showEditForm, setShowEditForm] = useState(false); 
+    const [EditService, setEditService] = useState({});
 
     function invokePopUp() {
       setShowPopUp(true);
@@ -30,14 +33,27 @@ function ProviderMenu(props) {
           navigate('/login/', {replace: true})
       }
       })
-    }, []) 
+    }, [])  
+
+    useEffect(() => {
+      GetAreaList().then((res) => {
+        setAreas(res.data.areas)
+      })
+    }, [])
 
     function handleFormSubmit(service) {
-      console.log(service, 'provider menu')
       setShowForm(false); 
       setServices([...services, service])
     }
     
+    function handleEditFormSubmit(service) {
+      console.log(service, 'provider menu')
+      setShowEditForm(false);  
+      const new_services = [...services] 
+      const index = services.findIndex(s => s.id == service.id)
+      new_services[index] = service 
+      setServices(new_services)
+    }
 
     return (
       <>
@@ -61,16 +77,29 @@ function ProviderMenu(props) {
             <div className="w-2/4">
               <h2 className="font-bold text-xl">{service.business_name} ( <span className="text-orange-600">{service.service_type}</span> ) </h2>
               <h3 className="text-sm">{service.description} </h3>
+              <h3 className="text-sm"><span className="font-medium">Areas: </span>
+              {service.get_areas.map(area => (
+                <small> 
+                <span className="text-cyan-700 font-medium bg-white rounded px-1 mx-1 shadow-sm">
+                  {areas.find(a => a.id == area)?.village + ' '}
+                </span>
+                </small>
+              ))}
+             </h3>
             </div>
             {service.permit && <div className="flex flex-col flex-grow space-y-2 ">
               <button 
                onClick={() => {
-                navigate('/provider/viewservice/', {state: service})
+                navigate('/provider/viewservice/', {state: {service, areas}})
               }}
               className="text-white w-3/4 mx-auto font-medium zoom-hover rounded shadow-md hover:bg-orange-600 bg-orange-500">
                 View service
               </button>
               <button 
+              onClick={() => {
+                setEditService(service) 
+                setShowEditForm(true)
+              }}
               className="text-white w-3/4 mx-auto font-medium zoom-hover rounded shadow-md hover:bg-cyan-800 bg-cyan-700">
                 Edit service
               </button>
@@ -86,7 +115,14 @@ function ProviderMenu(props) {
            </div>
            ))
           }
-
+            <div>
+            {showEditForm &&
+            <ServiceEditForm
+            setShowForm={setShowEditForm}
+            service={EditService}
+            handleFormSubmit={handleEditFormSubmit}/>
+              }
+            </div>
           </div> 
 
 
@@ -99,8 +135,8 @@ function ProviderMenu(props) {
   
           </div>
           <button 
-          onClick={() => setShowForm(true)}
-          className="mx-8 mt-4 text-white w-48 py-2 font-medium zoom-hover rounded shadow-md hover:bg-cyan-800 bg-cyan-700">
+          onClick={() => setShowForm(!showForm)}
+          className="mx-8 mt-4 text-white w-48 py-2 active:bg-cyan-900 font-medium zoom-hover rounded shadow-md hover:bg-cyan-800 bg-cyan-700">
            {showForm ? 'close form': 'Add service'} <span> <i className="fas fa-book"></i></span>
           </button> 
           {!showForm && <h1 className="mx-8 text-green-500 text-sm"><small>{services.length < 3 ? 3 - services.length: 0}
@@ -108,8 +144,10 @@ function ProviderMenu(props) {
           {showForm &&
           <ServiceForm 
           invokePopUp={invokePopUp}
+          setShowForm={setShowForm}
           handleFormSubmit={handleFormSubmit}/>
           }
+  
           
           
       </div>}
