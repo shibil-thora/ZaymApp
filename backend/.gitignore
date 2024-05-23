@@ -121,7 +121,8 @@ venv.bak/
 
 # mkdocs documentation
 /site 
-uploads/
+uploads/ 
+users/emailsettings.py
 
 # mypy
 .mypy_cache/
