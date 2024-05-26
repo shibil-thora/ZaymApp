@@ -16,6 +16,8 @@ import ServiceView from './pages/ServiceView'
 import ProfileServiceView from './Components/ProfileServiceView/ProfileServiceView'
 import ProviderProtected from './pages/ProviderProtected'
 import ProfilePasswordMenu from './Components/ProfilePassword/ProfilePasswordMenu'
+import ChatPage from './pages/ChatPage'
+import ChatSubMenu from './Components/ChatSubMenu/ChatSubMenu'
 
 //add suspense and fallback and lazy loading. . . 
 
@@ -25,17 +27,19 @@ function App() {
     <> 
     <Routes> 
       <Route exact path='/' element={<Home />}/>
-      <Route exact path='admin/dashboard' element={<Admin rightMenu={AdminDash}/>}/>
-      <Route exact path='admin/users' element={<Admin rightMenu={AdminUser}/>}/>
-      <Route exact path='admin/providers' element={<Admin rightMenu={AdminProvider}/>}/>
-      <Route exact path='admin/servicetypes' element={<Admin rightMenu={AdminServiceTypes}/>}/>
+      <Route exact path='admin/dashboard' element={<Admin subMenu={AdminDash}/>}/>
+      <Route exact path='admin/users' element={<Admin subMenu={AdminUser}/>}/>
+      <Route exact path='admin/providers' element={<Admin subMenu={AdminProvider}/>}/>
+      <Route exact path='admin/servicetypes' element={<Admin subMenu={AdminServiceTypes}/>}/>
       <Route path='login/' element={<Login />}/>
       <Route path='signup/' element={<Signup />}/>
       <Route path='user/serviceview/' element={<UserProtected component={ServiceView}/>}/>
-      <Route path='profile/user/' element={<UserProtected component={Profile} rightMenu={UserMenu} />}/>
-      <Route path='profile/provider/' element={<UserProtected component={Profile} rightMenu={ProviderMenu} />}/>
-      <Route path='profile/change_password/' element={<UserProtected component={Profile} rightMenu={ProfilePasswordMenu} />}/>
-      <Route path='provider/viewservice/' element={<ProviderProtected component={Profile} rightMenu={ProfileServiceView} />} />
+      <Route path='profile/user/' element={<UserProtected component={Profile} subMenu={UserMenu} />}/>
+      <Route path='profile/provider/' element={<UserProtected component={Profile} subMenu={ProviderMenu} />}/>
+      <Route path='profile/change_password/' element={<UserProtected component={Profile} subMenu={ProfilePasswordMenu} />}/>
+      <Route path='chat/users/' element={<UserProtected component={ChatPage} />}/>
+      <Route path='chat/users/:id' element={<UserProtected component={ChatPage} subMenu={ChatSubMenu} />}/>
+      <Route path='provider/viewservice/' element={<ProviderProtected component={Profile} subMenu={ProfileServiceView} />} />
     </Routes>
     </>
   )

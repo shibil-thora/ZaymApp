@@ -8,12 +8,12 @@ html::-webkit-scrollbar {
   }
 
 html::-webkit-scrollbar-track {
-    background: rgb(179, 177, 177);
+    background: rgb(153, 246, 228);
     border-radius: 0px;
 }
 
 html::-webkit-scrollbar-thumb {
-    background: rgb(255, 255, 255);
+    background: rgb(6, 101, 82);
     border-radius: 10px; 
   }
 

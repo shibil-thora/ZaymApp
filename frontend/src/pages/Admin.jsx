@@ -74,7 +74,7 @@ function Admin(props) {
             </div>
         </div>
         <div className="w-3/4 "> 
-            {<props.rightMenu />}
+            {<props.subMenu />}
         </div>
     </div>
     </div>

@@ -30,7 +30,7 @@ function ProviderProtected(props) {
 
 
   return (
-    <props.component rightMenu={props.rightMenu}/>
+    <props.component subMenu={props.subMenu}/>
   )
 }
 

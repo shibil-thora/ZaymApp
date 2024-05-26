@@ -200,6 +200,12 @@ export function EditServiceType(type) {
     })
 } 
 
+export function GetAvailableChats() {
+    return axios.get('chat/get_chats/').then((res) => {
+        return res
+    })
+} 
+
 
 
 
