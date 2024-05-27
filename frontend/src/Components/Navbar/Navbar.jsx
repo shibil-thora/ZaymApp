@@ -1,16 +1,19 @@
-import React from 'react' 
+import React, { useState } from 'react' 
 import {useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
 import { baseURL } from '../../Axios/axios';
+import NotificationMenu from '../Notifications/NotificationMenu';
 
 function Navbar() {
   const navigate = useNavigate(); 
   const dispatch = useDispatch(); 
   const state = useSelector(state => state.auth); 
+  const [showNotification, setShowNotification] = useState(false); 
 
   return (
     <>
+    {showNotification && <NotificationMenu setShowNotification={setShowNotification} />}
     <div className="bg-gradient-to-br from-cyan-500 to-teal-300 shadow-md 
     border-b-4 border-teal-200
     top-0 sticky z-10">
@@ -30,7 +33,11 @@ function Navbar() {
             </div> 
             <div className="flex">
 
-              {state.user.is_authenticated && <div className="md:flex rotate-hover hidden hover:cursor-pointer w-8 h-8 zoom-hover shadow-lg bg-black bg-opacity-20 rounded-full hover:bg-orange-600 mt-2 justify-center">   
+              {state.user.is_authenticated && <div tabIndex={0} 
+              onClick={() => setShowNotification(!showNotification)}
+              className="md:flex rotate-hover
+               hidden hover:cursor-pointer w-8 h-8 active:bg-opacity-90 focus:outline-none focus:border focus:border-white
+              zoom-hover  bg-black bg-opacity-20 rounded-full hover:bg-orange-600 mt-2 justify-center">   
                 <i className="text-white mt-2 fas fa-bell"></i> 
               </div>}
 

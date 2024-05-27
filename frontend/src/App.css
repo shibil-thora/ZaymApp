@@ -33,3 +33,31 @@
     transform: rotate(0deg);
     box-shadow: none;
 } 
+
+
+/* appscroll */ 
+.appscroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+.appscroll::-webkit-scrollbar-track {
+    background: rgb(255, 255, 255);
+    border-radius: 50px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.appscroll::-webkit-scrollbar-thumb {
+    background: rgb(111, 231, 255);
+    border-radius: 10px; 
+  }
+
+.appscroll::-webkit-scrollbar-thumb:hover {
+    background: rgb(12, 185, 219);
+    border-radius: 10px;
+  }
+
+.appscroll::-webkit-scrollbar-thumb:active {
+    background: rgb(0, 164, 197);
+    border-radius: 10px;
+  }
