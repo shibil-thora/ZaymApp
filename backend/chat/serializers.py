@@ -10,6 +10,7 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Message 
         fields = [
+            'id'
             'sender', 
             'receiver', 
             'message', 
@@ -24,4 +25,4 @@ class ChatRoomSerializer(serializers.ModelSerializer):
 
     class Meta: 
         model = ChatRoom
-        fields = ['user', 'fellow_user', 'fellow_user_data', 'messages']
+        fields = ['id', 'user', 'fellow_user', 'fellow_user_data', 'last_message', 'messages']

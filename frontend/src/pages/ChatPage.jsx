@@ -11,7 +11,6 @@ function ChatPage(props) {
 
     useEffect(() => {
         GetAvailableChats().then((res) => {
-            console.log(res.data)
             setChats(res.data)
         })
     }, [])
@@ -37,8 +36,8 @@ function ChatPage(props) {
             {/* recent chats */}
             <div className="mx-auto w-full h-5/6 overflow-y-scroll hide-scrollbar flex-col mt-4">
                 {chats.map((chat) => (
-                    <div tabIndex={0} 
-                    onClick={navigate('')}
+                    <div tabIndex={0} key={chat.id}
+                    onClick={() => navigate(`/chat/users/${chat.id}/`)}
                     className="hover:bg-white rounded-md p-3 my-1 mx-3 flex
                     focus:outline-none focus:border-sky-700 focus:border
                     cursor-pointer ">
@@ -49,7 +48,7 @@ function ChatPage(props) {
                         </div>
                         <div className="names mx-4">
                         <h1 className="font-semibold text-lg text-sky-700">{chat.fellow_user_data.username}</h1>
-                        {chat.messages.map((message) => (<h1 className=" text-gray-700 text-sm">{message.message}</h1>))}
+                        {chat.last_message.map((message) => (<h1 key={message.id} className=" text-gray-700 text-sm">{message.message}</h1>))}
                         </div>
                         <div className="time text-gray-500">
                             <p className=""><small>02:47</small></p>

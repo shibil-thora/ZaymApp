@@ -11,10 +11,17 @@ class ChatRoom(models.Model):
         return User.objects.get(id=self.fellow_user.id) 
     
     @property
-    def messages(self): 
+    def last_message(self): 
         message1_set = self.message1.all() 
         message2_set = self.message2.all() 
         messages = message1_set.union(message2_set).order_by('-date')[:1].values()
+        return list(messages)
+    
+    @property
+    def messages(self): 
+        message1_set = self.message1.all() 
+        message2_set = self.message2.all() 
+        messages = message1_set.union(message2_set).values()
         return list(messages)
     
     def __str__(self): 

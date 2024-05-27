@@ -206,6 +206,12 @@ export function GetAvailableChats() {
     })
 } 
 
+export function GetMessages(chat_id) {
+    return axios.post('chat/get_messages/', {chat_id}).then((res) => {
+        return res
+    })
+} 
+
 
 
 
