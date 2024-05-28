@@ -12,4 +12,6 @@ urlpatterns = [
     path('edit_types/', views.EditServiceType.as_view()), 
     path('hide_types/', views.HideTypes.as_view()), 
     path('unhide_types/', views.UnHideTypes.as_view()), 
+    path('ban_area/', views.BanAreas.as_view()), 
+    path('permit_area/', views.PermitAreas.as_view()),
 ]

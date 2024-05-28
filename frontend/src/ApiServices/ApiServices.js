@@ -212,6 +212,14 @@ export function GetMessages(chat_id) {
     })
 } 
 
+export function BanArea(id) {
+    return axios.post('/services/ban_area/', {id}).then((res) => {
+        return res
+    })
+} 
 
-
-
+export function PermitArea(id) {
+    return axios.post('/services/permit_area/', {id}).then((res) => {
+        return res
+    })
+} 

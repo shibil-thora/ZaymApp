@@ -15,7 +15,7 @@ from .models import ServiceType
 
 class GetAreas(APIView): 
     def get(self, request): 
-        area_objs = Area.objects.all().order_by('village') 
+        area_objs = Area.objects.filter(permit=True).order_by('village') 
         area_dict = AreaSerializer(area_objs, many=True)
 
         response_data = {
@@ -195,4 +195,24 @@ class EditServiceType(APIView):
         type_obj.service_name = type_dict['service_name']
         type_obj.save() 
         return Response(ServiceTypeSerializer(type_obj).data) 
+    
+
+class BanAreas(APIView): 
+    permission_classes = [IsAdminUser] 
+    def post(self, request): 
+        area = Area.objects.get(id=request.data['id'])
+        area.permit = False 
+        area.save()
+        area = AreaSerializer(area).data
+        return Response(area)
+    
+
+class PermitAreas(APIView): 
+    permission_classes = [IsAdminUser] 
+    def post(self, request): 
+        area = Area.objects.get(id=request.data['id'])
+        area.permit = True
+        area.save()
+        area = AreaSerializer(area).data
+        return Response(area)
     
