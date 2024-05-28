@@ -1,5 +1,6 @@
 from rest_framework import serializers 
-from . models import Area, Service, ServiceType , UserArea
+from . models import Area, Service, ServiceType , UserArea, ServiceAreas
+from users.serializers import UserSerializer
 
 
 class AreaSerializer(serializers.ModelSerializer): 
@@ -14,7 +15,18 @@ class UserAreaSerializer(serializers.ModelSerializer):
         fields = '__all__' 
 
 
+class ServiceAreaSerializer(serializers.ModelSerializer): 
+    area_data = AreaSerializer(read_only=True)
+    class Meta: 
+        model = ServiceAreas 
+        fields = [
+            'area_data'
+        ]
+
+
 class ServiceSerializer(serializers.ModelSerializer): 
+    get_user = UserSerializer(read_only=True)
+    get_areas = ServiceAreaSerializer(many=True)
     class Meta: 
         model = Service 
         fields = [
@@ -28,6 +40,22 @@ class ServiceSerializer(serializers.ModelSerializer):
             'cover_image', 
             'get_user', 
             'get_areas', 
+        ] 
+
+
+class DisplayServiceSerializer(serializers.ModelSerializer): 
+    get_user = UserSerializer(read_only=True) 
+    get_areas = ServiceAreaSerializer(many=True)
+    class Meta: 
+        model = Service 
+        fields = [
+            'id', 
+            'business_name', 
+            'service_type', 
+            'cover_image', 
+            'description', 
+            'get_user', 
+            'get_areas',
         ]
 
 
@@ -36,4 +64,5 @@ class ServiceTypeSerializer(serializers.ModelSerializer):
         model = ServiceType 
         fields = '__all__'
     
+
     

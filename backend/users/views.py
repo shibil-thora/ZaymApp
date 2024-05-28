@@ -8,7 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer 
 from .models import MyUsers as User 
 from django.core.validators import EmailValidator
-from services.serializers import AreaSerializer, ServiceSerializer
+from services.serializers import AreaSerializer, ServiceSerializer, DisplayServiceSerializer
 from services.models import Area, UserArea, Service
 from django.contrib.auth.models import AnonymousUser 
 from .tasks import send_email_task
@@ -192,15 +192,8 @@ class UpdateProfilePic(APIView):
 
 class GetDisplayServiceList(APIView): 
     def get(self, request): 
-        service_objs = Service.objects.all().filter(permit=True).values(
-            'id', 
-            'business_name', 
-            'service_type', 
-            'cover_image', 
-            'description', 
-        )
-        #.filter(is_hidden=True) 
-        response_data = list(service_objs)
+        service_objs = Service.objects.all().filter(permit=True)
+        response_data = DisplayServiceSerializer(service_objs, many=True).data
         return Response(response_data) 
     
 

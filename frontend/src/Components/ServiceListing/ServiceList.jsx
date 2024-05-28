@@ -26,7 +26,10 @@ function ServiceList() {
 
   function handleAreaClick(area) {
     setSearchForm(false);
-    setAreaQuery(area.area_name)
+    setAreaQuery(area.area_name) 
+    const new_services = services.filter(service => service.get_areas.filter(a => a.area_data )); 
+    console.log(new_services, 'new')
+    console.log(area)
   } 
 
   function handleServiceClick(service) {
@@ -45,7 +48,7 @@ function ServiceList() {
             <input
             type="text"
             value={areaQuery}
-            onFocus={() => setSearchForm(true)}
+            onFocus={() => !showServiceBox && setSearchForm(true)}
             onChange={(e) => setAreaQuery(e.target.value)}
             className="block w-5/6 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-orange-500"
             placeholder="Serch location here..." />  
@@ -57,7 +60,7 @@ function ServiceList() {
             <input
             type="text" 
             value={serviceQuery}
-            onFocus={() => setShowServiceBox(true)}
+            onFocus={() => !showSearchForm && setShowServiceBox(true)}
             onChange={(e) => setServiceQuery(e.target.value)}
             className="block w-5/6 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-orange-500"
             placeholder="Search for service..." />  

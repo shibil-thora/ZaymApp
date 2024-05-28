@@ -15,4 +15,3 @@ class UserSerializer(serializers.ModelSerializer):
             'profile_picture', 
             'is_provider', 
         ] 
-

@@ -34,11 +34,11 @@ class Service(models.Model):
 
     def get_user(self): 
         user_obj =  User.objects.get(id=self.user.id)
-        user = UserSerializer(user_obj).data 
-        return user 
+        return user_obj 
     
+    @property
     def get_areas(self): 
-        area_objs = list(self.areas.all().values_list('area', flat=True)) 
+        area_objs = self.areas.all()
         return area_objs
 
 
@@ -52,6 +52,11 @@ class ServiceAreas(models.Model):
 
     def __str__(self): 
         return self.service.business_name 
+    
+    @property
+    def area_data(self): 
+        return Area.objects.get(id=self.area.id)
+    
     
         
 
