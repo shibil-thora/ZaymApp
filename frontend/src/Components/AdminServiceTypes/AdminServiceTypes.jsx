@@ -115,7 +115,14 @@ function AdminServiceTypes() {
           
         </tbody>
       </table>
-      
+       {/* add button */}
+       <div className="my-4 p-2">
+      <button 
+             
+             className={`font-medium zoom-hover
+              text-white ${true ? 'bg-green-700': 'bg-fuchsia-900'}  px-4 py-1
+               focus:outline-white hover:bg-opacity-90`}>{true ? 'Add type + ': 'Requested'}</button>
+      </div>
     </div>
     </div>
      </>

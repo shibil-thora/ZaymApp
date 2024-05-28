@@ -36,7 +36,7 @@ function Navbar() {
               {state.user.is_authenticated && <div tabIndex={0} 
               onClick={() => setShowNotification(!showNotification)}
               className="md:flex rotate-hover
-               hidden hover:cursor-pointer w-8 h-8 active:bg-opacity-90 focus:outline-none focus:border focus:border-white
+               hidden hover:cursor-pointer w-8 h-8 active:bg-opacity-90 focus:outline-none 
               zoom-hover  bg-black bg-opacity-20 rounded-full hover:bg-orange-600 mt-2 justify-center">   
                 <i className="text-white mt-2 fas fa-bell"></i> 
               </div>}

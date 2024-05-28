@@ -18,6 +18,7 @@ import ProviderProtected from './pages/ProviderProtected'
 import ProfilePasswordMenu from './Components/ProfilePassword/ProfilePasswordMenu'
 import ChatPage from './pages/ChatPage'
 import ChatSubMenu from './Components/ChatSubMenu/ChatSubMenu'
+import AdminAreas from './Components/AdminAreas/AdminAreas'
 
 //add suspense and fallback and lazy loading. . . 
 
@@ -31,6 +32,7 @@ function App() {
       <Route exact path='admin/users' element={<Admin subMenu={AdminUser}/>}/>
       <Route exact path='admin/providers' element={<Admin subMenu={AdminProvider}/>}/>
       <Route exact path='admin/servicetypes' element={<Admin subMenu={AdminServiceTypes}/>}/>
+      <Route exact path='admin/areas' element={<Admin subMenu={AdminAreas}/>}/>
       <Route path='login/' element={<Login />}/>
       <Route path='signup/' element={<Signup />}/>
       <Route path='user/serviceview/' element={<UserProtected component={ServiceView}/>}/>
