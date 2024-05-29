@@ -19,16 +19,16 @@ function ChatPage(props) {
     <Navbar />
     {/*  */}
     <div className="flex sm:flex-row flex-col w-full min-h-screen ">
-        <div className="lg:w-1/4 sm:w-1/3 flex flex-col justify-start w-full flex-grow bg-slate-200 border-r border-gray-200  shadow-lg bg-opacity-80">
+        <div className="lg:w-1/4 hidden sm:flex sm:w-1/3 flex-col justify-start w-full flex-grow bg-white  border-r border-black border-opacity-5">
             {/* chat search */}
-            <div className="mx-auto w-full p-3 flex">
+            <div className="mx-auto w-full p-3">
                 <div tabIndex={0} className=" flex w-full 
-                focus:border-sky-400 rounded 
+                focus:border-sky-400 rounded shadow-md
                 focus:outline-none focus:border-1">
-                <h1 className="bg-white px-4 py-2 rounded-l-md flex-grow"><i className="fas fa-search opacity-60"></i></h1>
+                <h1 className="bg-gray-200 px-4 py-2 rounded-l-md flex-grow"><i className="fas fa-search opacity-60"></i></h1>
                 <input
                 type="text"
-                className="block  py-2 w-full focus:outline-none flex-grow"
+                className="block bg-gray-200 py-2 w-full rounded-r-md focus:outline-none flex-grow"
                 placeholder="Search" /> 
                 </div> 
             
@@ -38,12 +38,12 @@ function ChatPage(props) {
                 {chats.map((chat) => (
                     <div tabIndex={0} key={chat.id}
                     onClick={() => navigate(`/chat/users/${chat.id}/`)}
-                    className="hover:bg-white rounded-md p-3 my-1 mx-3 flex
+                    className="hover:bg-gray-200 hover:bg-opacity-50 rounded-md p-3 my-1 mx-3 flex
                     focus:outline-none focus:border-sky-700 focus:border
                     cursor-pointer ">
                         <div className="">
                             <img 
-                            className="w-12 h-12 rounded-full"
+                            className="w-12 h-12 rounded-lg"
                             src={chat.fellow_user_data.profile_picture ? `${baseURL}${chat.fellow_user_data.profile_picture}` : 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'}/>
                         </div>
                         <div className="names mx-4">
@@ -51,7 +51,7 @@ function ChatPage(props) {
                         {chat.last_message.map((message) => (<h1 key={message.id} className=" text-gray-700 text-sm">{message.message}</h1>))}
                         </div>
                         <div className="time text-gray-500">
-                            <p className=""><small>02:47</small></p>
+                            <p className="text-orange-700"><small>02:47</small></p>
                         </div>
                         
                     </div>
@@ -61,7 +61,7 @@ function ChatPage(props) {
                
             </div>
         </div>
-        <div className="lg:w-3/4 hidden sm:block sm:w-2/3 w-full flex-grow  bg-white shadow-md bg-opacity-80">
+        <div className="lg:w-3/4 sm:w-2/3 w-full flex-grow  bg-white shadow-md bg-opacity-80">
             {props.subMenu ? <props.subMenu /> : <>
             <div className="flex-grow h-full flex flex-col justify-start">
                 <img 

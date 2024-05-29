@@ -33,13 +33,22 @@ function Navbar() {
             </div> 
             <div className="flex">
 
-              {state.user.is_authenticated && <div tabIndex={0} 
+            {state.user.is_authenticated && <div tabIndex={0} 
               onClick={() => setShowNotification(!showNotification)}
               className="md:flex rotate-hover
                hidden hover:cursor-pointer w-8 h-8 active:bg-opacity-90 focus:outline-none 
               zoom-hover  bg-black bg-opacity-20 rounded-full hover:bg-orange-600 mt-2 justify-center">   
                 <i className="text-white mt-2 fas fa-bell"></i> 
               </div>}
+
+              <button 
+              onClick={() => navigate('/chat/users', {replace: true})}
+              className="ms-4 md:flex 
+               hidden hover:cursor-pointer w-10 h-10 my-auto active:bg-opacity-90 focus:outline-none 
+              zoom-hover  bg-black bg-opacity-20 rounded-full hover:bg-orange-600 justify-center">
+                <i className="fas fa-comment text-white my-auto text-xl"></i>
+              </button>
+
 
             {!state.user.is_authenticated && <button 
             onClick={() => navigate('/login/', {replace: true})} 
