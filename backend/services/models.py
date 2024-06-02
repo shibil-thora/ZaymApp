@@ -23,6 +23,10 @@ class ServiceType(models.Model):
         return self.service_name
     
 
+    class Meta: 
+        ordering = ['service_name']
+    
+
 class Service(models.Model): 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='services')
     business_name = models.CharField(max_length=100) 

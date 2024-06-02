@@ -11,9 +11,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         token = t[2:-1]   
         decoded_token = AccessToken(token) 
         user_id = decoded_token['user_id']  
+        
+        #developing unique room name using their id 
         id_list = sorted([str(user_id), str(fellow_user_id)]) 
         room_name = "room" + "".join(id_list) 
-        print(room_name, 'room_name is printed here')
+       
         self.chat_box_name = room_name
         self.group_name = f'chat_{self.chat_box_name}'
 

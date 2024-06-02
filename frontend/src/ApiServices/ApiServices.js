@@ -200,6 +200,12 @@ export function EditServiceType(type) {
     })
 } 
 
+export function AddServiceType(service_name) {
+    return axios.post('services/add_types/', {service_name}).then((res) => {
+        return res
+    })
+} 
+
 export function GetAvailableChats() {
     return axios.get('chat/get_chats/').then((res) => {
         return res

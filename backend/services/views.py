@@ -10,7 +10,8 @@ from . models import Service, ServiceType
 from users.serializers import UserSerializer 
 from users.models import MyUsers as User
 from services.models import ServiceAreas
-from .models import ServiceType
+from .models import ServiceType 
+from rest_framework.generics import CreateAPIView
 
 
 class GetAreas(APIView): 
@@ -194,7 +195,12 @@ class EditServiceType(APIView):
         type_obj = ServiceType.objects.get(id=type_dict['id']) 
         type_obj.service_name = type_dict['service_name']
         type_obj.save() 
-        return Response(ServiceTypeSerializer(type_obj).data) 
+        return Response(ServiceTypeSerializer(type_obj).data)  
+    
+
+class AddServiceType(CreateAPIView): 
+    permission_classes = [IsAdminUser]
+    serializer_class = ServiceTypeSerializer
     
 
 class BanAreas(APIView): 

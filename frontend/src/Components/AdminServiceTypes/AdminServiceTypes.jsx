@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { EditServiceType, GetServiceTypes, HideServiceTypes, UnHideServiceTypes } from '../../ApiServices/ApiServices';
+import { AddServiceType, EditServiceType, GetServiceTypes, HideServiceTypes, UnHideServiceTypes } from '../../ApiServices/ApiServices';
 import Modal from '../Modal/Modal';
 import { useRef } from 'react';
 import EditType from '../EditType/EditType';
+import AddType from '../AddType/AddType';
 
 function AdminServiceTypes() {
     const [query, setQuery] = useState('');
@@ -10,6 +11,8 @@ function AdminServiceTypes() {
     const [showModal, setShowModal] = useState(false);
     const currentType = useRef(null);
     const [editType, setEditType] = useState('');
+    const [addType, setAddType] = useState('');  
+    const [showAddForm, setShowAddForm] = useState(false); 
     const [showEditForm, setShowEditForm] = useState(false);
     
     useEffect(() => {
@@ -48,12 +51,26 @@ function AdminServiceTypes() {
         setShowEditForm(false)
       })
     }
+
+    function onAddSubmit() {
+      console.log(addType) 
+      AddServiceType(addType).then((res) => {
+        setTypes([...types, res.data])
+      }) 
+      setShowAddForm(false); 
+    }
+
   return (
     <>
     {showEditForm && 
     <EditType editQuery={editType} 
-    onEditSubmit={onEditSubmit}
+    onEditSubmit={onEditSubmit} close={setShowEditForm}
     setEditQuery={setEditType}/> 
+    }
+    {showAddForm && 
+    <AddType addQuery={addType} 
+    onAddSubmit={onAddSubmit} close={setShowAddForm}
+    setAddQuery={setAddType}/> 
     }
      {showModal && <Modal 
      text={currentType.current.is_hidden ? 'are you sure about unhiding this type' : 'are you sure about hiding this type'} 
@@ -116,13 +133,15 @@ function AdminServiceTypes() {
         </tbody>
       </table>
        {/* add button */}
-       <div className="my-4 p-2">
+  
       <button 
-             
-             className={`font-medium zoom-hover
-              text-white ${true ? 'bg-green-700': 'bg-fuchsia-900'}  px-4 py-1
-               focus:outline-white hover:bg-opacity-90`}>{true ? 'Add type + ': 'Requested'}</button>
-      </div>
+      onClick={() => {
+        setShowAddForm(true); 
+      }}
+      className={`font-medium my-2
+      text-white bg-green-700 px-4 py-1
+        focus:outline-white hover:bg-opacity-90`}>Add type +</button>
+
     </div>
     </div>
      </>

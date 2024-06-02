@@ -8,7 +8,16 @@ function EditType(props) {
     }
   return (
     <div className="inset-0 fixed h-full flex flex-col justify-center bg-black bg-opacity-60 z-20">
-        <div className="flex flex-col w-1/3 h-1/3 mx-auto bg-gray-200  shadow-lg pt-4">
+        <div className="flex flex-col w-1/3 h-1/3 mx-auto bg-gray-200  shadow-lg">
+          <div className=" bg-cyan-700 flex justify-between flex-grow text-center ">
+            <button></button>
+          <button 
+          onClick={() => props.close(false)}
+          className="zoom-hover bg-orange-600 shadow-md
+          mx-2 px-2 my-1  rounded-md hover:bg-opacity-90 active:bg-orange-700">
+              <i className="fa fa-close text-md text-white"></i>
+          </button>
+          </div>
         <div className="my-4 flex-grow mt-4 mx-8 text-center"> 
                 <h2 className="text-black font-medium mb-1 text-center">Service type</h2>
         <input type="text" 
