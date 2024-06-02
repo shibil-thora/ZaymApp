@@ -3,67 +3,65 @@ import { useParams } from 'react-router-dom'
 import { GetMessages } from '../../ApiServices/ApiServices'
 import { baseURL, domainPort } from '../../Axios/axios'
 import { useSelector } from 'react-redux'
+import { useRef } from 'react'
 
 function ChatSubMenu() {
     const param = useParams() 
     const [room, setRoom] = useState({}); 
     const [text, setText] = useState(''); 
-    const state = useSelector(state => state.auth)
+    const state = useSelector(state => state.auth);
+    const socket = useRef(null);
+    const [messages, setMessages] = useState([]); 
 
     useEffect(() => {
         GetMessages(param.id).then((res) => {
-            console.log(res.data) 
             setRoom(res.data)
+            setMessages(res.data.messages) 
+            socket.current = new WebSocket(`ws://${domainPort}/chat/room/?f=${res.data.fellow_user}&t=${localStorage.getItem('access')}`)
+            console.log(room, 'room data')
+            socket.current.onopen = function(e) {
+                console.log('chat socket connected')
+            }
+    
+            socket.current.onclose = function(e) {
+                console.log('chat socket disconnected')
+            }
+            console.log(messages)
+            socket.current.onmessage = function(e) {
+                console.log(e)
+                const data = e.data
+                const messageObj = JSON.parse(data)
+                console.log(messageObj)
+                if (messageObj.sender_id != room.user) {
+                    console.log('updated')
+                setMessages([...res.data?.messages,...messages, {
+                    message: messageObj.message, 
+                    sender_id: messageObj.sender_id,
+                }])
+                }
+            }
+    
         }).catch((err) => {
             console.log(err)
         })
     }, [param])
 
-    const socket = new WebSocket(`ws://${domainPort}/chat/room/?f=${room?.fellow_user}&t=${localStorage.getItem('access')}`)
-
+    
     useEffect(() => {
-
-        socket.onopen = function(e) {
-            console.log('chat socket connected')
-        }
-
-        socket.onclose = function(e) {
-            console.log('chat socket disconnected')
-        }
-
-        socket.onmessage = function(e) {
-            const data = e.data
-            const messageObj = JSON.parse(data)
-            console.log(messageObj)
-            console.log(room?.fellow_user_data?.username, messageObj.fellow) 
-            if (room.fellow_user_data?.username == messageObj.fellow) {
-                setRoom({...room, messages:[...room.messages, 
-                    {   
-                        date: Date(), 
-                        message: messageObj.message,  
-                    }
-                ]})
-                setText(''); 
-            }
-        }
 
     }, [])
 
 
     function createMessage() {
         console.log('sent a message')
-        socket.send(JSON.stringify({
+        socket.current.send(JSON.stringify({
             'message': text ,
-            'user': room.user,
-            'fellow': room.fellow_user, 
-            'room_id': room.id
+            'sender_id': room.user,
         })); 
-        setRoom({...room, messages:[...room.messages, 
-            {   
-                date: Date(), 
-                message: text,  
-            }
-        ]})
+        setMessages([...messages, {
+            message: text, 
+            sender_id: room.user,
+        }])
         setText(''); 
     }
 
@@ -86,15 +84,15 @@ function ChatSubMenu() {
 
         <div className="messages flex-grow m-5">
             
-            {room.messages?.map((message) => (
+            {messages?.map((message) => (
                 <>
-                {message.sender_id == room.fellow_user && 
+                {message.sender_id != room.user && 
                      <div className="left mb-3 w-2/3  flex ">
 
                          <h1 className="mx-4 p-2 my-auto text-sm rounded-xl shadow-md bg-cyan-200 bg-opacity-50 text-gray-600">{message.message}</h1>
                      </div>
                 }
-                {message.sender_id != room.fellow_user &&
+                {message.sender_id == room.user &&
                 <div className="right mb-3 w-2/3 ms-auto  flex justify-end">
                 
                     <h1 className="mx-4 p-2 my-auto text-gray-700 rounded-xl shadow-md bg-gray-200 text-sm">{message.message}</h1>
