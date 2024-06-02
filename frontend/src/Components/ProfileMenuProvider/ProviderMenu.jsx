@@ -73,7 +73,7 @@ function ProviderMenu(props) {
            {services.map((service) => (
             <div key={service.id} className="w-full bg-gray-200 shadow-md p-2 rounded-md flex space-x-4">
             <img className="w-30 h-20 rounded cursor-pointer mt-2"
-            src={`${baseURL}/${service.cover_image}/`} />
+            src={`${baseURL}${service.cover_image}/`} />
             <div className="w-2/4">
               <h2 className="font-bold text-xl">{service.business_name} ( <span className="text-orange-600">{service.service_type}</span> ) </h2>
               <h3 className="text-sm">{service.description} </h3>

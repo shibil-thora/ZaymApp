@@ -113,6 +113,11 @@ function ProfileServiceView(props) {
         </div>
         </>
         }
+         <button 
+          onClick={() => setShowAddForm(!showAddForm)}
+          className="mx-1 mt-4 text-white py-4 w-32 active:bg-orange-800 font-medium zoom-hover rounded shadow-md hover:bg-orange-700 bg-orange-600">
+           {false ? 'cancel': 'Add Image'} <span> {!showAddForm && <i className="fas fa-camera"></i>}</span>
+        </button> 
         </div>
     </>
   )

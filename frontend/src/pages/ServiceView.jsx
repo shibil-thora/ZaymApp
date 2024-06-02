@@ -3,6 +3,7 @@ import Navbar from '../Components/Navbar/Navbar'
 import Footer from '../Components/Footer/Footer'
 import { useLocation } from 'react-router-dom'
 import { baseURL } from '../Axios/axios'
+import Carousal from '../Components/Carousal/Carousal'
 
 function ServiceView() {
     const location = useLocation();
@@ -20,7 +21,7 @@ function ServiceView() {
         shadow-lg">
         <div className="py-8 flex sm:flex-row flex-col space-y-4 justify-center space-x-2 flex-grow w-full mx-auto rounded-xl">
             <div className="div w-full sm:w-1/2 sm:mx-8 mx-auto">
-                <img src={`${baseURL}/media/${location.state.cover_image}`} alt="" className="rounded-xl"/>
+                <img src={`${baseURL}${location.state.cover_image}`} alt="" className="rounded-xl"/>
             </div>
             <div className="div flex flex-col sm:w-1/2 space-y-4 sm:mx-8 mx-auto">
                 <h1 className="text-5xl text-cyan-600 ring-offset-2 ring-offset-black font-bold text-left">
@@ -48,8 +49,10 @@ function ServiceView() {
             </div>
         </div>
 
-        <div className="py-4 sm:px-8 flex-grow w-full mx-auto rounded-xl border border-black h-32">
-
+        <div className="py-4 sm:px-8 flex-grow h-full w-full mx-auto rounded-xl">
+            {/* carousal */} 
+            <Carousal />
+            {/* carousal */} 
         </div>
     
         

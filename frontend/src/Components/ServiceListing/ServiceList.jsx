@@ -97,7 +97,7 @@ function ServiceList() {
       className="sm:w-48 flex flex-col justify-between rounded-lg border border-black border-opacity-20
       shadow-md sm:h-48 w-36 h-36 my-8 mx-8 bg-white focus:outline-orange-500 cursor-pointer zoom-hover-md">
         <div className="shadow-md rounded-lg w-full h-2/3">
-          <img src={`${baseURL}/media/${service.cover_image}`} alt="service image" className="rounded-t-md h-full w-full" />
+          <img src={`${baseURL}${service.cover_image}`} alt="service image" className="rounded-t-md h-full w-full" />
         </div>
         <div className="div mx-auto my-2">
         <h2 className="font-medium sm:text-md text-sm">{service.business_name}</h2>
