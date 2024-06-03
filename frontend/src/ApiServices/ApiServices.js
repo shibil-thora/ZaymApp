@@ -188,6 +188,25 @@ export function DeleteServiceArea(area_id) {
     })
 } 
 
+export function AddServiceImage(service_id, image) { 
+    const formData = new FormData(); 
+    formData.append('service_id', service_id); 
+    formData.append('image', image); 
+    return axios.post('/providers/add_service_image/', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then((res) => {
+        return res
+    })
+}  
+
+export function DeleteServiceImage(image_id) {
+    return axios.post('/providers/delete_service_image/', {image_id}).then((res) => {
+        return res
+    })
+} 
+
 export function ChangePassword(current_pass, new_pass) {
     return axios.post('/change_password/', {current_pass, new_pass}).then((res) => {
         return res

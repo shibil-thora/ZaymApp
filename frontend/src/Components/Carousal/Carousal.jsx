@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { baseURL } from '../../Axios/axios';
 
-const Carousel = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const slides = [
-    "https://mdbcdn.b-cdn.net/img/new/slides/041.webp",
-    "https://mdbcdn.b-cdn.net/img/new/slides/042.webp",
-    "https://mdbcdn.b-cdn.net/img/new/slides/043.webp"
-  ];
+const Carousel = (props) => {
+  const [activeIndex, setActiveIndex] = useState(0); 
 
   const prevSlide = () => {
-    const index = activeIndex === 0 ? slides.length - 1 : activeIndex - 1;
+    const index = activeIndex === 0 ? props.slides.length - 1 : activeIndex - 1;
     setActiveIndex(index);
   };
 
   const nextSlide = () => {
-    const index = activeIndex === slides.length - 1 ? 0 : activeIndex + 1;
+    const index = activeIndex === props.slides.length - 1 ? 0 : activeIndex + 1;
     setActiveIndex(index);
   };
 
@@ -35,18 +31,20 @@ const Carousel = () => {
       <div
         className="relative w-full overflow-hidden after:clear-both after:block after:content-['']"
       >
-        {slides.map((slide, index) => (
+        {props.slides.map((slide, index) => (
           <div
             key={index}
             className={`relative float-left w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none ${index === activeIndex ? 'block' : 'hidden'}`}
             data-twe-carousel-item
             data-twe-carousel-active={index === activeIndex}
-          >
+          > 
+            <div className="md:h-72 sm:h-36 h-36 flex">
             <img
-              src={slide}
-              className="block w-full"
+              src={`${baseURL}/media/${slide.image}`}
+              className="w-full h-full"
               alt={`Slide ${index + 1}`}
             />
+            </div>
           </div>
         ))}
       </div>

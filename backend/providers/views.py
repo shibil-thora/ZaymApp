@@ -3,7 +3,7 @@ from rest_framework.permissions import BasePermission , IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from services.serializers import ServiceSerializer, ServiceAreaSerializer
-from services.models import Service, Area, ServiceAreas
+from services.models import Service, Area, ServiceAreas, ServiceImages
 
 
 # provider permission 
@@ -37,4 +37,12 @@ class DeleteServiceArea(APIView):
         delete_id = request.data['area_id']['area_data']['id'] 
         print(delete_id)
         print(ServiceAreas.objects.filter(area__id=delete_id).delete())
+        return Response(request.data)
+    
+
+class DeleteServiceImage(APIView):
+    permission_classes = [IsProvider] 
+    def post(self, request): 
+        delete_id = request.data['image_id'] 
+        ServiceImages.objects.filter(id=delete_id).delete()
         return Response(request.data)

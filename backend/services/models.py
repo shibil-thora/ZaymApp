@@ -43,7 +43,12 @@ class Service(models.Model):
     @property
     def get_areas(self): 
         area_objs = self.areas.all()
-        return area_objs
+        return area_objs 
+    
+    @property 
+    def get_images(self): 
+        image_objs = self.images.all() 
+        return list(image_objs.values())
 
 
     def __str__(self): 
@@ -63,8 +68,11 @@ class ServiceAreas(models.Model):
     
     
 class ServiceImages(models.Model): 
-    service = models.ForeignKey(Service, on_delete=models.CASCADE) 
-    image = models.ImageField(upload_to='service_images')
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='images') 
+    image = models.ImageField(upload_to='service_images') 
+
+    def __str__(self): 
+        return self.service.business_name + '_image' + str(self.id)
 
 
 class UserArea(models.Model): 

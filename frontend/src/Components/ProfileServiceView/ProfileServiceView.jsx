@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { baseURL } from '../../Axios/axios'
 import ResultBox from '../AreaResultBox/ResultBox' 
 import Modal from '../Modal/Modal'
-import { AddServiceArea, DeleteServiceArea } from '../../ApiServices/ApiServices'
+import { AddServiceArea, DeleteServiceArea, DeleteServiceImage } from '../../ApiServices/ApiServices'
 
 
 function ProfileServiceView(props) {
@@ -13,10 +13,12 @@ function ProfileServiceView(props) {
     const [showAreaSearch, setShowAreaSearch] = useState(false);
     const [showModal, setShowModal] = useState(false); 
     const [serviceAreas, setServiceAreas] = useState([]); 
+    const [serviceImages, setServiceImages] = useState([]); 
 
     useEffect(() => {
-        setServiceAreas(location.state.service.get_areas)
-        console.log(serviceAreas)
+        setServiceAreas(location.state.service.get_areas);
+        setServiceImages(location.state.service.get_images);
+        console.log(serviceImages)
     }, [])
 
     function handleAreaClick(area) {
@@ -40,6 +42,13 @@ function ProfileServiceView(props) {
         DeleteServiceArea(area_id).then((res) => {
             console.log(res.data.area_id.area_data.id) 
             setServiceAreas(serviceAreas.filter(area => area.area_data.id != res.data.area_id.area_data.id))
+        })
+    }
+
+    function handleDeleteImage(image_id) {
+        DeleteServiceImage(image_id).then((res) => {
+            console.log(res.data.image_id) 
+            setServiceImages(serviceImages.filter((image) => image.id != res.data.image_id))
         })
     }
 
@@ -68,9 +77,26 @@ function ProfileServiceView(props) {
             </div>
         </div>
 
-        {/* <div className="py-4 sm:px-8 flex-grow w-full mx-auto rounded-xl border border-black h-32">
-    hi
-        </div> */}
+        <div className="py-4 sm:px-1 flex-grow w-full mx-auto rounded-xl space-y-2">
+        <h1 className="font-semibold">Images</h1>
+        {serviceImages.map(image => (
+        <small className="flex space-x-3"> 
+        <button className="px-1 cursor-default">
+        <i className="fas fa-circle text-black my-auto"></i>
+        </button>
+        <h1 className="text-cyan-700 font-medium bg-sky-100  px-1 shadow-sm">
+            <div className="h-1/6">
+                <img src={`${baseURL}/media/${image.image}`} className="w-1/2" alt="" />
+            </div>
+        </h1>
+        <button 
+        onClick={() => handleDeleteImage(image.id)}
+        className="bg-sky-100 px-1 hover:bg-sky-200 active:bg-sky-300">
+        <i className="fas fa-trash text-red-600 my-auto"></i>
+        </button>
+        </small>
+        ))}
+        </div>
 
         <div className="flex flex-col space-y-3 my-4 mx-1"> 
         <h1 className="font-semibold">Areas</h1>

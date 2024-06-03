@@ -49,9 +49,11 @@ function ServiceView() {
             </div>
         </div>
 
-        <div className="py-4 sm:px-8 flex-grow h-full w-full mx-auto rounded-xl">
+        <div className="py-4 sm:px-8 flex-grow w-full mx-auto rounded-xl">
             {/* carousal */} 
-            <Carousal />
+            <div className="w-3/6 mx-auto">
+            <Carousal slides={location.state.get_images}/>
+            </div>
             {/* carousal */} 
         </div>
     
