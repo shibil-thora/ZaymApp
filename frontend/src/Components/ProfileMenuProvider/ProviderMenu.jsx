@@ -15,7 +15,6 @@ function ProviderMenu(props) {
     const [showForm, setShowForm] = useState(false);
     const [showPopUp, setShowPopUp] = useState(false); 
     const [services, setServices] = useState([]);
-    const [areas, setAreas] = useState([]);
     const [showEditForm, setShowEditForm] = useState(false); 
     const [EditService, setEditService] = useState({});
 
@@ -34,12 +33,6 @@ function ProviderMenu(props) {
       }
       })
     }, [])  
-
-    useEffect(() => {
-      GetAreaList().then((res) => {
-        setAreas(res.data.areas)
-      })
-    }, [])
 
     function handleFormSubmit(service) {
       setShowForm(false); 
@@ -81,7 +74,7 @@ function ProviderMenu(props) {
               {service.get_areas.map(area => (
                 <small> 
                 <span className="text-cyan-700 font-medium bg-white rounded px-1 mx-1 shadow-sm">
-                  {areas.find(a => a.id == area)?.village + ' '}
+                  {area.area_data.village}
                 </span>
                 </small>
               ))}
@@ -90,7 +83,7 @@ function ProviderMenu(props) {
             {service.permit && <div className="flex flex-col flex-grow space-y-2 ">
               <button 
                onClick={() => {
-                navigate('/provider/viewservice/', {state: {service, areas}})
+                navigate('/provider/viewservice/', {state: {service}})
               }}
               className="text-white w-3/4 mx-auto font-medium zoom-hover rounded shadow-md hover:bg-orange-600 bg-orange-500">
                 View service

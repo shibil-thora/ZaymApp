@@ -16,6 +16,7 @@ function ProfileServiceView(props) {
 
     useEffect(() => {
         setServiceAreas(location.state.service.get_areas)
+        console.log(serviceAreas)
     }, [])
 
     function handleAreaClick(area) {
@@ -25,18 +26,20 @@ function ProfileServiceView(props) {
     }
 
     function handleAddArea() {
-        console.log(location)
+        console.log(location.state.service.id) 
+        console.log(areaQuery)
         AddServiceArea(location.state.service.id, areaQuery).then((res) => {
             setShowModal(false); 
-            setShowAddForm(false);
-            setServiceAreas([...serviceAreas, res.data.id])
+            setShowAddForm(false); 
+            console.log(res.data)
+            setServiceAreas([...serviceAreas, res.data])
         })
     }
 
     function handleDeleteArea(area_id) {
         DeleteServiceArea(area_id).then((res) => {
-            console.log(res) 
-            setServiceAreas(serviceAreas.filter(area => area != res.data.area_id))
+            console.log(res.data.area_id.area_data.id) 
+            setServiceAreas(serviceAreas.filter(area => area.area_data.id != res.data.area_id.area_data.id))
         })
     }
 
@@ -77,7 +80,7 @@ function ProfileServiceView(props) {
         <i className="fas fa-circle text-black my-auto"></i>
         </button>
         <h1 className="text-cyan-700 font-medium bg-sky-100  px-1 shadow-sm">
-            {location.state.areas?.find(a => a.id == area)?.area_name + ' '}
+            {area.area_data.area_name}
         </h1>
         <button 
         onClick={() => handleDeleteArea(area)}
@@ -112,9 +115,11 @@ function ProfileServiceView(props) {
         }
         </div>
         </>
-        }
+        } 
+
+        
          <button 
-          onClick={() => setShowAddForm(!showAddForm)}
+
           className="mx-1 mt-4 text-white py-4 w-32 active:bg-orange-800 font-medium zoom-hover rounded shadow-md hover:bg-orange-700 bg-orange-600">
            {false ? 'cancel': 'Add Image'} <span> {!showAddForm && <i className="fas fa-camera"></i>}</span>
         </button> 

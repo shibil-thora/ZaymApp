@@ -62,7 +62,9 @@ class ServiceAreas(models.Model):
         return Area.objects.get(id=self.area.id)
     
     
-        
+class ServiceImages(models.Model): 
+    service = models.ForeignKey(Service, on_delete=models.CASCADE) 
+    image = models.ImageField(upload_to='service_images')
 
 
 class UserArea(models.Model): 
