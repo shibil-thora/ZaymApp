@@ -46,3 +46,12 @@ class DeleteServiceImage(APIView):
         delete_id = request.data['image_id'] 
         ServiceImages.objects.filter(id=delete_id).delete()
         return Response(request.data)
+    
+
+class AddServiceImage(APIView):
+    permission_classes = [IsProvider] 
+    def post(self, request):
+        print('reached here') 
+        image = request.FILES
+        print(image)
+        return Response('hoi')

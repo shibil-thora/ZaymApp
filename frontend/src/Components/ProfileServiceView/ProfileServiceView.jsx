@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { baseURL } from '../../Axios/axios'
 import ResultBox from '../AreaResultBox/ResultBox' 
 import Modal from '../Modal/Modal'
-import { AddServiceArea, DeleteServiceArea, DeleteServiceImage } from '../../ApiServices/ApiServices'
+import { AddServiceArea, AddServiceImage, DeleteServiceArea, DeleteServiceImage } from '../../ApiServices/ApiServices'
 
 
 function ProfileServiceView(props) {
@@ -18,7 +18,6 @@ function ProfileServiceView(props) {
     useEffect(() => {
         setServiceAreas(location.state.service.get_areas);
         setServiceImages(location.state.service.get_images);
-        console.log(serviceImages)
     }, [])
 
     function handleAreaClick(area) {
@@ -49,6 +48,14 @@ function ProfileServiceView(props) {
         DeleteServiceImage(image_id).then((res) => {
             console.log(res.data.image_id) 
             setServiceImages(serviceImages.filter((image) => image.id != res.data.image_id))
+        })
+    }
+
+    function handleAddImage(e) {
+        console.log(e.target.files[0])  
+        console.log('came here')
+        AddServiceImage(location.state.service.id, e.target.files[0]).then((res) => {
+            console.log(res)
         })
     }
 
@@ -94,8 +101,26 @@ function ProfileServiceView(props) {
         className="bg-sky-100 px-1 hover:bg-sky-200 active:bg-sky-300">
         <i className="fas fa-trash text-red-600 my-auto"></i>
         </button>
-        </small>
+        </small> 
         ))}
+
+        
+
+        <div className=" w-32 mx-1 ">
+            <input
+                onChange={(e) => {handleAddImage(e)}}
+                type="file"
+                id="fileInput2"
+                className="hidden"
+                accept="image/*"
+            />
+            <label htmlFor="fileInput2" className="flex justify-between items-center px-4 py-3 shadow-md bg-orange-600 rounded-lg border border-orange-500 cursor-pointer hover:bg-orange-700">
+                <span className="text-sm font-medium text-gray-200 text-center">Update</span>
+                <span className="fas fa-camera text-3xl text-gray-200 filename"></span>
+            </label>
+        </div>
+
+
         </div>
 
         <div className="flex flex-col space-y-3 my-4 mx-1"> 
@@ -142,13 +167,6 @@ function ProfileServiceView(props) {
         </div>
         </>
         } 
-
-        
-         <button 
-
-          className="mx-1 mt-4 text-white py-4 w-32 active:bg-orange-800 font-medium zoom-hover rounded shadow-md hover:bg-orange-700 bg-orange-600">
-           {false ? 'cancel': 'Add Image'} <span> {!showAddForm && <i className="fas fa-camera"></i>}</span>
-        </button> 
         </div>
     </>
   )
