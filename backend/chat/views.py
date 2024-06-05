@@ -6,7 +6,7 @@ from .serializers import MessageSerializer, Message, ChatRoomSerializer, ChatRoo
 from django.db.models import Q , Count
 from users.models import MyUsers as User
 from .serializers import ChatRoom, ChatRoomSerializer
-
+from services.models import KnockedUsers
 
 
 class GetAvailableChats(APIView):
@@ -31,7 +31,8 @@ class GetRoom(APIView):
     permission_classes = [IsAuthenticated] 
     def post(self, request): 
         user = request.user
-        fellow = User.objects.get(id=request.data['user_id']) 
+        fellow = User.objects.get(id=request.data['user_id'])  
+        KnockedUsers.objects.filter(id=request.data['knock_id']).delete()
 
         try:
             room = ChatRoom.objects.get(user=user, fellow_user=fellow)  

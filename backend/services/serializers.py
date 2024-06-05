@@ -36,6 +36,7 @@ class KnockedUserSerializer(serializers.ModelSerializer):
     class Meta: 
         model = KnockedUsers 
         fields = [
+            'id', 
             'user_data'
         ]
 

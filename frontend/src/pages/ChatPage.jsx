@@ -4,10 +4,14 @@ import Footer from '../Components/Footer/Footer'
 import { GetAvailableChats } from '../ApiServices/ApiServices';
 import { baseURL } from '../Axios/axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { formattedDate } from '../Validations/DateValidation';
 
 function ChatPage(props) {
     const [chats, setChats] = useState([]); 
     const navigate = useNavigate(); 
+    const param = useParams();  
+    const [query, setQuery] = useState(''); 
+    console.log(param)
 
     useEffect(() => {
         GetAvailableChats().then((res) => {
@@ -27,6 +31,8 @@ function ChatPage(props) {
                 focus:outline-none focus:border-1">
                 <h1 className="bg-gray-200 px-4 py-2 rounded-l-md flex-grow"><i className="fas fa-search opacity-60"></i></h1>
                 <input
+                value={query} 
+                onChange={(e) => setQuery(e.target.value)}
                 type="text"
                 className="block bg-gray-200 py-2 w-full rounded-r-md focus:outline-none flex-grow"
                 placeholder="Search" /> 
@@ -35,23 +41,27 @@ function ChatPage(props) {
             </div>
             {/* recent chats */}
             <div className="mx-auto w-full h-5/6 overflow-y-scroll hide-scrollbar flex-col mt-4">
-                {chats.map((chat) => (
+                {chats.filter((chat) => chat.fellow_user_data.username.toLowerCase().includes(query.toLowerCase()))
+                .map((chat) => (
                     <div tabIndex={0} key={chat.id}
                     onClick={() => navigate(`/chat/users/${chat.id}/`)}
-                    className="hover:bg-gray-200 hover:bg-opacity-50 rounded-md p-3 my-1 mx-3 flex
-                    focus:outline-none focus:border-sky-700 focus:border
-                    cursor-pointer ">
+                    className={`hover:bg-teal-100 ${chat.id == param.id && 'bg-teal-100'} rounded-md p-3 my-1 mx-3 flex
+                    focus:outline-none
+                    cursor-pointer  `}>
                         <div className="">
                             <img 
                             className="w-12 h-12 rounded-lg"
                             src={chat.fellow_user_data.profile_picture ? `${baseURL}${chat.fellow_user_data.profile_picture}` : 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'}/>
                         </div>
-                        <div className="names mx-4">
+                        <div className="names mx-4 flex flex-col w-4/6">
                         <h1 className="font-semibold text-lg text-sky-700">{chat.fellow_user_data.username}</h1>
-                        {chat.last_message.map((message) => (<h1 key={message.id} className=" text-gray-700 text-sm">{message.message}</h1>))}
+                        {chat.last_message.map((message) => (<div key={message.id} className=" text-lime-600 text-sm flex justify-between w-full space-x-2">
+                            <p>{message.message.slice(0, 18)}{message.message.length > 18 && '...'}</p>
+                            <p className="text-gray-400"><small>{formattedDate(message.date)}</small></p>
+                            </div>))}
                         </div>
                         <div className="time text-gray-500">
-                            <p className="text-orange-700"><small></small></p>
+                            
                         </div>
                         
                     </div>

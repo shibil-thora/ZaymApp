@@ -4,12 +4,14 @@ import { GetMessages } from '../../ApiServices/ApiServices'
 import { baseURL, domainPort } from '../../Axios/axios'
 import { useSelector } from 'react-redux'
 import { useRef } from 'react'
+import { formattedDate } from '../../Validations/DateValidation'
 
 function ChatSubMenu() {
     const param = useParams() 
     const [room, setRoom] = useState({}); 
     const [text, setText] = useState(''); 
     const state = useSelector(state => state.auth);
+    const new_message = useRef(''); 
     const socket = useRef(null);
     const [messages, setMessages] = useState([]); 
 
@@ -28,17 +30,14 @@ function ChatSubMenu() {
             }
             console.log(messages)
             socket.current.onmessage = function(e) {
-                console.log(e)
                 const data = e.data
                 const messageObj = JSON.parse(data)
-                console.log(messageObj)
-                if (messageObj.sender_id != room.user) {
-                    console.log('updated')
-                setMessages([...res.data?.messages,...messages, {
-                    message: messageObj.message, 
-                    sender_id: messageObj.sender_id,
-                }])
-                }
+                const repeated = messages.filter( message => message.id === messageObj.message.id ) 
+                console.log(repeated.length)
+                console.log(messageObj, 'on message rendered')  
+                console.log(repeated)
+                setMessages(m => [...m.filter(message => message.id !== messageObj.message.id), messageObj.message])
+                
             }
     
         }).catch((err) => {
@@ -46,22 +45,13 @@ function ChatSubMenu() {
         })
     }, [param])
 
-    
-    useEffect(() => {
-
-    }, [])
-
-
     function createMessage() {
         console.log('sent a message')
         socket.current.send(JSON.stringify({
             'message': text ,
-            'sender_id': room.user,
+            'sender_id': room.user, 
+            'receiver_id': room.fellow_user,
         })); 
-        setMessages([...messages, {
-            message: text, 
-            sender_id: room.user,
-        }])
         setText(''); 
     }
 
@@ -77,7 +67,7 @@ function ChatSubMenu() {
                 </div>
                 <div className="names mx-4">
                 <h1 className="font-semibold text-lg text-sky-700">{room.fellow_user_data?.username}</h1>
-                <h1 className=" text-lime-700 text-sm">online</h1>
+                <h1 className=" text-lime-700 text-sm">available</h1>
                 </div>
             </div>
         </div>
@@ -89,13 +79,19 @@ function ChatSubMenu() {
                 {message.sender_id != room.user && 
                      <div className="left mb-3 w-2/3  flex ">
 
-                         <h1 className="mx-4 p-2 my-auto text-sm rounded-xl shadow-md bg-cyan-200 bg-opacity-50 text-gray-600">{message.message}</h1>
+                         <h1 className="mx-4 p-2 my-auto text-sm flex space-x-2 rounded-xl shadow-md bg-cyan-200 bg-opacity-50 text-gray-600">
+                         <p>{message.message}</p>
+                        <p><small className="text-gray-400">{formattedDate(message.date)}</small></p>
+                         </h1>
                      </div>
                 }
                 {message.sender_id == room.user &&
                 <div className="right mb-3 w-2/3 ms-auto  flex justify-end">
                 
-                    <h1 className="mx-4 p-2 my-auto text-gray-700 rounded-xl shadow-md bg-gray-200 text-sm">{message.message}</h1>
+                    <h1 className="mx-4 p-2 my-auto flex space-x-2 text-gray-700 rounded-xl shadow-md bg-gray-200 text-sm">
+                        <p>{message.message}</p>
+                        <p><small className="text-gray-400">{formattedDate(message.date)}</small></p>
+                    </h1>
                 </div>}
                 </>
             ))}

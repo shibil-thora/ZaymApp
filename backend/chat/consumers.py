@@ -1,6 +1,10 @@
 import json 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from rest_framework_simplejwt.tokens import AccessToken
+from .models import Message, ChatRoom
+from .serializers import MessageSerializer
+from users.models import MyUsers as User 
+from channels.db import database_sync_to_async
 
 
 class ChatConsumer(AsyncWebsocketConsumer): 
@@ -29,13 +33,34 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data) 
         # this is the place where we get the data sent from the frontend 
         message = text_data_json["message"] 
-        sender_id = text_data_json["sender_id"]
+        sender_id = text_data_json["sender_id"]  
+        receiver_id = text_data_json["receiver_id"] 
+
+        sender = await database_sync_to_async(User.objects.get)(id=sender_id) 
+        receiver = await database_sync_to_async(User.objects.get)(id=receiver_id) 
+        room1 = await database_sync_to_async(ChatRoom.objects.get)(user=sender, fellow_user=receiver)
+        room2 = await database_sync_to_async(ChatRoom.objects.get)(user=receiver, fellow_user=sender)
+        message_obj = await database_sync_to_async(Message.objects.create)(
+            sender=sender,  
+            receiver=receiver, 
+            message=message, 
+            room1=room1, 
+            room2=room2, 
+        )  
 
         await self.channel_layer.group_send(
             self.group_name, 
             {
                 'type': 'chatbox_message', 
-                'message': message, 
+                'message': { 
+                    'id': message_obj.id,
+                    'sender_id': sender_id, 
+                    'receiver_id': receiver_id, 
+                    'message': message,  
+                    'date': message_obj.date.isoformat(),
+                    'room1': message_obj.room1.id, 
+                    'room2': message_obj.room2.id,
+                }, 
                 'sender_id': sender_id
             },
         ) 

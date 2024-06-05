@@ -49,8 +49,8 @@ function ProviderMenu(props) {
       setServices(new_services)
     }
 
-    function handleChatClick(user) {
-      GetUserRoom(user.id).then((res) => {
+    function handleChatClick(user, knock_id) {
+      GetUserRoom(user.id, knock_id).then((res) => {
         navigate(`/chat/users/${res.data}`)
       })
     }
@@ -139,7 +139,7 @@ function ProviderMenu(props) {
                 </div> 
                 <h2 className="mx-auto font-medium opacity-70"></h2> 
                 <button 
-                onClick={() => handleChatClick(knock.user_data)}
+                onClick={() => handleChatClick(knock.user_data, knock.id)}
                 className="bg-green-700 rounded-lg w-5/6 mx-auto
                   zoom-hover hover:bg-green-600 active:bg-green-800
                  text-white">

@@ -255,14 +255,8 @@ export function KnockService(user_name, service_id) {
     })
 } 
 
-export function NoteKnock(knock_id) {
-    return axios.post('/services/knock_noted/', {knock_id}).then((res) => {
-        return res
-    })
-} 
-
-export function GetUserRoom(user_id) {
-    return axios.post('/chat/get_room/', {user_id}).then((res) => {
+export function GetUserRoom(user_id, knock_id) {
+    return axios.post('/chat/get_room/', {user_id, knock_id}).then((res) => {
         return res
     })
 } 
