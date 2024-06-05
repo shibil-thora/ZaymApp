@@ -11,7 +11,8 @@ from users.serializers import UserSerializer
 from users.models import MyUsers as User
 from services.models import ServiceAreas
 from .models import ServiceType 
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView 
+from .models import KnockedUsers
 
 
 class GetAreas(APIView): 
@@ -220,5 +221,24 @@ class PermitAreas(APIView):
         area.permit = True
         area.save()
         area = AreaSerializer(area).data
-        return Response(area)
+        return Response(area) 
     
+
+class KnockService(APIView): 
+    permission_classes = [IsAuthenticated] 
+    def post(self, request):   
+        print(request.data, 'knocked')
+        service = Service.objects.get(id=request.data['service_id'])
+        user = User.objects.get(username=request.data['user_name'])  
+        if not KnockedUsers.objects.filter(user=user, service=service): 
+            KnockedUsers.objects.create(user=user, service=service)
+        return Response('200')
+    
+
+class KnockNoted(APIView): 
+    permission_classes = [IsAuthenticated] 
+    def post(self, request):    
+        knock_id = request.data['knock_id'] 
+        KnockedUsers.objects.delete(id=knock_id)
+        print('hoi')
+        return Response('200')

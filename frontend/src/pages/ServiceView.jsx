@@ -1,16 +1,40 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar/Navbar'
 import Footer from '../Components/Footer/Footer'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { baseURL } from '../Axios/axios'
 import Carousal from '../Components/Carousal/Carousal'
+import { KnockService } from '../ApiServices/ApiServices'
+import { useSelector } from 'react-redux'
+import { GetUserRoom } from '../ApiServices/ApiServices'
 
 function ServiceView() {
     const location = useLocation();
+    const state = useSelector(state => state.auth);  
+    const [knocked, setKnocked] = useState(false); 
+    const navigate = useNavigate(); 
+
     useEffect(() => {
-        console.log(location.state)
+        const knocked = location.state.get_knocks.filter(knock => knock.user_data.username == state.user.username)
+        if (knocked.length !== 0) {
+            setKnocked(true); 
+        }
     }, []) 
-    console.log(window.innerWidth)
+ 
+
+    function handleKnock() {
+        if(!knocked) {
+        KnockService(state.user.username, location.state.id).then((res) => {
+            setKnocked(true);
+        })
+        }
+    }
+
+    function handleChatClick() { 
+        GetUserRoom(location.state.get_user.id).then((res) => {
+            navigate(`/chat/users/${res.data}`)
+          })
+    }
 
   return (
     <>
@@ -31,14 +55,15 @@ function ServiceView() {
                 <div className="h-full flex space-x-4">
 
                 <button 
-                onClick={() => handleLoginClick()}
-                className=" font-bold shadow-lg
-                text-orange-600 my-2 w-1/2 bg-white py-0 text-3xl
-                rounded-md hover:bg-opacity-80 focus:outline-orange-500 focus:outline-none">
-                Knock <span><i className="fas fa-bell"></i></span>
+                onClick={() => handleKnock()}
+                className={`font-bold shadow-lg
+                text-orange-600 my-2 w-1/2 ${knocked ? `bg-orange-300` : `bg-white`} py-0 text-3xl
+                rounded-md hover:bg-opacity-80 focus:outline-none`}>
+                {knocked ? 'Knocked' :'Knock'} <span><i className="fas fa-bell"></i></span>
                 </button>
+
                 <button 
-                onClick={() => handleLoginClick()}
+                onClick={() => handleChatClick()}
                 className=" font-bold shadow-lg
                 my-2 w-1/2 sm:h-auto py-4 bg-white text-3xl
                 rounded-md text-green-700 hover:bg-opacity-80 focus:outline-green-700 focus:outline-none">

@@ -24,4 +24,19 @@ class GetMessages(APIView):
         chat_id = request.data['chat_id'] 
         chat_obj = ChatRoom.objects.get(id=chat_id) 
         chat = ChatRoomSerializer(chat_obj).data
-        return Response(chat)
+        return Response(chat) 
+    
+
+class GetRoom(APIView): 
+    permission_classes = [IsAuthenticated] 
+    def post(self, request): 
+        user = request.user
+        fellow = User.objects.get(id=request.data['user_id']) 
+
+        try:
+            room = ChatRoom.objects.get(user=user, fellow_user=fellow)  
+        except: 
+            room = ChatRoom.objects.create(user=user, fellow_user=fellow) 
+            ChatRoom.objects.create(user=fellow, fellow_user=user)
+
+        return Response(room.id)

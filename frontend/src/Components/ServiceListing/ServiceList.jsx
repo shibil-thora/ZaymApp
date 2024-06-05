@@ -11,12 +11,15 @@ function ServiceList() {
   const [showServiceBox, setShowServiceBox] = useState(false)
   const [areaQuery, setAreaQuery] = useState('') 
   const [serviceQuery, setServiceQuery] = useState('');
-  const [services, setServices] = useState([])
+  const [services, setServices] = useState([]) 
+  const [searchServices, setSearchServices] = useState([]); 
   const navigate = useNavigate()
+  
 
   useEffect(() => {
     GetDisplayServiceList().then((res) => {
       setServices(res.data)
+      setSearchServices(res.data)
       console.log(services)
     }).catch((err) => {
       console.log(err)
@@ -27,8 +30,9 @@ function ServiceList() {
   function handleAreaClick(area) {
     setSearchForm(false);
     setAreaQuery(area.area_name) 
-    const new_services = services.filter(service => service.get_areas.filter(a => a.area_data )); 
-    console.log(new_services, 'new')
+    const new_services = services.filter(service => service.get_areas.some(a => a.area_data.id == area.id)) 
+    console.log(services, 'services')
+    setSearchServices(new_services)
     console.log(area)
   } 
 
@@ -78,7 +82,8 @@ function ServiceList() {
         {showServiceBox && <ServiceResultBox
             handleAreaClick={handleServiceClick}
             serviceQuery={serviceQuery}
-            areaQuery={areaQuery}
+            areaQuery={areaQuery} 
+            services={searchServices}
              />
             }
         </div>

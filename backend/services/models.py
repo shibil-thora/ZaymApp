@@ -49,7 +49,11 @@ class Service(models.Model):
     def get_images(self): 
         image_objs = self.images.all() 
         return list(image_objs.values())
-
+    
+    @property
+    def get_knocks(self): 
+        knock_objs = self.knocks.all()  
+        return knock_objs
 
     def __str__(self): 
         return self.business_name
@@ -64,8 +68,19 @@ class ServiceAreas(models.Model):
     
     @property
     def area_data(self): 
-        return Area.objects.get(id=self.area.id)
+        return Area.objects.get(id=self.area.id) 
     
+
+class KnockedUsers(models.Model): 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='knocked_at') 
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='knocks')
+
+    def __str__(self): 
+        return self.user.username + '-knocked-' + self.service.business_name
+    
+    @property 
+    def user_data(self): 
+        return User.objects.get(id=self.user.id)
     
 class ServiceImages(models.Model): 
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='images') 

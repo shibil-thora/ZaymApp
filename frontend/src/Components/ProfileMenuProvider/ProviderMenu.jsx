@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import ClosePopup from '../ClosePopup/ClosePopup'
 import ServiceForm from '../ServiceForm/ServiceForm'
 import ServiceEditForm from '../ServiceEditForm/ServiceEditForm'
-import { GetAreaList, GetProviderServices } from '../../ApiServices/ApiServices'
+import { GetAreaList, GetAvailableChats, GetProviderServices } from '../../ApiServices/ApiServices'
+import { GetUserRoom } from '../../ApiServices/ApiServices'
 import { baseURL } from '../../Axios/axios' 
 
 function ProviderMenu(props) {
@@ -46,6 +47,12 @@ function ProviderMenu(props) {
       const index = services.findIndex(s => s.id == service.id)
       new_services[index] = service 
       setServices(new_services)
+    }
+
+    function handleChatClick(user) {
+      GetUserRoom(user.id).then((res) => {
+        navigate(`/chat/users/${res.data}`)
+      })
     }
 
     return (
@@ -122,11 +129,31 @@ function ProviderMenu(props) {
           <div className="w-3/4 border-b border-gray-200 mx-8 py-4 ">
               <h1 className="text-2xl font-bold text-gray-700">Knocked Customers</h1>
           </div>
-          <div className="bg-gray-300 flex w-6/6 rounded-md mx-4 h-36 ">
-            <div className="bg-gray-50 rounded-md shadow-md w-32 h-32 justify my-auto mx-2"></div>
-            <div className="bg-gray-50 rounded-md shadow-md w-32 h-32 justify my-auto mx-2"></div>
-            <div className="bg-gray-50 rounded-md shadow-md w-32 h-32 justify my-auto mx-2"></div>
-  
+          <div className="my-3 flex w-6/6 rounded-md mx-4 h-36">  
+          {services.map(service => (  
+            <>
+            {service.get_knocks.map(knock => (
+               <div className="bg-gray-200 rounded-md flex flex-col justify-evenly py-1 shadow-md w-32 h-32 justify my-auto mx-2">
+                <div className=" w-16 h-16 rounded-full mx-auto shadow border border-black border-opacity-30">
+                  <img src={`${baseURL}${knock.user_data.profile_picture}`} className="rounded-full" />
+                </div> 
+                <h2 className="mx-auto font-medium opacity-70"></h2> 
+                <button 
+                onClick={() => handleChatClick(knock.user_data)}
+                className="bg-green-700 rounded-lg w-5/6 mx-auto
+                  zoom-hover hover:bg-green-600 active:bg-green-800
+                 text-white">
+                  <span><i className="fa fa-comment text-sm"></i><small className="font-medium">&nbsp;&nbsp;{knock.user_data.username }</small></span>
+                </button> 
+                <small className="mx-auto font-thin">({service.business_name})</small>
+
+               </div>
+            ))}
+           
+            </>
+            
+          ))}
+          
           </div>
           <button 
           onClick={() => setShowForm(!showForm)}

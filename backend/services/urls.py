@@ -14,5 +14,7 @@ urlpatterns = [
     path('hide_types/', views.HideTypes.as_view()), 
     path('unhide_types/', views.UnHideTypes.as_view()), 
     path('ban_area/', views.BanAreas.as_view()), 
-    path('permit_area/', views.PermitAreas.as_view()),
+    path('permit_area/', views.PermitAreas.as_view()), 
+    path('knock_service/', views.KnockService.as_view()), 
+    path('knock_noted/', views.KnockNoted.as_view()),  
 ]

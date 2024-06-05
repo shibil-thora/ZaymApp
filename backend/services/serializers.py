@@ -1,5 +1,6 @@
 from rest_framework import serializers 
 from . models import Area, Service, ServiceType , UserArea, ServiceAreas, ServiceImages
+from . models import KnockedUsers
 from users.serializers import UserSerializer
 
 
@@ -30,9 +31,19 @@ class ServiceImageSerializer(serializers.ModelSerializer):
         fields = ['id', 'service']
 
 
+class KnockedUserSerializer(serializers.ModelSerializer): 
+    user_data = UserSerializer(read_only=True)
+    class Meta: 
+        model = KnockedUsers 
+        fields = [
+            'user_data'
+        ]
+
+
 class ServiceSerializer(serializers.ModelSerializer): 
     get_user = UserSerializer(read_only=True)
     get_areas = ServiceAreaSerializer(many=True)  
+    get_knocks = KnockedUserSerializer(many=True)
     class Meta: 
         model = Service 
         fields = [
@@ -47,13 +58,15 @@ class ServiceSerializer(serializers.ModelSerializer):
             'get_user', 
             'get_areas', 
             'get_images',
+            'get_knocks', 
         ] 
 
 
 class DisplayServiceSerializer(serializers.ModelSerializer): 
     get_user = UserSerializer(read_only=True) 
     get_areas = ServiceAreaSerializer(many=True)
-    
+    get_knocks = KnockedUserSerializer(many=True) 
+
     class Meta: 
         model = Service 
         fields = [
@@ -64,7 +77,8 @@ class DisplayServiceSerializer(serializers.ModelSerializer):
             'description', 
             'get_user', 
             'get_areas',
-            'get_images',
+            'get_images', 
+            'get_knocks', 
         ]
 
 

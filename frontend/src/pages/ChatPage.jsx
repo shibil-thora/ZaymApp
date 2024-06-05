@@ -51,7 +51,7 @@ function ChatPage(props) {
                         {chat.last_message.map((message) => (<h1 key={message.id} className=" text-gray-700 text-sm">{message.message}</h1>))}
                         </div>
                         <div className="time text-gray-500">
-                            <p className="text-orange-700"><small>02:47</small></p>
+                            <p className="text-orange-700"><small></small></p>
                         </div>
                         
                     </div>

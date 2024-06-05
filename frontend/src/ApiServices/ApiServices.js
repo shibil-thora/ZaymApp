@@ -247,4 +247,23 @@ export function PermitArea(id) {
     return axios.post('/services/permit_area/', {id}).then((res) => {
         return res
     })
+}  
+
+export function KnockService(user_name, service_id) {
+    return axios.post('/services/knock_service/', {user_name, service_id}).then((res) => {
+        return res
+    })
 } 
+
+export function NoteKnock(knock_id) {
+    return axios.post('/services/knock_noted/', {knock_id}).then((res) => {
+        return res
+    })
+} 
+
+export function GetUserRoom(user_id) {
+    return axios.post('/chat/get_room/', {user_id}).then((res) => {
+        return res
+    })
+} 
+
