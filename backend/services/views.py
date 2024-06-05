@@ -13,6 +13,7 @@ from services.models import ServiceAreas
 from .models import ServiceType 
 from rest_framework.generics import CreateAPIView 
 from .models import KnockedUsers
+from users.models import Notification
 
 
 class GetAreas(APIView): 
@@ -229,7 +230,14 @@ class KnockService(APIView):
     def post(self, request):   
         print(request.data, 'knocked')
         service = Service.objects.get(id=request.data['service_id'])
-        user = User.objects.get(username=request.data['user_name'])  
+        user = User.objects.get(username=request.data['user_name'])   
+
+        service_owner = service.user 
+        message = f'{user.username} knocked you! for {service.business_name}' 
+
+        #sending a notification to the service owner
+        Notification.objects.create(informer=user, receiver=service_owner, message=message)
+
         if not KnockedUsers.objects.filter(user=user, service=service): 
             KnockedUsers.objects.create(user=user, service=service)
         return Response('200')

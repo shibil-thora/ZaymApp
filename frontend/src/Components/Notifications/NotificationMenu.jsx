@@ -1,6 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import {GetNotifications, SeeNotification} from '../../ApiServices/ApiServices'
+import { baseURL } from '../../Axios/axios';
+import {formattedDate} from '../../Validations/DateValidation'
+import {useNavigate} from 'react-router-dom'
 
-function NotificationMenu(props) {
+function NotificationMenu(props) { 
+    const [notifications, setNotifications] = useState();  
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        GetNotifications().then((res) => {
+            setNotifications(res.data)
+        })
+    }, []) 
+
+    function handleNotiClick(noti_id) {
+        SeeNotification(noti_id).then((res) => {
+            navigate('/profile/provider/')
+        })
+    }
+
   return (
     <div className="flex flex-col inset-0 fixed mt-20 z-20">
         {/* heading */}
@@ -21,28 +40,32 @@ function NotificationMenu(props) {
     </div>
     {/* notification session */}
     <div className="sm:w-1/2 md:w-1/3 w-full shadow-xl h-2/3 overflow-y-scroll appscroll bg-white sm:ms-auto sm:me-8 rounded-b-md">
-        <div className="my-2 py-2 mx-2 flex space-x-4">
-            <div className="image w-12 h-12 mx-2">
-                <img src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" 
-                className="w-12 rounded-full h-12"
-                alt="" />
+        
+        {notifications?.map((noti) => (
+             <div className="my-2 py-2 mx-2 flex space-x-2 border-b hover:bg-slate-50">
+                <div className="image w-12 h-12 mx-2">
+                    <img src={noti.informer_data.profile_picture ? `${baseURL}${noti.informer_data.profile_picture}` : `https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg`} 
+                    className="w-12 rounded-full h-12"
+                    alt="" />
+                </div>
+                <div className="flex flex-col w-4/6">
+                    <p className="text w-full text-gray-700 text-left">{noti.message}</p>
+                    <div className="time text-slate-500"><small>{formattedDate(noti.date)}</small></div>
+                </div>  
+                <div className="flex flex-col justify-center">
+                <button 
+                onClick={() => handleNotiClick(noti.id)}
+                className="bg-sky-700 rounded-lg px-2 ms-2  mx-auto
+                  zoom-hover hover:bg-sky-600 active:bg-sky-800
+                 text-white">
+                  <span><i className='fas fa-eye'></i></span>
+                </button> 
+                </div>
             </div>
-            <div className="flex flex-col">
-                <p className="text w-2/3 text-left">A person from mars knoked you a message</p>
-                <div className="time"></div>
-            </div>
-        </div>
-        <div className="my-2 py-2 mx-2 flex space-x-4">
-            <div className="image w-12 h-12 mx-2">
-                <img src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" 
-                className="w-12 rounded-full h-12"
-                alt="" />
-            </div>
-            <div className="flex flex-col">
-                <p className="text w-2/3 text-left">A person from mars knoked you a message</p>
-                <div className="time"></div>
-            </div>
-        </div>
+        ))}
+
+       
+
     </div>
     
     </div>

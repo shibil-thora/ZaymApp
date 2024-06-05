@@ -261,3 +261,15 @@ export function GetUserRoom(user_id, knock_id) {
     })
 } 
 
+export function GetNotifications() {
+    return axios.get('/get_notifications/').then((res) => {
+        return res
+    })
+} 
+
+export function SeeNotification(noti_id) {
+    return axios.post('/see_notification/', {noti_id}).then((res) => {
+        return res
+    })
+} 
+

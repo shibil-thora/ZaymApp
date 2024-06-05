@@ -55,7 +55,7 @@ function ProfileServiceView(props) {
         console.log(e.target.files[0])  
         console.log('came here')
         AddServiceImage(location.state.service.id, e.target.files[0]).then((res) => {
-            console.log(res)
+            setServiceImages([...serviceImages, {id: res.data.id, service: res.data.service, image: res.data.image.slice(6, res.data.image.length)}])
         })
     }
 

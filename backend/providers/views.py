@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.permissions import BasePermission , IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from services.serializers import ServiceSerializer, ServiceAreaSerializer
+from services.serializers import ServiceSerializer, ServiceAreaSerializer, ServiceImageSerializer
 from services.models import Service, Area, ServiceAreas, ServiceImages
 
 
@@ -52,6 +52,9 @@ class AddServiceImage(APIView):
     permission_classes = [IsProvider] 
     def post(self, request):
         print('reached here') 
-        image = request.FILES
-        print(image)
-        return Response('hoi')
+        service_id = request.data['service_id']
+        image = request.FILES['image'] 
+        service = Service.objects.get(id=service_id)
+        image_obj = ServiceImages.objects.create(image=image, service=service) 
+        image_data = ServiceImageSerializer(image_obj).data
+        return Response(image_data)

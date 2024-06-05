@@ -28,7 +28,7 @@ class ServiceAreaSerializer(serializers.ModelSerializer):
 class ServiceImageSerializer(serializers.ModelSerializer): 
     class Meta: 
         model = ServiceImages 
-        fields = ['id', 'service']
+        fields = ['id', 'service', 'image']
 
 
 class KnockedUserSerializer(serializers.ModelSerializer): 

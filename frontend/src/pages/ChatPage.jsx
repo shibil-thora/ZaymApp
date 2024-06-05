@@ -46,7 +46,7 @@ function ChatPage(props) {
                     <div tabIndex={0} key={chat.id}
                     onClick={() => navigate(`/chat/users/${chat.id}/`)}
                     className={`hover:bg-teal-100 ${chat.id == param.id && 'bg-teal-100'} rounded-md p-3 my-1 mx-3 flex
-                    focus:outline-none
+                    focus:outline-none border-b shadow-sm
                     cursor-pointer  `}>
                         <div className="">
                             <img 

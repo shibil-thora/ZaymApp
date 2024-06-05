@@ -135,7 +135,7 @@ function ProviderMenu(props) {
             {service.get_knocks.map(knock => (
                <div className="bg-gray-200 rounded-md flex flex-col justify-evenly py-1 shadow-md w-32 h-32 justify my-auto mx-2">
                 <div className=" w-16 h-16 rounded-full mx-auto shadow border border-black border-opacity-30">
-                  <img src={`${baseURL}${knock.user_data.profile_picture}`} className="rounded-full" />
+                  <img src={knock.user_data.profile_picture ? `${baseURL}${knock.user_data.profile_picture}` : `https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg`} className="rounded-full" />
                 </div> 
                 <h2 className="mx-auto font-medium opacity-70"></h2> 
                 <button 

@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from django.contrib.auth import authenticate 
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import UserSerializer 
+from .serializers import UserSerializer , NotificationSerializer
 from .models import MyUsers as User 
 from django.core.validators import EmailValidator
 from services.serializers import AreaSerializer, ServiceSerializer, DisplayServiceSerializer
@@ -14,7 +14,8 @@ from django.contrib.auth.models import AnonymousUser
 from .tasks import send_email_task
 import random
 from django.core.cache import cache
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta 
+from .models import Notification
 
 
 class UserLoginView(APIView): 
@@ -242,4 +243,21 @@ class ChangePassword(APIView):
     
         user.set_password(new_password) 
         user.save()
-        return Response('ok')
+        return Response('ok') 
+    
+
+class GetNotifications(APIView): 
+    permission_classes = [IsAuthenticated] 
+    def get(self, request):  
+        user = request.user 
+        notify_ojbs = user.notifications.all().order_by('-id') 
+        notify_data = NotificationSerializer(notify_ojbs, many=True).data
+        return Response(notify_data)
+    
+
+class SeeNotifications(APIView): 
+    permission_classes = [IsAuthenticated] 
+    def post(self, request):  
+        delete_id = request.data['noti_id']
+        Notification.objects.filter(id=delete_id).delete()
+        return Response('deleted')
