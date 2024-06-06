@@ -68,10 +68,10 @@ function ProfileServiceView(props) {
     cancelText='No'
     handleCancel={() => {setShowModal(false)}}
     />}
-     <div className="flex flex-col opacity-80  sm:max-w-6xl my-12 rounded-xl mx-auto
-        sm:mx-12 overflow-x-scroll scroll-smooth ease-in-out bg-white bg-opacity-20
+     <div className="flex flex-col opacity-80  sm:max-w-6xl my-4 rounded-xl mx-auto
+        sm:mx-4 overflow-x-scroll scroll-smooth ease-in-out bg-white bg-opacity-20
         hide-scrollbar border border-black border-opacity-10 p-2
-        shadow-lg">
+        shadow-lg h-screen">
         <div className="py-8 flex sm:flex-row flex-col space-y-4 justify-center space-x-2 flex-grow w-full mx-auto rounded-xl">
             <div className="div w-full sm:w-1/2 sm:mx-8 mx-auto">
                 <img src={`${baseURL}${location.state?.service.cover_image}`} alt="" className="rounded-xl"/>
@@ -86,23 +86,22 @@ function ProfileServiceView(props) {
 
         <div className="py-4 sm:px-1 flex-grow w-full mx-auto rounded-xl space-y-2">
         <h1 className="font-semibold">Images</h1>
+        <div className="flex flex-col space-y-3 w-full justify-start">
         {serviceImages.map(image => (
-        <small className="flex space-x-3"> 
-        <button className="px-1 cursor-default">
-        <i className="fas fa-circle text-black my-auto"></i>
-        </button>
-        <h1 className="text-cyan-700 font-medium bg-sky-100  px-1 shadow-sm">
-            <div className="h-1/6">
-                <img src={`${baseURL}/media/${image.image}`} className="w-1/2" alt="" />
+        <div className="flex space-x-3"> 
+            <div className="text-cyan-700 font-medium w-1/3 rounded-lg shadow-sm">
+                <div className="h-1/6">
+                    <img src={`${baseURL}/media/${image.image}`} className="rounded-lg" alt="" />
+                </div>
             </div>
-        </h1>
-        <button 
-        onClick={() => handleDeleteImage(image.id)}
-        className="bg-sky-100 px-1 hover:bg-sky-200 active:bg-sky-300">
-        <i className="fas fa-trash text-red-600 my-auto"></i>
-        </button>
-        </small> 
+            <button 
+            onClick={() => handleDeleteImage(image.id)}
+            className="bg-red-700 px-1 h-1/2 rounded-md hover:bg-red-800 active:bg-red-600">
+            <i className="fas fa-close p-1 text-white my-auto"></i>
+            </button>
+        </div> 
         ))}
+        </div>
 
         
 
@@ -130,13 +129,13 @@ function ProfileServiceView(props) {
         <button className="px-1 cursor-default">
         <i className="fas fa-circle text-black my-auto"></i>
         </button>
-        <h1 className="text-cyan-700 font-medium bg-sky-100  px-1 shadow-sm">
+        <h1 className="text-cyan-700 font-medium border-b px-1 shadow-sm">
             {area.area_data.area_name}
         </h1>
         <button 
         onClick={() => handleDeleteArea(area)}
-        className="bg-sky-100 px-1 hover:bg-sky-200 active:bg-sky-300">
-        <i className="fas fa-trash text-red-600 my-auto"></i>
+        className="bg-red-700  px-1 rounded-md hover:bg-red-800 active:bg-red-600">
+        <i className="fas fa-close p-1 text-white my-auto"></i>
         </button>
         </small>
         ))}
