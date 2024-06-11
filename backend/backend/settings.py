@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 from users.emailsettings import *
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'services', 
     'django_celery_results',
+    'razorpay_backend', 
 ]  
 
 REST_FRAMEWORK = {
@@ -189,4 +191,9 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json' 
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIME_ZONE = 'Asia/Kolkata'
-CELERY_RESULT_BACKEND = 'django-db' 
+CELERY_RESULT_BACKEND = 'django-db'  
+
+
+#razorpay 
+RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET")

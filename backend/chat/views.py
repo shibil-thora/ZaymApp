@@ -32,7 +32,10 @@ class GetRoom(APIView):
     def post(self, request): 
         user = request.user
         fellow = User.objects.get(id=request.data['user_id'])  
-        KnockedUsers.objects.filter(id=request.data['knock_id']).delete()
+        try:
+            KnockedUsers.objects.filter(id=request.data['knock_id']).delete()
+        except: 
+            pass
 
         try:
             room = ChatRoom.objects.get(user=user, fellow_user=fellow)  

@@ -19,6 +19,7 @@ import ProfilePasswordMenu from './Components/ProfilePassword/ProfilePasswordMen
 import ChatPage from './pages/ChatPage'
 import ChatSubMenu from './Components/ChatSubMenu/ChatSubMenu'
 import AdminAreas from './Components/AdminAreas/AdminAreas'
+import PremiumMenu from './Components/PremiumMenu/PremiumMenu'
 
 //add suspense and fallback and lazy loading. . . 
 
@@ -38,6 +39,7 @@ function App() {
       <Route path='user/serviceview/' element={<UserProtected component={ServiceView}/>}/>
       <Route path='profile/user/' element={<UserProtected component={Profile} subMenu={UserMenu} />}/>
       <Route path='profile/provider/' element={<UserProtected component={Profile} subMenu={ProviderMenu} />}/>
+      <Route path='profile/premium/' element={<UserProtected component={Profile} subMenu={PremiumMenu} />}/>
       <Route path='profile/change_password/' element={<UserProtected component={Profile} subMenu={ProfilePasswordMenu} />}/>
       <Route path='chat/users/' element={<UserProtected component={ChatPage} />}/>
       <Route path='chat/users/:id' element={<UserProtected component={ChatPage} subMenu={ChatSubMenu} />}/>
