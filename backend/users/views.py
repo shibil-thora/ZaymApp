@@ -47,6 +47,7 @@ class UserLoginView(APIView):
                 'is_active': user_dict['is_active'],  
                 'is_superuser': user_dict['is_superuser'],
                 'is_provider': user_dict['is_provider'],
+                'is_premium': user_dict['is_premium'], 
                 'area': area, 
                 'pro_pic': user_dict['profile_picture']
             }
@@ -75,6 +76,7 @@ class UserStatusView(APIView):
                     'is_authenticated': None,
                     'is_active': None,  
                     'is_superuser': None,
+                    'is_premium': None, 
                     'is_provider': None,
                     'area': area,
                     'pro_pic': None
@@ -88,7 +90,8 @@ class UserStatusView(APIView):
                     'is_authenticated': user_dict['is_authenticated'],
                     'is_active': user_dict['is_active'],  
                     'is_superuser': user_dict['is_superuser'],
-                    'is_provider': user_dict['is_provider'],
+                    'is_provider': user_dict['is_provider'], 
+                    'is_premium': user_dict['is_premium'], 
                     'area': area,
                     'pro_pic': user_dict['profile_picture']
                 }

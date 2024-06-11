@@ -2,14 +2,17 @@ from rest_framework.views import APIView
 from rest_framework import status  
 from .razorpay_serializers import CreateOrderSerializer, TransactionSerializer
 from rest_framework.response import Response 
-from .razorpay.main import RazorPayClient 
+from .razorpay.main import RazorPayClient  
+from django.conf import settings
+from ..models import Transaction
+from rest_framework.permissions import IsAuthenticated
 
 rz_client = RazorPayClient()
 
 
 class CreateOrderAPIView(APIView): 
+    permission_classes = [IsAuthenticated]
     def post(self, request): 
-        print('got inside')
         create_order_serializer = CreateOrderSerializer(data=request.data)
         if create_order_serializer.is_valid(): 
             order_response = rz_client.create_order(
@@ -19,7 +22,9 @@ class CreateOrderAPIView(APIView):
             response = {
                 "status_code": status.HTTP_201_CREATED, 
                 "message": "order_created", 
-                "data": order_response, 
+                "data": order_response,  
+                # here you are providing the razorpay secret key to the frontend
+                "key": settings.RAZORPAY_KEY_ID, 
             }
             return Response(response, status=status.HTTP_201_CREATED)
         else: 
@@ -32,25 +37,26 @@ class CreateOrderAPIView(APIView):
 
 
 class TransactionAPIView(APIView): 
+    permission_classes = [IsAuthenticated]
     def post(self, request): 
-        transaction_serializer = TransactionSerializer(request.data)
-        if transaction_serializer.is_valid(): 
-            rz_client.verify_payment(
-                razorpay_order_id=transaction_serializer.validated_data.get("order_id"), 
-                razorpay_payment_id=transaction_serializer.validated_data.get("payment_id"), 
-                razorpay_signature=transaction_serializer.validated_data.get("signature"), 
-            )
-            transaction_serializer.save() 
-            response = {
-                "status_code": status.HTTP_201_CREATED, 
-                "message": "transaction created", 
-            }
-            return Response(response, status=status.HTTP_201_CREATED)
-        else: 
-            response = {
-                "status_code": status.HTTP_400_BAD_REQUEST, 
-                "message": "bad request", 
-                "error": transaction_serializer
-            }
-            return Response(response, status=status.HTTP_400_BAD_REQUEST) 
+       
+        rz_client.verify_payment(
+            razorpay_order_id=request.data.get("order_id"), 
+            razorpay_payment_id=request.data.get("payment_id"), 
+            razorpay_signature=request.data.get("signature"), 
+        ) 
+
+        Transaction.objects.create(
+            user=request.user,
+            payment_id=request.data.get("payment_id"),
+            order_id=request.data.get("order_id"),
+            signature=request.data.get("signature"),
+            amount=request.data.get("amount"),
+        )
         
+        response = {
+            "status_code": status.HTTP_201_CREATED, 
+            "message": "transaction created", 
+        }
+        return Response(response, status=status.HTTP_201_CREATED)
+         

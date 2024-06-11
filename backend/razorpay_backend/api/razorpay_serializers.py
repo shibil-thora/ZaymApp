@@ -7,7 +7,7 @@ class CreateOrderSerializer(serializers.Serializer):
     currency = serializers.CharField() 
 
 
-class TransactionSerializer: 
+class TransactionSerializer(serializers.ModelSerializer): 
     class Meta: 
         model = Transaction 
         fields = '__all__' 

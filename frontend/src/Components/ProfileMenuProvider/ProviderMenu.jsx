@@ -67,7 +67,12 @@ function ProviderMenu(props) {
       {state.user.is_provider && 
       <div className="flex flex-col h-screen overflow-y-scroll hide-scrollbar w-full">
           <div className=" border-b border-gray-200 mx-8 py-4 ">
-              <h1 className="text-3xl font-bold text-gray-700 text-orange-60">Your Services</h1>
+              <h1 className="text-3xl font-bold text-gray-700 text-orange-60">Your Services 
+                {state.user.is_premium &&
+                <span className="font-medium inset-0 bg-gradient-to-r from-lime-400 to-red-600 text-white py-1 px-2 rounded-full
+                text-xl mx-4 shadow-md cursor-default"> Premium <i className="fas fa-crown"></i> 
+                </span>}
+              </h1>
           </div>
           <div className="my-2 mx-8 flex flex-col space-y-4"> 
            {services.map((service) => (
@@ -126,13 +131,13 @@ function ProviderMenu(props) {
           </div> 
 
 
-          <div className="w-3/4 border-b border-gray-200 mx-8 py-4 ">
+          <div className="w-4/4 border-b border-gray-200 mx-8 py-4 ">
               <h1 className="text-2xl font-bold text-gray-700">Knocked Customers</h1>
           </div>
           <div className="my-3 flex w-6/6 rounded-md mx-4 h-36">  
           {services.map(service => (  
             <>
-            {service.get_knocks.map(knock => (
+            {service.get_knocks.length > 0 && service.get_knocks.map(knock => (
                <div className="bg-gray-200 rounded-md flex flex-col justify-evenly py-1 shadow-md w-32 h-32 justify my-auto mx-2">
                 <div className=" w-16 h-16 rounded-full mx-auto shadow border border-black border-opacity-30">
                   <img src={knock.user_data.profile_picture ? `${baseURL}${knock.user_data.profile_picture}` : `https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg`} className="rounded-full" />
@@ -149,7 +154,10 @@ function ProviderMenu(props) {
 
                </div>
             ))}
-           
+            
+            {!service.get_knocks.length > 0 &&  
+                <h1 className="text-center my-auto text-xl mx-auto text-gray-300">No knocks</h1>
+            }
             </>
             
           ))}

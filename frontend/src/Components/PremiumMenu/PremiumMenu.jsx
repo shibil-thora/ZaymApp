@@ -4,7 +4,7 @@ import axios from 'axios'
 
 function PremiumMenu() {
 
-  const [amount, setAmount] = useState(1); 
+  const [amount, setAmount] = useState(100); 
   const [Razorpay] = useRazorpay(); 
 
   function razorpayPayment() {
@@ -15,7 +15,7 @@ function PremiumMenu() {
       console.log(res)  
       const orderId = res.data.data.id; 
       const options = {
-        key: "your razor pay secret key",
+        key: res.data.key,
         name: "ZaymApp",
         description: "Premium payment",
         image: "https://example.com/your_logo",
@@ -33,7 +33,7 @@ function PremiumMenu() {
           address: "Razorpay Corporate Office",
         },
         theme: {
-          color: "#3399cc",
+          color: "#EA580C"
         },
       };
   
@@ -46,7 +46,8 @@ function PremiumMenu() {
     axios.post('http://127.0.0.1:8000/razorpay/order/complete/', {
       payment_id, 
       order_id, 
-      signature,
+      signature, 
+      amount,
     }).then((res) => {
       console.log(res)
     })

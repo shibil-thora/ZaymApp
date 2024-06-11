@@ -8,6 +8,7 @@ const INITIAL_STATE = {
         is_active: false,
         is_superuser: false, 
         is_provider: false, 
+        is_premium: false, 
         area: {}, 
         pro_pic: '', 
     }
@@ -24,6 +25,7 @@ export const authSlice = createSlice({
             state.user.is_active = action.payload.is_active;
             state.user.is_superuser = action.payload.is_superuser; 
             state.user.is_provider = action.payload.is_provider;
+            state.user.is_premium = action.payload.is_premium;
             state.user.area = action.payload.area; 
             state.user.pro_pic = action.payload.pro_pic;
         },
@@ -37,6 +39,7 @@ export const authSlice = createSlice({
                 is_active: false, 
                 is_superuser: false, 
                 is_provider: false, 
+                is_premium: false, 
                 area: {}, 
                 pro_pic: '',
             }

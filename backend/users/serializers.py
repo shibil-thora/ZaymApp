@@ -11,6 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
             'email', 
             'is_authenticated', 
             'is_active', 
+            'is_premium',
             'is_superuser', 
             'profile_picture', 
             'is_provider', 

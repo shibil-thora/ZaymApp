@@ -4,10 +4,12 @@ import { baseURL } from '../../Axios/axios'
 import ResultBox from '../AreaResultBox/ResultBox' 
 import Modal from '../Modal/Modal'
 import { AddServiceArea, AddServiceImage, DeleteServiceArea, DeleteServiceImage } from '../../ApiServices/ApiServices'
+import { useSelector } from 'react-redux'
 
 
 function ProfileServiceView(props) {
     const location = useLocation()
+    const state = useSelector(state => state.auth)
     const [showAddForm, setShowAddForm] = useState(false); 
     const [areaQuery, setAreaQuery] = useState('');
     const [showAreaSearch, setShowAreaSearch] = useState(false);
@@ -79,6 +81,10 @@ function ProfileServiceView(props) {
             <div className="div flex flex-col sm:w-1/2 space-y-4 sm:mx-8 mx-auto">
                 <h1 className="text-5xl text-cyan-700 ring-offset-2 ring-offset-black font-bold text-left">
                 {location.state?.service.business_name.toUpperCase()}
+                {state.user.is_premium &&
+                <span className="font-medium inset-0 bg-gradient-to-r from-lime-400 to-red-600 text-white px-2 py-1 rounded-full
+                text-sm mx-4 shadow-md cursor-default"><i className="fas fa-crown"></i> 
+                </span>}
                 </h1>
                 <h1 className="text-left">{location.state?.service.description}</h1>
             </div>
@@ -140,12 +146,14 @@ function ProfileServiceView(props) {
         </small>
         ))}
         </div>
-        {serviceAreas.length < 3 && 
+        
           <button 
-          onClick={() => setShowAddForm(!showAddForm)}
+          onClick={() => {
+            setShowAddForm(!showAddForm)
+          }}
           className="mx-1 mt-4 text-white py-1 w-32 active:bg-cyan-900 font-medium zoom-hover rounded shadow-md hover:bg-cyan-800 bg-cyan-700">
            {showAddForm ? 'cancel': 'Add Area'} <span> {!showAddForm && <i className="fas fa-map"></i>}</span>
-        </button> } 
+        </button> 
 
         {showAddForm && 
         <>
