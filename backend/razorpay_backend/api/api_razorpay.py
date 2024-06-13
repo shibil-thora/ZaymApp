@@ -5,13 +5,13 @@ from rest_framework.response import Response
 from .razorpay.main import RazorPayClient  
 from django.conf import settings
 from ..models import Transaction
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated 
+from users.models import MyUsers as User
 
 rz_client = RazorPayClient()
 
 
 class CreateOrderAPIView(APIView): 
-    permission_classes = [IsAuthenticated]
     def post(self, request): 
         create_order_serializer = CreateOrderSerializer(data=request.data)
         if create_order_serializer.is_valid(): 
@@ -37,7 +37,6 @@ class CreateOrderAPIView(APIView):
 
 
 class TransactionAPIView(APIView): 
-    permission_classes = [IsAuthenticated]
     def post(self, request): 
        
         rz_client.verify_payment(
@@ -45,15 +44,17 @@ class TransactionAPIView(APIView):
             razorpay_payment_id=request.data.get("payment_id"), 
             razorpay_signature=request.data.get("signature"), 
         ) 
-
+        user_obj = User.objects.get(username=request.data.get("user"))
         Transaction.objects.create(
-            user=request.user,
+            user=user_obj,
             payment_id=request.data.get("payment_id"),
             order_id=request.data.get("order_id"),
             signature=request.data.get("signature"),
             amount=request.data.get("amount"),
         )
-        
+        user_obj.is_premium = True 
+        user_obj.save()
+
         response = {
             "status_code": status.HTTP_201_CREATED, 
             "message": "transaction created", 
