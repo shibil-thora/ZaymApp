@@ -52,9 +52,12 @@ export const authSlice = createSlice({
         }, 
         updateProPic: (state, action) => {
             state.user.pro_pic = action.payload; 
+        },
+        changeToPremium: (state, action) => {
+            state.user.is_premium = action.payload; 
         }
     }
 }) 
 
-export const {changeAuthMode, logOut, changeArea, changeToProvider, updateProPic} = authSlice.actions
+export const {changeAuthMode, logOut, changeArea, changeToProvider, updateProPic, changeToPremium} = authSlice.actions
 export default authSlice.reducer

@@ -1,14 +1,19 @@
 import React, {useState} from 'react' 
 import useRazorpay from 'react-razorpay' 
 import axios from 'axios'
+import { baseURL } from '../../Axios/axios';
+import {useDispatch, useSelector} from 'react-redux'
+import {changeToPremium} from '../../Redux/AuthSlice'
 
 function PremiumMenu() {
 
   const [amount, setAmount] = useState(100); 
   const [Razorpay] = useRazorpay(); 
+  const state = useSelector(state => state.auth)
+  const dipatch = useDispatch(); 
 
   function razorpayPayment() {
-    axios.post('http://127.0.0.1:8000/razorpay/order/create/', {
+    axios.post(`${baseURL}/razorpay/order/create/`, {
       amount: amount, 
       currency: "INR", 
     }).then((res) => {
@@ -43,13 +48,15 @@ function PremiumMenu() {
   }
 
   function completePayment (payment_id, order_id, signature) {
-    axios.post('http://127.0.0.1:8000/razorpay/order/complete/', {
+    axios.post(`${baseURL}/razorpay/order/complete/`, {
       payment_id, 
       order_id, 
       signature, 
-      amount,
+      amount, 
+      user: state.user.username,
     }).then((res) => {
       console.log(res)
+      dipatch(changeToPremium(true))
     })
   }
 

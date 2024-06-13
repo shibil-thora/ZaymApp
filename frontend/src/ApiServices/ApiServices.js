@@ -273,15 +273,4 @@ export function SeeNotification(noti_id) {
     })
 } 
 
-export function CreateOrder(noti_id) {
-    return axios.post('/see_notification/', {noti_id}).then((res) => {
-        return res
-    })
-} 
-
-export function CompleteOrder(noti_id) {
-    return axios.post('/see_notification/', {noti_id}).then((res) => {
-        return res
-    })
-} 
 
