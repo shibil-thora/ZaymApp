@@ -263,4 +263,26 @@ class SeeNotifications(APIView):
     def post(self, request):  
         delete_id = request.data['noti_id']
         Notification.objects.filter(id=delete_id).delete()
-        return Response('deleted')
+        return Response('deleted') 
+    
+
+class UserGroupListView(APIView): 
+    permission_classes = [IsAdminUser] 
+    def get(self, request): 
+        users = User.objects.filter(
+            is_provider=False, 
+            is_superuser=False, 
+            is_premium=False, 
+        ) 
+        providers = User.objects.filter(is_provider=True)
+        premium = User.objects.filter(is_premium=True) 
+        admin = User.objects.filter(is_superuser=True) 
+
+        response_data = [
+            {'name': 'users', 'value': users.count()},
+            {'name': 'providers', 'value': providers.count()}, 
+            {'name': 'premium users', 'value': premium.count()}, 
+            {'name': 'admins', 'value': admin.count()}, 
+        ]
+
+        return Response(response_data)

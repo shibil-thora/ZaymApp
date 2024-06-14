@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { baseURL } from '../../Axios/axios'
 import ResultBox from '../AreaResultBox/ResultBox' 
 import Modal from '../Modal/Modal'
 import { AddServiceArea, AddServiceImage, DeleteServiceArea, DeleteServiceImage } from '../../ApiServices/ApiServices'
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux' 
+import Modal2 from '../Modal2/Modal2'
 
 
 function ProfileServiceView(props) {
@@ -16,6 +17,8 @@ function ProfileServiceView(props) {
     const [showModal, setShowModal] = useState(false); 
     const [serviceAreas, setServiceAreas] = useState([]); 
     const [serviceImages, setServiceImages] = useState([]); 
+    const [showPremiumModal, setShowPremiumModal] = useState(false); 
+    const navigate = useNavigate(); 
 
     useEffect(() => {
         setServiceAreas(location.state.service.get_areas);
@@ -36,6 +39,10 @@ function ProfileServiceView(props) {
             setShowAddForm(false); 
             console.log(res.data)
             setServiceAreas([...serviceAreas, res.data])
+        }).catch((err) => {
+            if (err.response.data.detail == 'not a premium account') {
+                setShowPremiumModal(true); 
+            }
         })
     }
 
@@ -58,6 +65,10 @@ function ProfileServiceView(props) {
         console.log('came here')
         AddServiceImage(location.state.service.id, e.target.files[0]).then((res) => {
             setServiceImages([...serviceImages, {id: res.data.id, service: res.data.service, image: res.data.image.slice(6, res.data.image.length)}])
+        }).catch((err) => {
+            if (err.response.data.detail == 'not a premium account') {
+                setShowPremiumModal(true); 
+            }
         })
     }
 
@@ -69,6 +80,17 @@ function ProfileServiceView(props) {
     approveText='Yes'
     cancelText='No'
     handleCancel={() => {setShowModal(false)}}
+    />}
+     {showPremiumModal && <Modal 
+    text={`You are not a premium provider`}
+    handleApprove={() => {navigate('/profile/premium/', {replace: true})}} 
+    approveText={<span>Go Premium <i className="fas fa-crown"></i></span>}
+    cancelText='Cancel'
+    handleCancel={() => {
+        setShowPremiumModal(false) 
+        setShowModal(false)
+        setShowAddForm(false)
+    }}
     />}
      <div className="flex flex-col opacity-80  sm:max-w-6xl my-4 rounded-xl mx-auto
         sm:mx-4 overflow-x-scroll scroll-smooth ease-in-out bg-white bg-opacity-20

@@ -240,6 +240,8 @@ class KnockService(APIView):
 
         if not KnockedUsers.objects.filter(user=user, service=service): 
             KnockedUsers.objects.create(user=user, service=service)
+            service.knock_count += 1 
+            service.save()
         return Response('200')
     
 

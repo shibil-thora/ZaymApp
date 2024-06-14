@@ -56,6 +56,7 @@ class ServiceSerializer(serializers.ModelSerializer):
             'permit', 
             'description', 
             'cover_image', 
+            'knock_count',
             'get_user', 
             'get_areas', 
             'get_images',

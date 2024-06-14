@@ -3,7 +3,8 @@ from rest_framework.permissions import BasePermission , IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from services.serializers import ServiceSerializer, ServiceAreaSerializer, ServiceImageSerializer
-from services.models import Service, Area, ServiceAreas, ServiceImages
+from services.models import Service, Area, ServiceAreas, ServiceImages 
+from rest_framework.exceptions import AuthenticationFailed
 
 
 # provider permission 
@@ -26,9 +27,12 @@ class AddServiceArea(APIView):
         print(request.data) 
         service_id = request.data['service_id'] 
         service = Service.objects.get(id=service_id)
-        area_obj = Area.objects.get(area_name=request.data['area_name']) 
-        area = ServiceAreas.objects.create(area=area_obj, service=service)
-        return Response(ServiceAreaSerializer(area).data)
+        if request.user.is_premium or service.areas.all().count() < 3: 
+            area_obj = Area.objects.get(area_name=request.data['area_name']) 
+            area = ServiceAreas.objects.create(area=area_obj, service=service)
+            return Response(ServiceAreaSerializer(area).data)
+        else: 
+            raise AuthenticationFailed("not a premium account")
     
 
 class DeleteServiceArea(APIView):
@@ -55,6 +59,10 @@ class AddServiceImage(APIView):
         service_id = request.data['service_id']
         image = request.FILES['image'] 
         service = Service.objects.get(id=service_id)
-        image_obj = ServiceImages.objects.create(image=image, service=service) 
-        image_data = ServiceImageSerializer(image_obj).data
-        return Response(image_data)
+
+        if request.user.is_premium or service.images.all().count() < 3: 
+            image_obj = ServiceImages.objects.create(image=image, service=service) 
+            image_data = ServiceImageSerializer(image_obj).data
+            return Response(image_data) 
+        else: 
+            raise AuthenticationFailed("not a premium account")

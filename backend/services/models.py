@@ -35,6 +35,7 @@ class Service(models.Model):
     permit = models.BooleanField(default=False)
     description = models.TextField(max_length=500, null=True) 
     cover_image = models.ImageField(upload_to='covers', null=True)
+    knock_count = models.IntegerField(default=0)
 
     def get_user(self): 
         user_obj =  User.objects.get(id=self.user.id)

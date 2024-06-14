@@ -273,4 +273,8 @@ export function SeeNotification(noti_id) {
     })
 } 
 
-
+export function getUserGroupList() {
+    return axios.get('/zaymadmin/user_group_list').then((res) => {
+        return res
+    })
+}
