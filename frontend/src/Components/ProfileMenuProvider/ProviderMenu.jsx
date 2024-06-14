@@ -168,8 +168,11 @@ function ProviderMenu(props) {
           className="mx-8 mt-4 text-white w-48 py-2 active:bg-cyan-900 font-medium zoom-hover rounded shadow-md hover:bg-cyan-800 bg-cyan-700">
            {showForm ? 'close form': 'Add service'} <span> <i className="fas fa-book"></i></span>
           </button> 
-          {!showForm && <h1 className="mx-8 text-green-500 text-sm"><small>{services.length < 3 ? 3 - services.length: 0}
-          &nbsp; more free services available for you</small></h1>}
+          {!showForm && <h1 className="mx-8 text-green-500 text-sm">
+            {!state.user.is_premium &&
+            <small>{services.length < 3 ? 3 - services.length: 0}
+          &nbsp; more free services available for you</small>}
+          </h1>}
           {showForm &&
           <ServiceForm 
           invokePopUp={invokePopUp}

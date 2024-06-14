@@ -5,6 +5,7 @@ from .models import Message, ChatRoom
 from .serializers import MessageSerializer
 from users.models import MyUsers as User 
 from channels.db import database_sync_to_async
+from users.models import Notification
 
 
 class ChatConsumer(AsyncWebsocketConsumer): 
@@ -47,6 +48,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
             room1=room1, 
             room2=room2, 
         )  
+        notification_obj = await database_sync_to_async(Notification.objects.create)(
+            informer=sender, 
+            receiver=receiver, 
+            message=f'{sender.username} sent you a message'
+        )
 
         await self.channel_layer.group_send(
             self.group_name, 

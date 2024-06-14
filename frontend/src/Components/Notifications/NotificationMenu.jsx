@@ -14,9 +14,10 @@ function NotificationMenu(props) {
         })
     }, []) 
 
-    function handleNotiClick(noti_id) {
-        SeeNotification(noti_id).then((res) => {
-            navigate('/profile/provider/')
+    function handleNotiClick(noti) {
+        SeeNotification(noti.id).then((res) => {
+            if (!noti.message.includes('sent')) navigate('/profile/provider/'); 
+            else navigate('/chat/users/')
         })
     }
 
@@ -54,7 +55,7 @@ function NotificationMenu(props) {
                 </div>  
                 <div className="flex flex-col justify-center">
                 <button 
-                onClick={() => handleNotiClick(noti.id)}
+                onClick={() => handleNotiClick(noti)}
                 className="bg-sky-700 rounded-lg px-2 ms-2  mx-auto
                   zoom-hover hover:bg-sky-600 active:bg-sky-800
                  text-white">

@@ -20,7 +20,7 @@ function ServiceList() {
     GetDisplayServiceList().then((res) => {
       setServices(res.data)
       setSearchServices(res.data)
-      console.log(services)
+      console.log(res.data)
     }).catch((err) => {
       console.log(err)
     })
@@ -90,6 +90,8 @@ function ServiceList() {
         
     </div>
 
+    {!showServiceBox && !showSearchForm &&
+      <h1 className="text-2xl font-medium mx-16 text-gray-500">All services</h1> }
     <div className="flex flex-row opacity-80  h-76 max-w-6xl my-12 rounded-xl sm:mx-auto
     mx-12 overflow-x-scroll scroll-smooth ease-in-out bg-white bg-opacity-20
     hide-scrollbar border border-black border-opacity-10 p-2 
@@ -110,7 +112,42 @@ function ServiceList() {
         </div>
       </li>
     ))
-    }
+    } 
+
+    
+     
+    </ul> 
+    </div>
+ 
+       
+    </div>
+
+    <h1 className="text-2xl font-medium mx-16 text-gray-500">Featured services</h1> 
+    <div className="flex flex-row opacity-80  h-76 max-w-6xl my-12 rounded-xl sm:mx-auto
+    mx-12 overflow-x-scroll scroll-smooth ease-in-out bg-gradient-to-br from-yellow-300 to-red-400 bg-opacity-100
+    hide-scrollbar border border-black border-opacity-10 p-2 
+    shadow-lg"> 
+    <div className="py-4 sm:px-8 mx-auto">
+    <ul className="list-none my-8 flex flex-row items-center">
+    {services.filter(service => service.get_user.is_premium == true)
+    .map(service => (
+      <li tabIndex={0} key={service.id}
+      onClick={() => navigate('/user/serviceview/',{state: service})}
+      className="sm:w-48 flex flex-col justify-between rounded-lg border border-black border-opacity-20
+      shadow-md sm:h-48 w-36 h-36 my-8 mx-8 bg-white focus:outline-orange-500 cursor-pointer zoom-hover-md">
+        <div className="shadow-md rounded-lg w-full h-2/3">
+          <img src={`${baseURL}${service.cover_image}`} alt="service image" className="rounded-t-md h-full w-full" />
+        </div>
+        <div className="div mx-auto my-2">
+        <h2 className="font-medium sm:text-md text-sm">{service.business_name}</h2>
+        <h2 className="font-medium text-orange-600 sm:text-md text-sm">({service.service_type}) <i className='fas fa-crown'></i>
+        </h2>
+        </div>
+      </li>
+    ))
+    } 
+
+    
      
     </ul> 
     </div>

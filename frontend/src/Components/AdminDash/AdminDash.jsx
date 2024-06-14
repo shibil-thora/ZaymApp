@@ -55,6 +55,7 @@ const barDataX = [
 const AdminDash = () => {
   const [pieData, setPieData] = useState([]); 
   const COLORS = ['limegreen', '#80008e', '#ff1493', '#0034c3']; 
+  const [services, setServices] = useState([]); 
 
 
   useEffect(() => {
@@ -65,7 +66,12 @@ const AdminDash = () => {
 
   useEffect(() => {
     GetServicesAdmin().then((res) => {
-      console.log(res.data)
+      console.log(res.data) 
+      const service_data = res.data.services;
+      const new_services = service_data.map((s) => (
+        {service: s.business_name.slice(0, 5) , knockCount: s.knock_count, full: s.business_name}
+      ))
+      setServices(new_services)
     })
   }, [])
 
@@ -97,11 +103,12 @@ const AdminDash = () => {
         ) : (
           <p>Loading...</p>
         )}
+         <h1 className="text-xl font-semibold my-4 text-sky-700 cursor-default">Service Knock Count</h1>
         <BarChart
           className="my-4"
           width={500}
           height={300}
-          data={barDataX}
+          data={services}
           margin={{
             top: 5,
             right: 30,
