@@ -23,4 +23,7 @@ application = ProtocolTypeRouter({
             websocket_urlpatterns
         )
     ),
-})
+}) 
+
+
+# daphne -b 0.0.0.0 -p 8000 backend.asgi:application - give this command on render hosting. 
