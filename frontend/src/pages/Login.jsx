@@ -16,7 +16,7 @@ function Login() {
 
     useEffect(() => {
       if (state.user.is_authenticated) {
-      navigate('/')
+        navigate('/')
     }
     }, [])
     
