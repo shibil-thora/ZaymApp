@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-import os
+import os 
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -123,7 +124,10 @@ DATABASES = {
         'PASSWORD': '8912',
         'HOST': 'localhost',
         'PORT': '5432',
-    }}
+    }} 
+
+if not os.environ.get('LOCAL') == 'True': 
+    DATABASES['default'] = dj_database_url.parse(os.environ.get('DB_URL'))
 
 
 # Password validation
@@ -185,12 +189,12 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 #Celery confs 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'  
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json' 
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIME_ZONE = 'Asia/Kolkata'
-CELERY_RESULT_BACKEND = 'django-db'  
+# CELERY_BROKER_URL = 'redis://127.0.0.1:6379'  
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_RESULT_SERIALIZER = 'json' 
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_TIME_ZONE = 'Asia/Kolkata'
+# CELERY_RESULT_BACKEND = 'django-db'  
 
 
 #razorpay 

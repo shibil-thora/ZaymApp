@@ -11,11 +11,12 @@ from django.core.validators import EmailValidator
 from services.serializers import AreaSerializer, ServiceSerializer, DisplayServiceSerializer
 from services.models import Area, UserArea, Service
 from django.contrib.auth.models import AnonymousUser 
-from .tasks import send_email_task
 import random
 from django.core.cache import cache
 from datetime import datetime, timedelta 
-from .models import Notification
+from .models import Notification 
+from django.core.mail import send_mail 
+from django.conf import settings
 
 
 class UserLoginView(APIView): 
@@ -201,10 +202,18 @@ class GetDisplayServiceList(APIView):
     
 
 class SendOTP(APIView): 
-    def post(self, request):
+    def post(self, request): 
+        def send_email_task(email, otp): 
+            subject = 'ZaymApp verification' 
+            message = f'Zaym App Verification Code - {otp}' 
+            from_email = settings.EMAIL_HOST_USER 
+            recipient_list = [email]
+            send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list)
+            return 'Email Sent succesfully' 
+        
         email = request.data['email'] 
         otp = random.randint(100000, 999999)
-        send_email_task.delay(email=email, otp=otp)  
+        send_email_task(email=email, otp=otp)  
         cache.set(email, (otp, datetime.now()))
         return Response('success')  
     
