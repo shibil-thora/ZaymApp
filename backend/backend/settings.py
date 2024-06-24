@@ -130,7 +130,9 @@ if not os.environ.get('LOCAL') == 'True':
     DATABASES['default'] = {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+        } 
+elif os.environ.get('LOCAL') == 'Render': 
+    DATABASES['default'] = dj_database_url.parse(os.environ.get('DB_URL'))
 
 
 # Password validation
