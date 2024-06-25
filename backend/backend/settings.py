@@ -134,6 +134,11 @@ if not os.environ.get('LOCAL') == 'True':
 elif os.environ.get('LOCAL') == 'Render': 
     DATABASES['default'] = dj_database_url.parse(os.environ.get('DB_URL'))
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
