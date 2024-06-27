@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-3#8r5nndq^+(+8cpp)lk+&@x4pzdh&9(w0#60o(^4v$@z5*gp0
 DEBUG = False
 
 ALLOWED_HOSTS = ['65.2.151.89', '127.0.0.1']
-
+USE_X_FORWARDED_HOST = True
 
 # Application definition
 
