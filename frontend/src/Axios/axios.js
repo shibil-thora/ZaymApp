@@ -1,6 +1,6 @@
 import axios from 'axios' 
-export const baseURL = 'http://65.2.151.89'
-export const domainPort = '65.2.151.89'
+export const baseURL = 'http://13.233.178.63'
+export const domainPort = '13.233.178.63'
  
 
 const axiosInstance = axios.create({
