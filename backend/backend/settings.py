@@ -60,7 +60,7 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173', 
-    'http://65.2.151.89', 
+    'http://13.233.178.63', 
 ]
 
 # CORS_ORIGINS_ALLOW_ALL = True
