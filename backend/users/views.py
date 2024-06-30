@@ -13,10 +13,20 @@ from services.models import Area, UserArea, Service
 from django.contrib.auth.models import AnonymousUser 
 import random
 from django.core.cache import cache
-from datetime import datetime, timedelta 
+from datetime import datetime, timedelta
 from .models import Notification 
 from django.core.mail import send_mail 
-from django.conf import settings
+from django.conf import settings 
+from .serializers import MemberShip, MembershipSerializer
+from django.utils import timezone
+
+def validate_is_premium(user): 
+    current_date = timezone.now()  
+    print(current_date, user.next_premium_deadline)
+    
+    if user.next_premium_deadline < current_date: 
+        user.is_premium = False 
+        user.save() 
 
 
 class UserLoginView(APIView): 
@@ -24,6 +34,7 @@ class UserLoginView(APIView):
         username = request.data['username']
         password = request.data['password'] 
         user = authenticate(username=username, password=password) 
+        validate_is_premium(user)
         if user is None: 
             raise AuthenticationFailed('invalid credentials') 
         
@@ -59,7 +70,8 @@ class UserLoginView(APIView):
 
 class UserStatusView(APIView): 
     def get(self, request): 
-        user = request.user
+        user = request.user 
+        validate_is_premium(user)
         user_data = UserSerializer(user) 
         user_dict = user_data.data
         area = None 
@@ -294,4 +306,12 @@ class UserGroupListView(APIView):
             {'name': 'admins', 'value': admin.count()}, 
         ]
 
-        return Response(response_data)
+        return Response(response_data) 
+    
+
+class GetMembershipList(APIView): 
+    permission_classes = [IsAuthenticated] 
+    def get(self, request):  
+        memberships_obj = MemberShip.objects.all() 
+        membership_data = MembershipSerializer(memberships_obj, many=True).data 
+        return Response(membership_data)

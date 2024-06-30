@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from . models import MyUsers , Notification
+from . models import MyUsers , Notification, MemberShip
 
 
 class UserSerializer(serializers.ModelSerializer): 
@@ -29,4 +29,10 @@ class NotificationSerializer(serializers.ModelSerializer):
             'message', 
             'date', 
             'informer_data'
-        ]
+        ] 
+
+
+class MembershipSerializer(serializers.ModelSerializer): 
+    class Meta: 
+        model = MemberShip 
+        fields = '__all__'

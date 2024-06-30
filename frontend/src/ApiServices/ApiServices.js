@@ -278,3 +278,9 @@ export function getUserGroupList() {
         return res
     })
 }
+
+export function getMemberShipList() {
+    return axios.get('/get_membership_list').then((res) => {
+        return res
+    })
+}

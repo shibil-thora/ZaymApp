@@ -7,6 +7,9 @@ from django.conf import settings
 from ..models import Transaction
 from rest_framework.permissions import IsAuthenticated 
 from users.models import MyUsers as User
+from datetime import datetime, timedelta
+from users.models import MemberShip 
+from django.utils import timezone
 
 rz_client = RazorPayClient()
 
@@ -52,7 +55,13 @@ class TransactionAPIView(APIView):
             signature=request.data.get("signature"),
             amount=request.data.get("amount"),
         )
-        user_obj.is_premium = True 
+        user_obj.is_premium = True  
+        current_date = timezone.now() 
+        member_ship = MemberShip.objects.get(charge=request.data.get("amount"))  
+        # deadline = current_date + timedelta(days=member_ship.number_of_days)
+        deadline = current_date + timedelta(days=member_ship.number_of_days)
+        print(member_ship, current_date, deadline) 
+        user_obj.next_premium_deadline = deadline
         user_obj.save()
 
         response = {

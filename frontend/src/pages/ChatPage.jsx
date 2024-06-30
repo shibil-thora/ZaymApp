@@ -40,7 +40,7 @@ function ChatPage(props) {
             
             </div>
             {/* recent chats */}
-            <div className="mx-auto w-full h-5/6 overflow-y-scroll hide-scrollbar flex-col mt-4">
+            <div className="mx-auto w-full h-screen overflow-y-scroll hide-scrollbar flex-col mt-4">
                 {chats.filter((chat) => chat.fellow_user_data.username.toLowerCase().includes(query.toLowerCase()))
                 .map((chat) => (
                     <div tabIndex={0} key={chat.id}
@@ -68,6 +68,9 @@ function ChatPage(props) {
                 ))
                 
                 }
+
+
+
                
             </div>
         </div>

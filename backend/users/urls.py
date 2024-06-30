@@ -17,4 +17,5 @@ urlpatterns = [
     path('change_password/', views.ChangePassword.as_view()), 
     path('get_notifications/', views.GetNotifications.as_view()),
     path('see_notification/', views.SeeNotifications.as_view()),
+    path('get_membership_list/', views.GetMembershipList.as_view()),
 ]

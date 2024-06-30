@@ -4,7 +4,7 @@ import { GetMessages } from '../../ApiServices/ApiServices'
 import { baseURL, domainPort } from '../../Axios/axios'
 import { useSelector } from 'react-redux'
 import { useRef } from 'react'
-import { formattedDate } from '../../Validations/DateValidation'
+import { formattedDate } from '../../Validations/DateValidation' 
 
 function ChatSubMenu() {
     const param = useParams() 
@@ -13,7 +13,8 @@ function ChatSubMenu() {
     const state = useSelector(state => state.auth);
     const new_message = useRef(''); 
     const socket = useRef(null);
-    const [messages, setMessages] = useState([]); 
+    const [messages, setMessages] = useState([]);  
+    const chatDiv = useRef(null); 
 
     useEffect(() => {
         GetMessages(param.id).then((res) => {
@@ -37,7 +38,7 @@ function ChatSubMenu() {
                 console.log(messageObj, 'on message rendered')  
                 console.log(repeated)
                 setMessages(m => [...m.filter(message => message.id !== messageObj.message.id), messageObj.message])
-                
+                chatDiv.current.scrollTop = chatDiv.current.scrollHeight;
             }
     
         }).catch((err) => {
@@ -72,7 +73,7 @@ function ChatSubMenu() {
             </div>
         </div>
 
-        <div className="messages flex-grow m-5">
+        <div ref={chatDiv} className="messages flex flex-col overflow-y-auto h-screen flex-grow m-5 hide-scrollbar">
             
             {messages?.map((message) => (
                 <>
@@ -99,7 +100,7 @@ function ChatSubMenu() {
 
         </div>
 
-        <div className="flex flex-col bottom-0 sticky">
+        <div className="flex flex-col bottom-0 sticky bg-white">
         <div className="mx-auto w-full p-3 flex">
                 <div tabIndex={0} className=" flex w-full 
                 focus:border-sky-400 rounded mx-2 shadow-md
