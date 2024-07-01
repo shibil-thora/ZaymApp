@@ -32,8 +32,8 @@ def validate_is_premium(user):
 
 class UserLoginView(APIView): 
     def post(self, request):
-        username = request.data['username']
-        password = request.data['password'] 
+        username = request.data.get('username')
+        password = request.data.get('password') 
         user = authenticate(username=username, password=password) 
         validate_is_premium(user)
         if user is None: 
