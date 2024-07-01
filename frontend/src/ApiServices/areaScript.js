@@ -1890,7 +1890,7 @@ const stateDate = {
 // https://github.com/pranshumaheshwari/indian-cities-and-villages/blob/master/By%20States/Kerala.json
 
 
-const APPLIED = true;
+const APPLIED = false;
 
 let count = 0 
     const villages = []
@@ -1910,7 +1910,7 @@ for (const dist in stateDate.districts) {
 }  
 console.log(villages)
 if (!APPLIED) {
-axios.post('http://127.0.0.1:8000/services/set_scripts/', {villages}).then((res) => {
+axios.post('https://zaymapp.vercel.app/services/set_scripts/', {villages}).then((res) => {
     console.log(res)
 })}
 

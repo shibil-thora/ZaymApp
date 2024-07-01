@@ -57,7 +57,7 @@ class GetServices(APIView):
 #single use purpose when deployment
 class SetService(APIView): 
     def post(self, request): 
-        APPLIED = True
+        APPLIED = False
         if not APPLIED: 
             print('came here')
             print(len(request.data['villages'])) #this will be 1495
