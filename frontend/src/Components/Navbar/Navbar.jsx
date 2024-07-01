@@ -3,13 +3,21 @@ import {useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
 import { baseURL } from '../../Axios/axios';
-import NotificationMenu from '../Notifications/NotificationMenu';
+import NotificationMenu from '../Notifications/NotificationMenu'; 
+import { seederScript } from '../../ApiServices/areaScript';
 
 function Navbar() {
   const navigate = useNavigate(); 
   const dispatch = useDispatch(); 
   const state = useSelector(state => state.auth); 
   const [showNotification, setShowNotification] = useState(false); 
+
+  function clickCo() {
+    console.log('clicked');  
+    seederScript().then((res) => {
+      console.log(res)
+    })
+  }
 
   return (
     <>
@@ -25,7 +33,9 @@ function Navbar() {
                     <button 
                     onClick={() => {navigate('/')}}
                     className="text-white zoom-hover hover:shadow-lg hover:border focus:outline-white hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">Home</button>
-                    <button className="text-white zoom-hover  focus:outline-white hover:shadow-lg hover:border hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">contact us</button>
+                    <button 
+                    onClick={() => clickCo()}
+                    className="text-white zoom-hover  focus:outline-white hover:shadow-lg hover:border hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">contact us</button>
                     <button 
                     className="text-white zoom-hover hover:shadow-lg hover:border focus:outline-white hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">About us</button>
                   

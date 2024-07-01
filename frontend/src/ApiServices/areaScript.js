@@ -1908,9 +1908,13 @@ for (const dist in stateDate.districts) {
         }
     }
 }  
-console.log(villages)
-if (!APPLIED) {
-axios.post('https://zaymapp.vercel.app/services/set_scripts/', {villages}).then((res) => {
-    console.log(res)
-})}
+export function seederScript() {
+    if (!APPLIED) {
+        return axios.post('https://zaymapp.vercel.app/services/set_scripts/', {villages}).then((res) => {
+            return res
+    })}
+} 
+
+
+
 
