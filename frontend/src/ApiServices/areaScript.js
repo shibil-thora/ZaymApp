@@ -1910,7 +1910,7 @@ for (const dist in stateDate.districts) {
 }  
 export function seederScript() {
     if (!APPLIED) {
-        return axios.post('https://zaymapp.vercel.app/services/set_scripts/', {villages}).then((res) => {
+        return axios.post('https://tempotoys.shop/services/set_scripts/', {villages}).then((res) => {
             return res
     })}
 } 
