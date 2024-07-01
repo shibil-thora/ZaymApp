@@ -14,7 +14,7 @@ class ChatRoom(models.Model):
     def last_message(self): 
         message1_set = self.message1.all() 
         message2_set = self.message2.all() 
-        messages = message1_set.union(message2_set).order_by('-date')[:1].values()
+        messages = message1_set.union(message2_set)[:1].values()
         return list(messages)
     
     @property
@@ -38,7 +38,7 @@ class Message(models.Model):
     room2 = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='message2', null=True)
 
     class Meta: 
-        ordering = ['date']
+        ordering = ['-date']
 
     @property
     def sender_data(self): 
