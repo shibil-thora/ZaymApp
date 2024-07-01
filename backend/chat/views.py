@@ -22,7 +22,7 @@ class GetAvailableChats(APIView):
 class GetMessages(APIView): 
     permission_classes = [IsAuthenticated] 
     def post(self, request): 
-        chat_id = request.data['chat_id'] 
+        chat_id = request.data.get('chat_id') 
         chat_obj = ChatRoom.objects.get(id=chat_id)  
         Notification.objects.filter(informer=chat_obj.fellow_user).delete()
         chat = ChatRoomSerializer(chat_obj).data
