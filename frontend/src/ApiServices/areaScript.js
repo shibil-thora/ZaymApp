@@ -1890,7 +1890,7 @@ const stateDate = {
 // https://github.com/pranshumaheshwari/indian-cities-and-villages/blob/master/By%20States/Kerala.json
 
 
-const APPLIED = false;
+const APPLIED = true;
 
 let count = 0 
     const villages = []
