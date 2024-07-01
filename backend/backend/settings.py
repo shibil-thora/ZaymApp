@@ -60,7 +60,7 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173', 
-    'http://13.232.49.159', 
+    'https://zaymapp.vercel.app', 
 ]
 
 # CORS_ORIGINS_ALLOW_ALL = True
