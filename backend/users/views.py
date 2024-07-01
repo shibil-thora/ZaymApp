@@ -23,11 +23,12 @@ from django.utils import timezone
 
 def validate_is_premium(user): 
     current_date = timezone.now()  
-    print(current_date, user.next_premium_deadline)
-    
-    if user.next_premium_deadline < current_date: 
-        user.is_premium = False 
-        user.save() 
+    try:
+        if user.next_premium_deadline < current_date: 
+            user.is_premium = False 
+            user.save()  
+    except: 
+        pass
 
 
 class UserLoginView(APIView): 
