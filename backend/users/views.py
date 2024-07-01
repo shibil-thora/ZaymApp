@@ -17,7 +17,8 @@ from datetime import datetime, timedelta
 from .models import Notification 
 from django.core.mail import send_mail 
 from django.conf import settings 
-from .serializers import MemberShip, MembershipSerializer
+from .serializers import MembershipSerializer 
+from .models import MemberShip
 from django.utils import timezone
 
 def validate_is_premium(user): 
