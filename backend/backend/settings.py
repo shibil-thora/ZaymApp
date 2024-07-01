@@ -60,7 +60,8 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173', 
-    'https://zaymapp.vercel.app', 
+    'https://zaymapp.vercel.app',  
+    'https://tempotoys.shop'
 ]
 
 # CORS_ORIGINS_ALLOW_ALL = True

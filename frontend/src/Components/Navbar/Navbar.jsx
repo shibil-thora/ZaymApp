@@ -3,7 +3,8 @@ import {useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
 import { baseURL } from '../../Axios/axios';
-import NotificationMenu from '../Notifications/NotificationMenu'; 
+import NotificationMenu from '../Notifications/NotificationMenu';  
+
 
 function Navbar() {
   const navigate = useNavigate(); 
@@ -27,7 +28,6 @@ function Navbar() {
                     onClick={() => {navigate('/')}}
                     className="text-white zoom-hover hover:shadow-lg hover:border focus:outline-white hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">Home</button>
                     <button 
-                    onClick={() => clickCo()}
                     className="text-white zoom-hover  focus:outline-white hover:shadow-lg hover:border hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">contact us</button>
                     <button 
                     className="text-white zoom-hover hover:shadow-lg hover:border focus:outline-white hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">About us</button>
@@ -37,6 +37,7 @@ function Navbar() {
             <div className="flex">
 
             {state.user.is_authenticated && <div tabIndex={0} 
+              onClick={() => setShowNotification(!showNotification)}
               className="md:flex rotate-hover
                hidden hover:cursor-pointer w-8 h-8 active:bg-opacity-90 focus:outline-none 
               zoom-hover  bg-black bg-opacity-20 rounded-full hover:bg-orange-600 mt-2 justify-center">   
