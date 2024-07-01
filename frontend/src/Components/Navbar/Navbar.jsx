@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
 import { baseURL } from '../../Axios/axios';
 import NotificationMenu from '../Notifications/NotificationMenu'; 
-import { seederScript } from '../../ApiServices/areaScript';
 
 function Navbar() {
   const navigate = useNavigate(); 
@@ -12,12 +11,6 @@ function Navbar() {
   const state = useSelector(state => state.auth); 
   const [showNotification, setShowNotification] = useState(false); 
 
-  function clickCo() {
-    console.log('clicked');  
-    seederScript().then((res) => {
-      console.log(res)
-    })
-  }
 
   return (
     <>
@@ -44,7 +37,6 @@ function Navbar() {
             <div className="flex">
 
             {state.user.is_authenticated && <div tabIndex={0} 
-              onClick={() => setShowNotification(!showNotification)}
               className="md:flex rotate-hover
                hidden hover:cursor-pointer w-8 h-8 active:bg-opacity-90 focus:outline-none 
               zoom-hover  bg-black bg-opacity-20 rounded-full hover:bg-orange-600 mt-2 justify-center">   
