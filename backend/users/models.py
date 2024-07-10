@@ -26,7 +26,10 @@ class Notification(models.Model):
     informer = models.ForeignKey(MyUsers, on_delete=models.CASCADE)
     receiver = models.ForeignKey(MyUsers, on_delete=models.CASCADE, related_name='notifications') 
     message = models.CharField(max_length=500)
-    date = models.DateTimeField(auto_now_add=True) 
+    date = models.DateTimeField(auto_now_add=True)  
+
+    class Meta: 
+        ordering = ['-id']
 
     @property 
     def informer_data(self): 

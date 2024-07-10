@@ -276,7 +276,7 @@ class GetNotifications(APIView):
     permission_classes = [IsAuthenticated] 
     def get(self, request):  
         user = request.user 
-        notify_ojbs = user.notifications.all().order_by('-id') 
+        notify_ojbs = user.notifications.all()
         notify_data = NotificationSerializer(notify_ojbs, many=True).data
         return Response(notify_data)
     
