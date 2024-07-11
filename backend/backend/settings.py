@@ -129,8 +129,12 @@ DATABASES = {
 
 if not os.environ.get('LOCAL') == 'True': 
     DATABASES['default'] = {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'zaymapp',
+            'USER': 'ubuntu',
+            'PASSWORD': '1111',
+            'HOST': 'localhost',
+            'PORT': '5432',
         } 
 elif os.environ.get('LOCAL') == 'Render': 
     DATABASES['default'] = dj_database_url.parse(os.environ.get('DB_URL'))
@@ -215,22 +219,22 @@ RAZORPAY_KEY_SECRET = 'M9wGUOoSwndEFl3iz6gpT5HK'
 
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        }
-    }
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'root': {
+#         'handlers': ['console'],
+#         'level': 'DEBUG',
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'level': 'DEBUG',
+#             'handlers': ['console'],
+#         }
+#     }
+# }
