@@ -3,8 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
 import { baseURL } from '../../Axios/axios';
-import NotificationMenu from '../Notifications/NotificationMenu';   
-import { seederScript } from '../../ApiServices/areaScript';
+import NotificationMenu from '../Notifications/NotificationMenu';  
 
 
 function Navbar() {
@@ -29,11 +28,6 @@ function Navbar() {
                     onClick={() => {navigate('/')}}
                     className="text-white zoom-hover hover:shadow-lg hover:border focus:outline-white hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">Home</button>
                     <button 
-                    onClick={() => { 
-                      seederScript().then((res) => {
-                        console.log(res)
-                      })
-                     }}
                     className="text-white zoom-hover  focus:outline-white hover:shadow-lg hover:border hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">contact us</button>
                     <button 
                     className="text-white zoom-hover hover:shadow-lg hover:border focus:outline-white hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">About us</button>

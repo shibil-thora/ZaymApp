@@ -57,18 +57,18 @@ class GetServices(APIView):
 #single use purpose when deployment
 class SetService(APIView): 
     def post(self, request): 
-        APPLIED = False
+        APPLIED = True
         if not APPLIED: 
             print('came here')
             print(len(request.data['villages'])) #this will be 1495
-            for village in request.data['villages']: 
-                Area.objects.create(
-                    state=village['state'], 
-                    dist=village['dist'], 
-                    sub_dist=village['sub_dist'], 
-                    village=village['village'] ,
-                    area_name=f'{village['village']} {village['sub_dist']} {village['dist']} {village['state']}'
-                )
+            # for village in request.data['villages']: 
+            #     Area.objects.create(
+            #         state=village['state'], 
+            #         dist=village['dist'], 
+            #         sub_dist=village['sub_dist'], 
+            #         village=village['village'] ,
+            #         area_name=f'{village['village']} {village['sub_dist']} {village['dist']} {village['state']}'
+            #     )
             return Response({'message': 'success'}) 
         return Response({'message': 'already applied'})
 
