@@ -11,4 +11,5 @@ from . import consumers
 
 websocket_urlpatterns = [
     re_path(r'chat/room/', consumers.ChatConsumer.as_asgi()), 
+    re_path(r'live/room/', consumers.RealTimeConsumer.as_asgi()), 
 ]

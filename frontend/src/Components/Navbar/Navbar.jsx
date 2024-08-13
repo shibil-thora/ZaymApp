@@ -1,4 +1,4 @@
-import React, { useState } from 'react' 
+import React, { useEffect, useState } from 'react' 
 import {useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Redux/AuthSlice'
@@ -10,8 +10,11 @@ function Navbar() {
   const navigate = useNavigate(); 
   const dispatch = useDispatch(); 
   const state = useSelector(state => state.auth); 
-  const [showNotification, setShowNotification] = useState(false); 
+  const [showNotification, setShowNotification] = useState(false);   
 
+  useEffect(() => {
+    console.log(state)
+  }, [])
 
   return (
     <>
@@ -23,7 +26,7 @@ function Navbar() {
         <div className="max-w-6xl flex justify-between md:mx-auto mx-8 py-2 ">
             <h2 className="text-4xl ms-2 font-black cursor-pointer text-gray-200">ZaymApp</h2> 
             <div className="hidden md:block">
-                <section className="flex justify-between invisible space-x-8 mt-3 items-center">
+                <section className="flex justify-between space-x-8 mt-3 items-center">
                     <button 
                     onClick={() => {navigate('/')}}
                     className="text-white zoom-hover hover:shadow-lg hover:border focus:outline-white hover:border-slate-500 hover:opacity-90 rounded-md hover:cursor-pointer px-2 ">Home</button>
@@ -36,20 +39,30 @@ function Navbar() {
             </div> 
             <div className="flex">
 
-            {state.user.is_authenticated && <div tabIndex={0} 
-              onClick={() => setShowNotification(!showNotification)}
-              className="flex rotate-hover
-              hover:cursor-pointer w-8 h-8 active:bg-opacity-90 focus:outline-none 
-              zoom-hover  bg-black bg-opacity-20 rounded-full hover:bg-orange-600 mt-2">   
-                <i className="text-white mx-auto my-auto fas fa-bell "></i> 
-              </div>}
+            {state.user.is_authenticated && (
+              <div tabIndex={0} 
+                  onClick={() => setShowNotification(!showNotification)}
+                  className="flex rotate-hover hover:cursor-pointer w-8 h-8 active:bg-opacity-90 focus:outline-none zoom-hover bg-black bg-opacity-20 rounded-full hover:bg-lime-600 mt-2 relative">
+                <i className="text-white mx-auto my-auto fas fa-bell"></i>
+                {state.user.notificationCount >= 0 && (
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-600 rounded-full flex items-center justify-center text-xs text-white">
+                    {state.user.notificationCount}
+                  </div>
+                )}
+              </div>
+            )}
 
               {state.user.is_authenticated && <button 
               onClick={() => navigate('/chat/users', {replace: true})}
               className="ms-4 flex mr-2
-               hover:cursor-pointer w-10 h-10 my-auto active:bg-opacity-90 focus:outline-none 
-              zoom-hover  bg-black bg-opacity-20 rounded-full hover:bg-orange-600 justify-center">
+               hover:cursor-pointer w-10 h-10 my-auto active:bg-opacity-90 focus:outline-none relative
+              zoom-hover  bg-black bg-opacity-20 rounded-full hover:bg-lime-600 justify-center">
                 <i className="fas fa-comment text-white my-auto text-xl"></i>
+                {state.user.chatCount >= 0 && (
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-600 rounded-full flex items-center justify-center text-xs text-white">
+                    {state.user.chatCount}
+                  </div>
+                )}
               </button>}
 
 

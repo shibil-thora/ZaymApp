@@ -20,7 +20,7 @@ function ChatSubMenu() {
         GetMessages(param.id).then((res) => {
             setRoom(res.data)
             setMessages(res.data.messages) 
-            socket.current = new WebSocket(`wss://${domainPort}/ws/chat/room/?f=${res.data.fellow_user}&t=${localStorage.getItem('access')}`)
+            socket.current = new WebSocket(`ws://${domainPort}/ws/chat/room/?f=${res.data.fellow_user}&t=${localStorage.getItem('access')}`)
             console.log(room, 'room data')
             socket.current.onopen = function(e) {
                 console.log('chat socket connected')

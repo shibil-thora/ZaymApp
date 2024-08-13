@@ -1,31 +1,43 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar/Navbar'
 import Footer from '../Components/Footer/Footer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { baseURL } from '../Axios/axios'
 import Carousal from '../Components/Carousal/Carousal'
-import { KnockService } from '../ApiServices/ApiServices'
+import { GetOneService, KnockService } from '../ApiServices/ApiServices'
 import { useSelector } from 'react-redux'
-import { GetUserRoom } from '../ApiServices/ApiServices'
+import { GetUserRoom } from '../ApiServices/ApiServices' 
+import { liveSocket2 as live } from '../Components/ContextComp/ContextComp'
 
 function ServiceView() {
     const location = useLocation();
     const state = useSelector(state => state.auth);  
     const [knocked, setKnocked] = useState(false); 
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();  
+    const [service, setService] = useState({})
+  
 
     useEffect(() => {
-        const knocked = location.state.get_knocks.filter(knock => knock.user_data.username == state.user.username)
-        if (knocked.length !== 0) {
-            setKnocked(true); 
-        }
-    }, []) 
+        GetOneService(location.state.id).then((res) => {
+            setService(res.data)
+            const knocked = res.data.get_knocks.filter(knock => knock.user_data.username == state.user.username)
+            if (knocked.length !== 0) {
+                setKnocked(true); 
+            }
+        })
+    }, [])
  
 
     function handleKnock() {
         if(!knocked) {
         KnockService(state.user.username, location.state.id).then((res) => {
-            setKnocked(true);
+            setKnocked(true); 
+            live.send(JSON.stringify({
+                message_type: 'knock', 
+                from_user: state.user, 
+                to_user: service.get_user, 
+                message: `${state.user.username} has knocked on ${service.business_name}`
+            }))
         })
         }
     }

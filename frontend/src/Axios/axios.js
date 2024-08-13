@@ -1,6 +1,8 @@
 import axios from 'axios' 
-export const baseURL = 'https://tempotoys.shop'
-export const domainPort = 'tempotoys.shop'
+// export const baseURL = 'https://tempotoys.shop'
+// export const domainPort = 'tempotoys.shop' 
+export const baseURL = 'http://127.0.0.1:8000'
+export const domainPort = '127.0.0.1:8000'
  
 
 const axiosInstance = axios.create({

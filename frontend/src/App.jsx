@@ -20,10 +20,33 @@ import ChatPage from './pages/ChatPage'
 import ChatSubMenu from './Components/ChatSubMenu/ChatSubMenu'
 import AdminAreas from './Components/AdminAreas/AdminAreas'
 import PremiumMenu from './Components/PremiumMenu/PremiumMenu'
+import { liveSocket2 } from './Components/ContextComp/ContextComp'
+import { useEffect } from 'react' 
+import { domainPort } from './Axios/axios'
+   
 
-//add suspense and fallback and lazy loading. . . 
+function App() { 
 
-function App() {
+  useEffect(() => {
+    
+        liveSocket2.onopen = (e) => {
+            console.log('live socket connected')
+        } 
+
+        liveSocket2.onclose = (e) => {
+            console.log('live socket disconnectd')
+        } 
+
+        // Live App management ------------
+
+        liveSocket2.onmessage = (e) => {
+            const data = JSON.parse(e.data).message 
+            console.log(data)
+        } 
+
+        // Live App management ------------
+
+    }, [])
 
   return (
     <> 

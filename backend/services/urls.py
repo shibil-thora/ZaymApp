@@ -7,6 +7,7 @@ urlpatterns = [
     path('create/', views.CreateService.as_view()), 
     path('edit/', views.EditService.as_view()), 
     path('get_services/', views.GetServices.as_view()), 
+    path('get_one_service/', views.GetOneService.as_view()), 
     path('allow_permit/', views.AllowPermit.as_view()), 
     path('get_types/', views.GetTypes.as_view()), 
     path('edit_types/', views.EditServiceType.as_view()), 

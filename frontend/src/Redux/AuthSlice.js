@@ -11,6 +11,8 @@ const INITIAL_STATE = {
         is_premium: false, 
         area: {}, 
         pro_pic: '', 
+        notificationCount: 1, 
+        chatCount: 1, 
     }
 } 
 
@@ -42,6 +44,8 @@ export const authSlice = createSlice({
                 is_premium: false, 
                 area: {}, 
                 pro_pic: '',
+                notificationCount: 1, 
+                chatCount: 1, 
             }
         }, 
         changeArea: (state, action) => {

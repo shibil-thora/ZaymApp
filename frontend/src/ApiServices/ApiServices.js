@@ -137,6 +137,11 @@ export function GetServicesAdmin() {
     })
 } 
 
+export function GetOneService(id) {
+    return axios.post('/services/get_one_service/', {id}).then((res) => {
+        return res
+    })
+}
 
 export function AllowPermit(id) {
     return axios.post('/services/allow_permit/', {id}).then((res) => {

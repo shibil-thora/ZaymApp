@@ -13,7 +13,8 @@ from services.models import ServiceAreas
 from .models import ServiceType 
 from rest_framework.generics import CreateAPIView 
 from .models import KnockedUsers
-from users.models import Notification
+from users.models import Notification 
+from .serializers import DisplayServiceSerializer
 
 
 class GetAreas(APIView): 
@@ -51,10 +52,18 @@ class GetServices(APIView):
             'users': users, 
             'services': services, 
         }
-        return Response(response_data) 
+        return Response(response_data)  
     
 
-#single use purpose when deployment
+class GetOneService(APIView): 
+    permission_classes = [IsAuthenticated] 
+    def post(self, request): 
+        service = Service.objects.get(id=request.data.get('id')) 
+        service_data = DisplayServiceSerializer(service).data
+        return Response(service_data)
+    
+
+#single use purpose while deployment
 class SetService(APIView): 
     def post(self, request): 
         APPLIED = True
