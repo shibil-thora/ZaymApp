@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer , NotificationSerializer
-from .models import MyUsers as User 
+from .models import MyUsers as User , Notification
 from django.core.validators import EmailValidator
 from services.serializers import AreaSerializer, ServiceSerializer, DisplayServiceSerializer
 from services.models import Area, UserArea, Service
@@ -19,7 +19,7 @@ from django.core.mail import send_mail
 from django.conf import settings 
 from .serializers import MembershipSerializer 
 from .models import MemberShip
-from django.utils import timezone
+from django.utils import timezone 
 
 def validate_is_premium(user): 
     current_date = timezone.now()  
@@ -28,7 +28,15 @@ def validate_is_premium(user):
             user.is_premium = False 
             user.save()  
     except: 
-        pass
+        pass 
+
+def get_notification_count(user): 
+    noti_count = 0 
+    try:
+        noti_count = Notification.objects.filter(receiver=user).count()
+    except: 
+        pass 
+    return noti_count
 
 
 class UserLoginView(APIView): 
@@ -63,7 +71,8 @@ class UserLoginView(APIView):
                 'is_provider': user_dict['is_provider'],
                 'is_premium': user_dict['is_premium'], 
                 'area': area, 
-                'pro_pic': user_dict['profile_picture']
+                'pro_pic': user_dict['profile_picture'],  
+                'notification_count': get_notification_count(request.user)
             }
         }
     
@@ -94,7 +103,8 @@ class UserStatusView(APIView):
                     'is_premium': None, 
                     'is_provider': None,
                     'area': area,
-                    'pro_pic': None
+                    'pro_pic': None, 
+                    'notification_count': 0,
                 }   
             }
         else: 
@@ -108,7 +118,8 @@ class UserStatusView(APIView):
                     'is_provider': user_dict['is_provider'], 
                     'is_premium': user_dict['is_premium'], 
                     'area': area,
-                    'pro_pic': user_dict['profile_picture']
+                    'pro_pic': user_dict['profile_picture'],
+                    'notification_count': get_notification_count(request.user),
                 }
             }
         return Response(response_data) 

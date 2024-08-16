@@ -3,10 +3,13 @@ import {GetNotifications, SeeNotification} from '../../ApiServices/ApiServices'
 import { baseURL } from '../../Axios/axios';
 import {formattedDate} from '../../Validations/DateValidation'
 import {useNavigate} from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { minusNotiCount } from '../../Redux/AuthSlice';
 
 function NotificationMenu(props) { 
     const [notifications, setNotifications] = useState();  
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         GetNotifications().then((res) => {
@@ -15,6 +18,7 @@ function NotificationMenu(props) {
     }, []) 
 
     function handleNotiClick(noti) {
+        dispatch(minusNotiCount()); 
         SeeNotification(noti.id).then((res) => {
             if (!noti.message.includes('sent')) navigate('/profile/provider/'); 
             else navigate('/chat/users/')

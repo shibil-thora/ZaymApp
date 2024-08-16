@@ -23,9 +23,14 @@ import PremiumMenu from './Components/PremiumMenu/PremiumMenu'
 import { liveSocket2 } from './Components/ContextComp/ContextComp'
 import { useEffect } from 'react' 
 import { domainPort } from './Axios/axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { addNotiCount } from './Redux/AuthSlice'
    
 
-function App() { 
+function App() {  
+
+  const state = useSelector(state => state.auth)
+  const dispatch = useDispatch(); 
 
   useEffect(() => {
     
@@ -41,7 +46,11 @@ function App() {
 
         liveSocket2.onmessage = (e) => {
             const data = JSON.parse(e.data).message 
-            console.log(data)
+            
+            if (data.type == 'knock' && data.to == state.user.username) {
+              console.log('here only me') 
+              dispatch(addNotiCount()); 
+            }
         } 
 
         // Live App management ------------

@@ -11,8 +11,8 @@ const INITIAL_STATE = {
         is_premium: false, 
         area: {}, 
         pro_pic: '', 
-        notificationCount: 1, 
-        chatCount: 1, 
+        notificationCount: 0, 
+        chatCount: 0, 
     }
 } 
 
@@ -30,6 +30,7 @@ export const authSlice = createSlice({
             state.user.is_premium = action.payload.is_premium;
             state.user.area = action.payload.area; 
             state.user.pro_pic = action.payload.pro_pic;
+            state.user.notificationCount = action.payload.notification_count; 
         },
         logOut: (state, action) => {
             localStorage.setItem('access', ''); 
@@ -44,8 +45,8 @@ export const authSlice = createSlice({
                 is_premium: false, 
                 area: {}, 
                 pro_pic: '',
-                notificationCount: 1, 
-                chatCount: 1, 
+                notificationCount: 0, 
+                chatCount: 0, 
             }
         }, 
         changeArea: (state, action) => {
@@ -59,9 +60,15 @@ export const authSlice = createSlice({
         },
         changeToPremium: (state, action) => {
             state.user.is_premium = action.payload; 
-        }
+        }, 
+        addNotiCount: (state, action) => {
+            state.user.notificationCount += 1
+        },
+        minusNotiCount: (state, action) => {
+            state.user.notificationCount -= 1
+        },
     }
 }) 
 
-export const {changeAuthMode, logOut, changeArea, changeToProvider, updateProPic, changeToPremium} = authSlice.actions
+export const {changeAuthMode, logOut, changeArea, changeToProvider, updateProPic, changeToPremium, addNotiCount, minusNotiCount} = authSlice.actions
 export default authSlice.reducer

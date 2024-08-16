@@ -49,11 +49,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
             room1=room1, 
             room2=room2, 
         )  
-        notification_obj = await database_sync_to_async(Notification.objects.create)(
-            informer=sender, 
-            receiver=receiver, 
-            message=f'{sender.username} sent you a message'
-        )
+        # notification_obj = await database_sync_to_async(Notification.objects.create)(
+        #     informer=sender, 
+        #     receiver=receiver, 
+        #     message=f'{sender.username} sent you a message'
+        # )
 
         await self.channel_layer.group_send(
             self.group_name, 
@@ -106,8 +106,8 @@ class RealTimeConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data) 
         # this is the place where we get the data sent from the frontend 
         message = text_data_json["message"]  
-        from_user = text_data_json["from_user"]
-        to_user = text_data_json["to_user"] 
+        from_user = text_data_json["from_user"]["username"]
+        to_user = text_data_json["to_user"]["username"] 
         message_type = text_data_json["message_type"] 
 
         live = LiveObj(message_type=message_type, from_user=from_user, to_user=to_user, message=message) 
